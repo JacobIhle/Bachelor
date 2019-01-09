@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <title>Histology</title>
+</head>
+<body>
+<header>
+<h1>Histology</h1>
+</header>
+<div id="openseadragon1" style="width: 800px; height: 600px;"></div>
+<script src="/../static/openseadragon/openseadragon.min.js"></script>
+<script type="text/javascript">
+    var viewer = OpenSeadragon({
+        id: "openseadragon1",
+        prefixUrl: "/../static/openseadragon/images/",
+        tileSources: "/../H281.scn"
+    });
+</script>
+
+<footer>
+    footer stuff
+</footer>
+
+</body>
+</html>
