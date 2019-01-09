@@ -1,0 +1,39 @@
+<!doctype html>
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
+	type='text/javascript'></script>
+<script type="text/javascript" src="static/OpenSeadragon.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    var dzi_data = {"/Users/thomasosaland/Desktop/BachelorStuff/dz.dzi": "<?xml version='1.0' encoding='UTF-8'?>\n<Image Format=\"jpeg\" Overlap=\"1\" TileSize=\"256\" xmlns=\"http://schemas.microsoft.com/deepzoom/2008\"><Size Height=\"106259\" Width=\"306939\" /></Image>"};
+    var viewer;
+
+    function open_slide(url) {
+        if (viewer) {
+            // Never reuse an existing viewer to avoid a timer leak
+            // (OpenSeadragon issue #14)
+            viewer.close();
+            $("#theo_display").text("");
+        }
+        viewer = new Seadragon.Viewer("theo_display");
+        viewer.config.animationTime = 0.5;
+        viewer.config.blendTime = 0.1;
+        viewer.config.zoomPerScroll = 1.1;
+        viewer.openDzi(url, dzi_data[url]);
+    }
+
+    open_slide("/Users/thomasosaland/Desktop/BachelorStuff/dz.dzi");
+});
+</script>
+
+<title>DeepZoom demo page</title>
+
+<p>Hello, world! This is a page with an embedded DZ picture.
+
+<p><center>
+<div id="theo_display" style="width: 800px; height: 600px;"></div>
+</center>
+
+<p>Click or use your mousewheel to zoom, click and drag to pan.
+
+<p>View source to see how it's done.

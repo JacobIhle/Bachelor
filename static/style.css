@@ -1,32 +1,168 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #212121;
-    height: 2%;
-    padding: 10px;
-}
+/*
+ * OpenSlide demo site
+ *
+ * Copyright (c) 2010-2015 Carnegie Mellon University
+ * Copyright (c) 2016 Benjamin Gilbert
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of version 2.1 of the GNU Lesser General Public License
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 
 html {
-    position: relative;
-    min-height: 100%; /* Needed for footer*/
+    overflow: hidden;
 }
-
+body {
+    margin: 10px;
+    padding: 0;
+}
 h1 {
-    color: lightgray;
+    font-size: 1.2em;
+}
+a:link {
+    color: #0000ee;
+}
+a img {
+    border: 0;
+}
+.clear {
+    clear: both;
+}
+.no-top {
+    margin-top: 0;
+}
+.no-bottom {
+    margin-bottom: 0;
+}
+.loading {
+    background-image: url('images/loading.gif');
+    background-repeat: no-repeat;
+    background-position: 50% 30px;
+}
+.scroll-parent {
+    overflow: auto;
+    height: 100%;
+}
+.scroll {
+    display: inline-block;
+    width: 100%;
+}
+div#header img {
+    float: left;
+}
+div#help-text {
+    margin-left: 330px;
+    /* Disable Font Boosting on Chrome for Android to avoid overly large
+       text */
+    max-height: 100000px;
+}
+div#content {
+    position: relative;
+    height: 4000px;
+}
+div#images {
+    position: absolute;
+    width: 20%;
+}
+div#images h2 {
+    font-size: 1em;
+    margin: 0;
+}
+div#images ul {
+    margin-left: 1.5em;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+div#images li {
+    margin: 0.2em 0;
+    list-style-type: none;
+}
+#versions {
+    font-size: small;
+}
+div#images a {
+    color: #0000ee;
+}
+.current-slide {
+    background-color: #ccf;
+}
+div#viewpane {
+    position: absolute;
+    left: 21%;
+    width: 53%;
+    height: 100%;
+}
+div#view {
+    height: 100%;
+    background-color: black;
+    border: 1px solid #000;
+    color: white;
+}
+div#view.fullpage {
+    left: 0;
+    border: 0;
+}
+div#retiling {
+    display: none;
+    padding: 0.8em;
+}
+div#retiling-inner {
+    padding: 0.8em;
+    border-radius: 6px;
+    background-color: #ffddbb;
     text-align: center;
 }
-
-footer {
+div#instructions {
     position: absolute;
-    bottom: 0;
-    height: 5%;
+    top: 48%;
     width: 100%;
-    margin: 0 auto;
-    left: 0;
-    background-color: #212121;
-    color: lightgray;
+    font-size: 13px;
     text-align: center;
+}
+div#details {
+    position: absolute;
+    right: 0;
+    width: 25%;
+}
+div#details h2 {
+    font-size: 1em;
+    margin: 0.5em 0;
+}
+div#details .download-link {
+    float: right;
+    font-size: small;
+    font-weight: normal;
+    margin-top: 0.3em;
+    margin-right: 0.5em;
+}
+div#details .info {
+    font-size: small;
+}
+div#details dl {
+    font-size: small;
+    margin: 0;
+}
+div#details dt {
+    font-weight: bold;
+    border-top: 1px solid #000;
+    background-color: #eee;
+}
+div#details dd {
+    margin-left: 0;
+}
+div.error {
+    margin-top: 40px;
+    color: #dd0044;
+    text-align: center;
+    font-weight: bold;
 }
