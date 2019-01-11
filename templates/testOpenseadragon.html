@@ -1,7 +1,7 @@
 <!doctype html>
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
 	type='text/javascript'></script>
-<script type="text/javascript" src="static/OpenSeadragon.js"></script>
+<script type="text/javascript" src="../static/OpenSeadragon.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -15,10 +15,12 @@ $(document).ready(function() {
             viewer.close();
             $("#theo_display").text("");
         }
+
         viewer = new Seadragon.Viewer("theo_display");
         viewer.config.animationTime = 0.5;
         viewer.config.blendTime = 0.1;
         viewer.config.zoomPerScroll = 1.05;
+
         viewer.openDzi(url, dzi_data[url]);
     }
 
