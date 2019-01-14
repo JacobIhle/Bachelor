@@ -1,17 +1,40 @@
 <!doctype html>
-<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
-	type='text/javascript'></script>
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
 <script type="text/javascript" src="../static/openseadragon.js"></script>
 <script type="text/javascript" src="../static/GUI.js"></script>
-<title>DeepZoom demo page</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-<button id="testButton">H281</button>
-<div id="display" style="width: 800px; height: 500px;"></div>
-<button id="zoom4x">4X</button>
-<button id="zoom10x">10x</button>
-<button id="zoom20x">20x</button>
-<button id="zoom40x">40x</button>
-<div id="currentZoomLevel"></div>
+<link rel="stylesheet" type="text/css" media="all" href="../static/style.css">
 
-
-
+<body>
+        <header>
+            <ul>
+                <li><div id="menu" class="dropdown">
+                        <button id="menuicon" class="material-icons menu">dehaze</button>
+                        <div class="dropdown-content">
+                            <a href="#">Add new scan</a>
+                            <a href="#">Thanks to the devs</a>
+                            <a href="#">Dump to xml</a>
+                        </div>
+                    </div>
+                    <li><button id="searchicon" class="material-icons search">search</button></li>
+                    <li><form>
+                        <input id="searchField" type="text" name="search" placeholder="Search">
+                    </form></li>
+                </li>
+                <li id="fileLi"><div id="filename">H281-03</div></li>
+                <li id="infoButton">INFO</li>
+            </ul>
+        </header>
+        <div id="display"></div>
+        <div id="infoField"></div>
+        
+        <div id="footer">
+            <li><button id="currentZoomLevel">365.20x</button></li>
+            <li><button id="zoom4x">4x</button></li>
+            <li><button id="zoom10x">10x</button></li>
+            <li><button id="zoom20x">20x</button></li>
+            <li><button id="zoom40x">40x</button></li>
+            <li><button id="testButton">H281</button></li>
+        </div>
+        </body>

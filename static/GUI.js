@@ -55,7 +55,7 @@ function addViewerHandlers() {
     });
 
     viewer.add_animationfinish(function () {
-        $("#currentZoomLevel").html(viewer.viewport.getZoom(true));
+        $("#currentZoomLevel").html(Math.round(viewer.viewport.getZoom(true) * 100) / 100 + "x");
     });
 
     viewer.add_open(function () {

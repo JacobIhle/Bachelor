@@ -2,5 +2,9 @@
 *.xml
 *.IDEA
 *.DS_store
-dziFolder
 *.dzi
+
+## Folders
+dziFolder
+__pycache__
+.vscode
