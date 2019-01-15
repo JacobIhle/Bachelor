@@ -33,7 +33,7 @@ li {
     float: left;
 }
 
-li #menuicon {
+#menuicon {
     color: white;
     font-size: 2em;
     line-height: 40px;
@@ -43,10 +43,12 @@ li #searchicon {
     color: white;
     font-size: 1.6em;
     line-height: 40px;
+    margin-right: 5px;
 }
 
 li #searchicon:hover{
     background-color: #212121;
+    border-radius: 5px;
 }
 
 li #searchicon:active{
@@ -82,7 +84,8 @@ li form{
     color: white;
     font-size: 1.6em;
     line-height: 40px;
-    padding: 0px 4px 0px 4px;
+    padding: 0px 6px 0px 6px;
+    border-radius: 5px;
 }
 
 #infoButton:hover {
@@ -204,7 +207,7 @@ li #filename {
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-    background-color: #f1f1f1
+    background-color: #f1f1f1;
 }
 
 /* Show the dropdown menu on hover */

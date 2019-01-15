@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-    return render_template("testOpenseadragon.html")
+    return render_template("index.html")
 
 @app.route('/<root>/<imageID>/<dzFiles>/<level>/<tile>')
 def getTile(root ,imageID ,dzFiles, level, tile):

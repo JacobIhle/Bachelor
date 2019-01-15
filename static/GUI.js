@@ -4,6 +4,7 @@ var dziInfo;
 
 $(document).ready(function() {
     addNonViewerHandlers();
+    jacobisGUIstuff();
 });
 
 function addNonViewerHandlers() {
@@ -61,7 +62,21 @@ function addViewerHandlers() {
     viewer.add_open(function () {
         viewer.viewport.zoomTo(0.6);
     });
-
 }
+
+function jacobisGUIstuff(){
+    $("#menuicon").hover(function(){
+        $("#menuicon").css({"background-color": "#212121", "border-radius": "5px"});
+    }, function(){
+        $("#menuicon").css({"background-color": "#424242", "border-radius": "5px"});
+    });
+
+    $("a").hover(function(){
+        $("#menuicon").css({"background-color": "#212121", "border-radius": "5px"});
+    }, function(){
+        $("#menuicon").css({"background-color": "#424242", "border-radius": "5px"});
+    });
+}
+
 
 
