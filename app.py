@@ -1,3 +1,5 @@
+#LICENCE: http://flask.pocoo.org/docs/1.0/license/#flask-license
+
 from flask import Flask, send_file, make_response, render_template
 
 app = Flask(__name__)
