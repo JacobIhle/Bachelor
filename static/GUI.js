@@ -1,5 +1,5 @@
 var viewer;
-var imageID;
+var imageUrl;
 var dziInfo;
 
 $(document).ready(function() {
@@ -9,12 +9,12 @@ $(document).ready(function() {
 
 function addNonViewerHandlers() {
     $("#testButton").on("click", function () {
-        imageID = "dziFolder/H281-03/H281.dzi";
-        fetch(imageID)
+        imageUrl = "scnImages/H281";
+        fetch(imageUrl)
             .then(response => response.text())
             .then(text => dziInfo);
 
-        open_slide(imageID);
+        open_slide(imageUrl);
         addViewerHandlers();
     })
 }
