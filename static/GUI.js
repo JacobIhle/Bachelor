@@ -8,8 +8,17 @@ $(document).ready(function() {
 });
 
 function addNonViewerHandlers() {
-    $("#testButton").on("click", function () {
+    $("#H281").on("click", function () {
         imageID = "dziFolder/H281-03/H281.dzi";
+        fetch(imageID)
+            .then(response => response.text())
+            .then(text => dziInfo);
+
+        open_slide(imageID);
+        addViewerHandlers();
+    });
+    $("#H281test").on("click", function () {
+        imageID = "dziFolder/H281test/H281.dzi";
         fetch(imageID)
             .then(response => response.text())
             .then(text => dziInfo);
@@ -75,6 +84,14 @@ function jacobisGUIstuff(){
         $("#menuicon").css({"background-color": "#212121", "border-radius": "5px"});
     }, function(){
         $("#menuicon").css({"background-color": "#424242", "border-radius": "5px"});
+    });
+
+    $("#H281").click(function(){
+        $("#filename").text("H281-03");
+    });
+
+    $("#H281test").click(function(){
+        $("#filename").text("H281 white removed");
     });
 }
 
