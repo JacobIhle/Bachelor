@@ -86,6 +86,14 @@ function jacobisGUIstuff(){
         $("#menuicon").css({"background-color": "#424242", "border-radius": "5px"});
     });
 
+    $("#infoButton").click(function(){
+        var infoField = document.getElementById("infoField");
+        if (infoField.style.display == "block"){
+            infoField.style.display = "none"
+        } else {
+            infoField.style.display = "block"
+        }
+      });
     $("#H281").click(function(){
         $("#filename").text("H281-03");
     });
