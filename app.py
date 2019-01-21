@@ -1,7 +1,6 @@
 #LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
-
-
-from flask import Flask, send_file, render_template
+import os
+from flask import Flask, send_file, render_template, send_from_directory
 import openslide
 from openslide.deepzoom import DeepZoomGenerator
 from io import BytesIO
@@ -41,6 +40,11 @@ def GetTile(dummyVariable, level, tile):
 @app.route('/<root>/<imageID>/<file>')
 def GetDzi(root, imageID, file):
     return send_file(root+"/"+imageID+"/"+file)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static/images'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 def GetNumericTileCoordinatesFromString(tile):
