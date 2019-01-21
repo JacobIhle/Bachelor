@@ -1,9 +1,10 @@
+#LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
+
+
 from flask import Flask, send_file, render_template
 import openslide
 from openslide.deepzoom import DeepZoomGenerator
-from tempfile import NamedTemporaryFile
-from shutil import copyfileobj
-from os import remove
+from io import BytesIO
 
 image = None
 deepZoomGen = None
@@ -11,9 +12,15 @@ deepZoomGen = None
 app = Flask(__name__)
 
 
+
 @app.route('/')
 def Main():
     return render_template("index.html")
+
+
+@app.route('/images/<filename>')
+def LoadControlImages(filename):
+    return send_file("static/images/"+filename)
 
 
 @app.route('/scnImages/<filename>')
@@ -25,11 +32,10 @@ def changeImage(filename):
 
 
 @app.route('/scnImages/<dummyVariable>/<level>/<tile>')
-def GetTile(dummyVariable ,level, tile):
+def GetTile(dummyVariable, level, tile):
     col, row = GetNumericTileCoordinatesFromString(tile)
-    tileImage = TileCoordinatesToJpegImage(level, col, row)
-    response = send_file(tileImage, mimetype="image/jpeg")
-    return response
+    img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
+    return serve_pil_image(img)
 
 
 @app.route('/<root>/<imageID>/<file>')
@@ -43,21 +49,15 @@ def GetNumericTileCoordinatesFromString(tile):
     return col, row
 
 
-def TileCoordinatesToJpegImage(level, col, row):
-    jpegImage = NamedTemporaryFile(mode='w+b', suffix='jpg')
-    deepZoomGen.get_tile(int(level), (int(col), int(row))).save("/tmp/myfile.jpg")
-
-    pilImage = open('/tmp/myfile.jpg', 'rb')
-    copyfileobj(pilImage, jpegImage)
-    pilImage.close()
-
-    remove('/tmp/myfile.jpg')
-    jpegImage.seek(0, 0)
-    return jpegImage
+def serve_pil_image(pil_img):
+    img_io = BytesIO()
+    pil_img.save(img_io, 'JPEG', quality=80)
+    img_io.seek(0)
+    return send_file(img_io, mimetype='image/jpeg')
 
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=5000, threaded=True)
 
 
 

@@ -10,9 +10,9 @@ $(document).ready(function() {
 function addNonViewerHandlers() {
     $("#testButton").on("click", function () {
         imageUrl = "scnImages/H281";
-        fetch(imageUrl)
-            .then(response => response.text())
-            .then(text => dziInfo);
+        //fetch(imageUrl)
+        //    .then(response => response.text())
+        //    .then(text => dziInfo);
 
         open_slide(imageUrl);
         addViewerHandlers();
@@ -27,14 +27,16 @@ function open_slide(url) {
         $("#display").text("");
     }
 
-    viewer = new Seadragon.Viewer("display");
+    viewer = OpenSeadragon({
+        id: "display",
+        zoomPerScroll: 1.10,
+        animationTime: 0.5,
+        tileSource: imageUrl,
+        navigatorId: "",
+        showNavigator: true,
 
-    viewer.config.animationTime = 0.5;
-    viewer.config.blendTime = 0.1;
-    viewer.config.zoomPerScroll = 1.05;
-
-    viewer.clearControls();
-    viewer.openDzi(url, dziInfo);
+    });
+    viewer.open(url);
 }
 
 function addViewerHandlers() {
@@ -55,13 +57,23 @@ function addViewerHandlers() {
         viewer.viewport.zoomTo(40);
     });
 
-    viewer.add_animationfinish(function () {
+
+    viewer.addHandler("animation-finish", function () {
+        $("#currentZoomLevel").html(Math.round(viewer.viewport.getZoom(true) * 100) / 100 + "x");
+    });
+
+    viewer.addHandler("open", function () {
+        viewer.viewport.zoomTo(0.6);
+    })
+
+    /*viewer.add_animationfinish(function () {
         $("#currentZoomLevel").html(Math.round(viewer.viewport.getZoom(true) * 100) / 100 + "x");
     });
 
     viewer.add_open(function () {
         viewer.viewport.zoomTo(0.6);
     });
+    */
 }
 
 function jacobisGUIstuff(){
