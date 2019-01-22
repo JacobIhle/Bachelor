@@ -32,11 +32,22 @@ function open_slide(url) {
         zoomPerScroll: 1.10,
         animationTime: 0.5,
         tileSource: imageUrl,
+
         navigatorId: "",
         showNavigator: true,
-
     });
+
     viewer.open(url);
+
+    viewer.scalebar({
+        stayInsideImage: false,
+        backgroundColor: "yellow",
+
+        xOffset: 45,
+        yOffset: 15,
+        maxWidth: 0.2,
+        pixelsPerMeter: 4000000
+    });
 }
 
 function addViewerHandlers() {
@@ -60,6 +71,7 @@ function addViewerHandlers() {
 
     viewer.addHandler("animation-finish", function () {
         $("#currentZoomLevel").html(Math.round(viewer.viewport.getZoom(true) * 100) / 100 + "x");
+        console.log(viewer.world.getItemCount());
     });
 
     viewer.addHandler("open", function () {

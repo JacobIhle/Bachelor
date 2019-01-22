@@ -106,7 +106,7 @@ li #filename {
 #display{
     position: relative;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 80px);
 }
 
 #infoField{
@@ -126,7 +126,7 @@ dt{
     height: 20px;
     border-top: 1px solid black;
     margin: 1px;
-    width: 100%;
+    width: calc(100% - 5px);
     font-weight: bold;
     padding: 2px;
 }
