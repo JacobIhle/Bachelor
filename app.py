@@ -13,7 +13,7 @@ deepZoomGen = None
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "notSecure"
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://{username}:{password}@localhost/flasklogintest"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://user:password@localhost/flasklogintest"
 
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -88,7 +88,7 @@ def Login():
         user = User.query.filter_by(username=username).first()
         # Probably not the best way to do it
         # TODO: Find the correct way
-        if username == user.username and user.check_password(password):
+        if user is not None and username == user.username and user.check_password(password):
                 login_user(user)
                 return render_template("index.html")
 
