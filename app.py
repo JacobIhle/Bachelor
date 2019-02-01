@@ -18,6 +18,7 @@ def Main():
     return render_template("index.html")
 
 
+
 @app.route('/images/<filename>')
 def LoadControlImages(filename):
     return send_file("static/images/"+filename)
@@ -57,7 +58,7 @@ def serve_pil_image(pil_img):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8080, threaded=True)
+    app.run(host="0.0.0.0", port=5000, threaded=True, ssl_context=("local.com.cert", "local.com.key"))
 
 
 
