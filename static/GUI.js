@@ -1,25 +1,16 @@
 var viewer;
 var imageUrl;
-var dziInfo;
+var overlay;
+var i = 0;
 
 $(document).ready(function() {
     addNonViewerHandlers();
     jacobisGUIstuff();
+    initiallizeCanvas();
 });
 
-function addNonViewerHandlers() {
-    $("#H281").on("click", function () {
-        imageUrl = "scnImages/H281";
-        fetch(imageUrl)
-            .then(response => response.text())
-            .then(text => dziInfo);
+function initiallizeCanvas(){
 
-        open_slide(imageUrl);
-        addViewerHandlers();
-    });
-}
-
-function open_slide(url) {
     if (viewer) {
         // Never reuse an existing viewer to avoid a timer leak
         // (OpenSeadragon issue #14)
@@ -32,11 +23,37 @@ function open_slide(url) {
         zoomPerScroll: 1.10,
         animationTime: 0.5,
         tileSource: imageUrl,
+
         navigatorId: "",
         showNavigator: true,
-
     });
+
+    overlay = viewer.fabricjsOverlay({scale: 1});
+}
+
+function addNonViewerHandlers() {
+    $("#H281").on("click", function () {
+        imageUrl = "https://192.168.43.139:5000/scnImages/H281";
+        open_slide(imageUrl);
+        addViewerHandlers();
+    });
+}
+
+function open_slide(url) {
+
     viewer.open(url);
+
+    viewer.scalebar({
+        stayInsideImage: false,
+        backgroundColor: "#616161",
+        fontColor: "white",
+        color: "#212121",
+
+        xOffset: 45,
+        yOffset: 15,
+        maxWidth: 0.18,
+        pixelsPerMeter: 4000000
+    });
 }
 
 function addViewerHandlers() {
@@ -64,16 +81,39 @@ function addViewerHandlers() {
 
     viewer.addHandler("open", function () {
         viewer.viewport.zoomTo(0.6);
-    })
-
-    /*viewer.add_animationfinish(function () {
-        $("#currentZoomLevel").html(Math.round(viewer.viewport.getZoom(true) * 100) / 100 + "x");
     });
 
-    viewer.add_open(function () {
-        viewer.viewport.zoomTo(0.6);
+    viewer.addHandler("animation-start", function () {
+        overlay._canvasdiv.style.opacity = "0";
     });
-    */
+
+    viewer.addHandler("animation-finish", function () {
+        overlay._canvasdiv.style.opacity = "1";
+    });
+
+    viewer.addHandler("canvas-click", function (e) {
+        var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
+        var posview = viewer.viewport.imageToWindowCoordinates(pos);
+        var posviewport = viewer.viewport.imageToViewportCoordinates(pos);
+        console.log(pos);
+        console.log(posview);
+        console.log(posviewport);
+    });
+
+    viewer.addHandler("canvas-click", function (e) {
+        e.preventDefaultAction = true;
+        var pos1 = viewer.viewport.viewerElementToImageCoordinates(e.position);
+        var pos = viewer.viewport.imageToViewportCoordinates(pos1);
+        var rect = new fabric.Rect({
+          left: pos.x-0.5025,
+          top: pos.y-0.5025,
+          fill: 'blue',
+          width: 0.005,
+          height: 0.005
+        });
+        overlay.fabricCanvas().add(rect);
+    });
+
 }
 
 function jacobisGUIstuff(){

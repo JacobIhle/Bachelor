@@ -44,6 +44,7 @@ def Main():
     return render_template("index.html")
 
 
+
 @app.route('/images/<filename>')
 def LoadControlImages(filename):
     return send_file("static/images/"+filename)
@@ -88,6 +89,7 @@ def serve_pil_image(pil_img):
     return send_file(img_io, mimetype='image/jpeg')
 
 
+
 # User handling methods
 @app.route("/login", methods=["GET", "POST"])
 def Login():
@@ -118,7 +120,6 @@ def Register():
         db.session.commit()
         logger.log(25, LogFormat() + current_user.username + " registered a new user: " + registerUsername)
         redirect("/login")
-
     return render_template("register.html")
 
 
@@ -174,4 +175,4 @@ class User(UserMixin, db.Model):
 
 
 if __name__ == '__main__':
-    app.run(port=5000, threaded=True)
+    app.run(host="0.0.0.0", port=5000, threaded=True, ssl_context=("local.com.cert", "local.com.key"))

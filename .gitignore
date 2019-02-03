@@ -5,6 +5,8 @@
 *.dzi
 *.txt
 *.log
+*.cert
+*.key
 
 
 ## Folders
