@@ -3,6 +3,7 @@ var imageUrl;
 var overlay;
 var i = 0;
 
+
 $(document).ready(function() {
     addNonViewerHandlers();
     jacobisGUIstuff();
@@ -140,9 +141,11 @@ function jacobisGUIstuff(){
     $("#H281").click(function(){
         $("#filename").text("H281-03");
     });
-
-    $("#H281test").click(function(){
-        $("#filename").text("H281 white removed");
+    $("#H142").click(function(){
+        $("#filename").text("H142-04");
+    });
+    $("#H83").click(function(){
+        $("#filename").text("H83-06");
     });
 }
 
