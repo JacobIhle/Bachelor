@@ -144,6 +144,11 @@ function jacobisGUIstuff(){
     $("#H281test").click(function(){
         $("#filename").text("H281 white removed");
     });
+
+    // Open log folder
+    $("#showLog").click(function () {
+        window.open('file:///C:\\Users\\Jacob Ihle\\Google Drive\\Skole\\Bachelor\\Bachelor Workspace\\Login.txt')
+    })
 }
 
 
