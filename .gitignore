@@ -3,6 +3,9 @@
 *.IDEA
 *.DS_store
 *.dzi
+*.txt
+*.log
+
 
 ## Folders
 dziFolder

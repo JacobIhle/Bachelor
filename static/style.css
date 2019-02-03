@@ -39,6 +39,7 @@ li {
     line-height: 40px;
 }
 
+
 li #searchicon {
     color: white;
     font-size: 1.6em;
@@ -246,3 +247,58 @@ dd{
 }
 
 /* Login stuff */
+
+#loginhtml {
+    background-color: #EEEEEE;
+}
+
+#loginBody{
+    position: relative;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    width: 25%;
+    height: 60%;
+    top: 10%;
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px #BDBDBD;
+    background-color: white;
+    padding: 10px;
+    min-width: 250px;
+}
+
+#loginBody form{
+}
+
+#loginBody input{
+    border: 1px solid #BDBDBD;
+    border-radius: 5px;
+    padding: 5px;
+    width: 70%;
+}
+
+#loginBody #loginButton {
+    background-color: #2979FF;
+    border: none;
+    color: white;
+    padding: 15px 16px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    width: 72%;
+    margin: 10px 0 0 0;
+    border-radius: 5px;
+}
+
+#loginBody h3{
+    margin-bottom: 5px;
+}
+
+#loginMessage {
+    color: red;
+}
+
+#logoutMessage {
+    color: darkorange;
+    size: 0.8em;
+}

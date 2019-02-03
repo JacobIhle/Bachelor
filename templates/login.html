@@ -1,18 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="loginhtml">
+
 <head>
     <meta charset="UTF-8">
     <title>LoginTest</title>
     <link rel="stylesheet" type="text/css" media="all" href="../static/style.css">
 </head>
+
 <body>
-<form method="POST">
-  Username:<br>
-  <input type="text" name="username" placeholder="username">
-  <br>
-  Password:<br>
-  <input type="password" name="password" placeholder="password">
-  <br><br>
-  <input type="submit" name="submitLogin" value="Submit">
-</form> </body>
+    <div id="loginBody">
+        <h1>Log in</h1>
+        <form method="POST" action="/login">
+            <h3>Username:</h3>
+            <input type="text" name="username" placeholder="Username">
+            <h3>Password:</h3>
+            <input type="password" name="password" placeholder="Password">
+            <br><br>
+            <button id="loginButton">Log in</button>
+        </form>
+        <br>
+        <h3 id="{{ type }}Message"> {{ message }}</h3>
+    </div>
+</body>
+
 </html>
