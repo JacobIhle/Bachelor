@@ -1,5 +1,5 @@
 var viewer;
-var imageUrl;
+var imageID;
 var dziInfo;
 
 $(document).ready(function() {
@@ -14,7 +14,26 @@ function addNonViewerHandlers() {
             .then(response => response.text())
             .then(text => dziInfo);
 
-        open_slide(imageUrl);
+        open_slide(imageID);
+        addViewerHandlers();
+    });
+    $("#H142").on("click", function () {
+        imageID = "scnImages/H282";
+        fetch(imageID)
+            .then(response => response.text())
+            .then(text => dziInfo);
+
+        open_slide(imageID);
+        addViewerHandlers();
+    });
+
+    $("#H83").on("click", function () {
+        imageID = "scnImages/H83";
+        fetch(imageID)
+            .then(response => response.text())
+            .then(text => dziInfo);
+
+        open_slide(imageID);
         addViewerHandlers();
     });
 }
@@ -100,9 +119,11 @@ function jacobisGUIstuff(){
     $("#H281").click(function(){
         $("#filename").text("H281-03");
     });
-
-    $("#H281test").click(function(){
-        $("#filename").text("H281 white removed");
+    $("#H142").click(function(){
+        $("#filename").text("H142-04");
+    });
+    $("#H83").click(function(){
+        $("#filename").text("H83-06");
     });
 }
 
