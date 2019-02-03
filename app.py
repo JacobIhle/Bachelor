@@ -26,6 +26,7 @@ with open("Login.txt", 'r') as f:
     f.close()
 
 app = Flask(__name__)
+## TODO: Create a random secure hash
 app.config["SECRET_KEY"] = "notSecure"
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://%s:%s@localhost/flasklogintest" % (dbUser, dbPassword)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -125,9 +126,9 @@ def Register():
 def user_login(Username):
     return User.query.get(Username)
 
-
+#TODO: Remove before production, this breaks pretty much all security we have implemented
 @app.route("/hack")
-def FoceLogin():
+def ForceLogin():
     login_user(User.query.filter_by(username="Ridalor").first())
     return redirect("/")
 
