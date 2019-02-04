@@ -10,6 +10,7 @@ import customLogger
 import openslide
 import logging
 import os
+from User import User
 
 dateTime = customLogger.DateTime()
 logger = customLogger.StartLogging()
@@ -115,7 +116,7 @@ def Register():
         registerUsername = request.form["username"]
         registerPassword = request.form["password"]
 
-        newUser = User(registerUsername, registerPassword)
+        newUser = User(registerUsername, registerPassword, db)
         db.session.add(newUser)
         db.session.commit()
         logger.log(25, LogFormat() + current_user.username + " registered a new user: " + registerUsername)
@@ -154,24 +155,7 @@ def LogFormat():
 
     return DateTime + " | " + ip + " | "
 
-## UserMixin contains the standard methods so we dont have to implement it our self
-class User(UserMixin, db.Model):
-    id = db.Column("id", db.Integer, primary_key=True)
-    username = db.Column("Username", db.String,)
-    password = db.Column("Password", db.String)
 
-    def __init__(self, usrname, password):
-        self.username = usrname
-        self.password = self.set_password(password)
-
-    def set_password(self, passwrd):
-        return generate_password_hash(passwrd)
-
-    def get_password(self):
-        return self.password
-
-    def check_password(self, passwrd):
-        return check_password_hash(self.password, passwrd)
 
 
 if __name__ == '__main__':
