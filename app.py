@@ -24,16 +24,18 @@ def LoadControlImages(filename):
     return send_file("static/images/"+filename)
 
 
-@app.route('/scnImages/<filename>')
-def changeImage(filename):
+@app.route('/<year>/<filename>')
+def changeImage(year, filename):
     global image; global deepZoomGen
-    image = openslide.OpenSlide("scnImages/"+filename+".scn")
+    path = "../../../../prosjekt/Histology/bladder_cancer_images/"+year+"/"+str.replace(filename, "%", " ")+".scn"
+    print(path)
+    image = openslide.OpenSlide(path)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     return deepZoomGen.get_dzi("jpeg")
 
 
-@app.route('/scnImages/<dummyVariable>/<level>/<tile>')
-def GetTile(dummyVariable, level, tile):
+@app.route('/<year>/<dummyVariable>/<level>/<tile>')
+def GetTile(year, dummyVariable, level, tile):
     col, row = GetNumericTileCoordinatesFromString(tile)
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
     return serve_pil_image(img)
@@ -58,7 +60,7 @@ def serve_pil_image(pil_img):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, threaded=True, ssl_context=("local.com.cert", "local.com.key"))
+    app.run(host="0.0.0.0", port=5000, threaded=True)
 
 
 

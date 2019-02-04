@@ -33,7 +33,7 @@ function initiallizeCanvas(){
 
 function addNonViewerHandlers() {
     $("#H281").on("click", function () {
-        imageUrl = "https://192.168.43.139:5000/scnImages/H281";
+        imageUrl = "http://152.94.1.69:5000/2002/H10295-02 E_2013-07-09 11_06_26";
         open_slide(imageUrl);
         addViewerHandlers();
     });
