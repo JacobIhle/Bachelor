@@ -15,7 +15,7 @@ dateTime = customLogger.DateTime()
 logger = customLogger.StartLogging()
 
 # Creates a new logging file for this session
-filename = str("logging\\" + str(strftime("%Y-%m-%d %H:%M:%S", gmtime())).replace(" ", "_").replace("-", "_").replace(":",".") + ".txt")
+filename = str("logging\\" + str(strftime("%Y_%m_%d %H.%M.%S", gmtime())).replace(" ", "_") + ".txt")
 logging.basicConfig(filename=filename, level=logging.WARNING)
 
 image = None
@@ -42,7 +42,6 @@ db.create_all()
 @login_required
 def Main():
     return render_template("index.html")
-
 
 
 @app.route('/images/<filename>')

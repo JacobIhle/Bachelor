@@ -1,26 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" id="loginhtml">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>LoginTest</title>
-    <link rel="stylesheet" type="text/css" media="all" href="../static/style.css">
+    <title>Bootstrap Sign in Form like Google</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
 </head>
-
 <body>
-    <div id="loginBody">
-        <h1>Log in</h1>
-        <form method="POST" action="/login">
-            <h3>Username:</h3>
-            <input type="text" name="username" placeholder="Username">
-            <h3>Password:</h3>
-            <input type="password" name="password" placeholder="Password">
-            <br><br>
-            <button id="loginButton">Log in</button>
-        </form>
-        <br>
-        <h3 id="{{ type }}Message"> {{ message }}</h3>
-    </div>
+<div class="login-form">
+    <h2>Log in</h2>
+    <form action="/login" method="post">
+        <div class="text-center">
+            <img src="../static/images/avatar.gif" class="img-circle avatar" alt="Avatar">
+        </div>
+        <div class="form-group">
+            <input class="form-control" placeholder="Username" required="required" name="username">
+            <input type="password" class="form-control" placeholder="Password" required="required" name="password">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+        </div>
+        <div class="clearfix">
+            <a href="#">Forgot Password?</a>
+        </div>
+    </form>
+</div>
 </body>
-
 </html>
