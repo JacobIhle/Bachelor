@@ -12,7 +12,7 @@
 
 <body>
         <header>
-            <ul>
+            <ul id="headerList">
                 <li><div id="menu" class="dropdown">
                         <button id="menuicon" class="material-icons menu">dehaze</button>
                         <div class="dropdown-content">
@@ -30,6 +30,24 @@
                 <li id="infoButton">INFO</li>
             </ul>
         </header>
+
+        <div id="imageExplorer">
+            <ul id="theList">
+                {% for folder, fileList in images.items() %}
+                    <li id="liTags">
+                        <div>
+                        <button id="thomasesbutton">{{ folder }}</button>
+                            <div class="fileListDiv">
+                                {% for file in fileList %}
+                                    <a href="#">{{ file }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
         <div id="display"></div>
         <div id="infoField">
             <dl id="infoFieldList">

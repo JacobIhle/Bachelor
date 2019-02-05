@@ -28,10 +28,16 @@ ul {
     padding: 0;
 }
 
-li {
+header li {
     display: inline;
     float: left;
 }
+
+#footer li {
+    display: inline;
+    float: left;
+}
+
 
 #menuicon {
     color: white;
@@ -243,4 +249,28 @@ dd{
     background-color: red;
     width: 100px;
     height: 100px;
+}
+
+#imageExplorer{
+    position: absolute;
+    width: 20%;
+    height: calc(100% - 80px);
+    z-index: 1000000000000000;
+    background-color: black;
+}
+
+#thomasesbutton{
+    position: relative;
+    width: 100%;
+    color: black;
+    background-color: #3e8e41;
+    padding: 10px;
+}
+
+.fileListDiv a{
+    display: block;
+}
+
+#liTags{
+    display: block;
 }

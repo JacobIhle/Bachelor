@@ -5,6 +5,7 @@ from flask import Flask, send_file, render_template
 import openslide
 from openslide.deepzoom import DeepZoomGenerator
 from io import BytesIO
+import os
 
 image = None
 deepZoomGen = None
@@ -15,7 +16,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def Main():
-    return render_template("index.html")
+    AvailableImages = GetAvailableImages()
+    return render_template("index.html", images=AvailableImages)
 
 
 
@@ -45,9 +47,34 @@ def GetTile(year, dummyVariable, level, tile):
 def GetDzi(root, imageID, file):
     return send_file(root+"/"+imageID+"/"+file)
 
-@app.route('/PopulateImageExplorer')
-def PopulateImageExplorer():
-    return ""
+
+#TODO
+#FOR RUNNING ON UNIX SERVER
+'''
+def GetAvailableImages():
+    allAvailableImages = {}
+    for folderName in os.listdir("../../../../prosjekt/Histology/bladder_cancer_images"):
+        if os.path.isdir("../../../../prosjekt/Histology/bladder_cancer_images/" + folderName):
+            listOfFiles = []
+            for filename in os.listdir("../../../../prosjekt/Histology/bladder_cancer_images/" + folderName):
+                if ".scn" in filename:
+                    listOfFiles.append(filename)
+        if listOfFiles:
+            allAvailableImages[folderName] = listOfFiles
+    return allAvailableImages
+'''
+
+
+#TODO
+#FOR TESTING PURPOSES
+def GetAvailableImages():
+    allAvailableImagesTEST = {"2002": ["1.scn", "2.scn", "3.scn"],
+                              "2003": ["1.scn", "2.scn"],
+                              "2004": ["1.scn"],
+                              "2005": ["1.scn", "2.scn", "3.scn", "4.scn", "5.scn", "6.scn"]
+                              }
+    return allAvailableImagesTEST
+
 
 def GetNumericTileCoordinatesFromString(tile):
     col, row = str.split(tile, "_")
