@@ -45,6 +45,9 @@ def GetTile(year, dummyVariable, level, tile):
 def GetDzi(root, imageID, file):
     return send_file(root+"/"+imageID+"/"+file)
 
+@app.route('/PopulateImageExplorer')
+def PopulateImageExplorer():
+    return ""
 
 def GetNumericTileCoordinatesFromString(tile):
     col, row = str.split(tile, "_")
