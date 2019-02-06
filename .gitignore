@@ -5,8 +5,10 @@
 *.dzi
 *.cert
 *.key
+*.txt
 
 ## Folders
 dziFolder
 __pycache__
 .vscode
+logging

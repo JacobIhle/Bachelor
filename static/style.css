@@ -258,18 +258,38 @@ dd{
     z-index: 1000000000000000;
 }
 
-#thomasesbutton{
+.thomasesbutton{
     position: relative;
     width: 100%;
     color: black;
     background-color: #3e8e41;
     padding: 10px;
+    border-bottom: 1px solid #424242;
+}
+
+.fileListDiv {
+    display: none;
 }
 
 .fileListDiv a{
     display: block;
 }
 
-#liTags{
+.fileListDiv button {
+    width: 100%;
+    text-align: center;
+    float: left;
+    clear: left;
+    height: 25px;
+    font-size: 0.9em;
+    box-shadow: 0 0 1px 1px #BDBDBD;
+}
+
+#theList{
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.liTags{
     display: block;
 }
