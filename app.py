@@ -82,7 +82,7 @@ def GetAvailableImages():
 #FOR TESTING PURPOSES
 def GetAvailableImages():
     global allAvailableImages
-    allAvailableImages = {"2002": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
+    allAvailableImages = {"somekey": {"2002": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
                                    "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
                                    "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
                                    "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
@@ -99,7 +99,10 @@ def GetAvailableImages():
                                    "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
                                    "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
                                    "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"]
-
+                                      },
+                          "someOtherKey": {
+                              "2056": ["2.scn"]
+                          }
                           }
     return allAvailableImages
 
