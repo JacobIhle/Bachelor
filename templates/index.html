@@ -33,7 +33,9 @@
 
         <div id="imageExplorer">
             <ul id="theList">
-                {% for folder, fileList in images.items() %}
+            {% for key, values in images.items() %}
+            <label>THIS IS BIG BIG UP THERE FOLDER called {{ key }}</label>
+                {% for folder, fileList in values.items() %}
                     <li id="liTags">
                         <div>
                         <button id="thomasesbutton">{{ folder }}</button>
@@ -46,6 +48,7 @@
                         </div>
                     </li>
                 {% endfor %}
+            {% endfor %}
             </ul>
         </div>
 
