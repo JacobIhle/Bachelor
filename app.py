@@ -32,7 +32,7 @@ def changeImage(folder, year, filename):
     #TODO
     #add check for blank return string
     filename = FindFilenameFromList(folder, year, filename)
-    path = "../../../../prosjekt/Histology/"+folder+"/"+year+"/"+filename
+    path = "../../../../prosjekt/Histology/"+folder+"/"+year+"/"+str.replace(filename, "%", " ")
     image = openslide.OpenSlide(path)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     return deepZoomGen.get_dzi("jpeg")
