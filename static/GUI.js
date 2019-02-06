@@ -44,6 +44,7 @@ function addNonViewerHandlers() {
         imageUrl = "http://152.94.1.69:5000/"+image;
         open_slide(imageUrl);
         addViewerHandlers();
+        $("#filename").text(image);
     })
 }
 
