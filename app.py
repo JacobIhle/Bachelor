@@ -26,13 +26,13 @@ def LoadControlImages(filename):
     return send_file("static/images/"+filename)
 
 
-@app.route('/<year>/<filename>')
-def changeImage(year, filename):
+@app.route('/<folder>/<year>/<filename>')
+def changeImage(folder, year, filename):
     global image; global deepZoomGen
     #TODO
     #add check for blank return string
-    filename = FindFilenameFromList(year, filename)
-    path = "../../../../prosjekt/Histology/bladder_cancer_images/"+year+"/"+filename
+    filename = FindFilenameFromList(folder, year, filename)
+    path = "../../../../prosjekt/Histology/"+folder+"/"+year+"/"+filename
     image = openslide.OpenSlide(path)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     return deepZoomGen.get_dzi("jpeg")
@@ -50,8 +50,9 @@ def GetDzi(root, imageID, file):
     return send_file(root+"/"+imageID+"/"+file)
 
 
-def FindFilenameFromList(year, filename):
-    fileList = allAvailableImages[year]
+def FindFilenameFromList(folder, year, filename):
+    foo = allAvailableImages[folder]
+    fileList = foo[year]
     for file in fileList:
         if filename in file:
             return file
