@@ -42,7 +42,7 @@
                             <div class="fileListDiv">
                                 {% for file in fileList %}
                                     {% set splitFilename = file.split(" ") %}
-                                    <button class="imageLinks" id="{{ folder }}/{{ splitFilename[0] }}">{{ splitFilename[0] }}</button>
+                                    <button class="imageLinks" id="{{ key }}/{{ folder }}/{{ file }}">{{ splitFilename[0] }}</button>
                                 {% endfor %}
                             </div>
                         </div>
