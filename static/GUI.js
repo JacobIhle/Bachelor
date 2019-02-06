@@ -33,7 +33,7 @@ function initiallizeCanvas(){
 
 function addNonViewerHandlers() {
     $("#H281").on("click", function () {
-        imageUrl = "https://152.94.136.239:5000/scnImages/H281";
+        imageUrl = "https://152.94.136.185:5000/scnImages/H281";
         open_slide(imageUrl);
         addViewerHandlers();
     });
@@ -113,7 +113,6 @@ function addViewerHandlers() {
         });
         overlay.fabricCanvas().add(rect);
     });
-
 }
 
 function jacobisGUIstuff(){
@@ -137,6 +136,7 @@ function jacobisGUIstuff(){
             infoField.style.display = "block"
         }
       });
+
     $("#H281").click(function(){
         $("#filename").text("H281-03");
     });
@@ -148,7 +148,10 @@ function jacobisGUIstuff(){
     // Open log folder
     $("#showLog").click(function () {
         window.open('file:///C:\\Users\\Jacob Ihle\\Google Drive\\Skole\\Bachelor\\Bachelor Workspace\\Login.txt')
-    })
+    });
+
+
+
 }
 
 

@@ -112,14 +112,14 @@ def Login():
 def Register():
     if request.method == "POST":
         registerUsername = request.form["username"]
-        registerPassword = request.form["password"]
+        registerPassword = request.form["firstPassField"]
 
         newUser = User(registerUsername, registerPassword)
         db.session.add(newUser)
         db.session.commit()
         logger.log(25, LogFormat() + current_user.username + " registered a new user: " + registerUsername)
-        redirect("/login")
-    return render_template("register.html")
+    else:
+        return render_template("register.html")
 
 
 @login_manager.user_loader
