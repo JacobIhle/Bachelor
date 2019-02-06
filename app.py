@@ -9,7 +9,7 @@ import os
 
 image = None
 deepZoomGen = None
-
+allAvailableImages = {}
 app = Flask(__name__)
 
 
@@ -29,8 +29,10 @@ def LoadControlImages(filename):
 @app.route('/<year>/<filename>')
 def changeImage(year, filename):
     global image; global deepZoomGen
-    path = "../../../../prosjekt/Histology/bladder_cancer_images/"+year+"/"+str.replace(filename, "%", " ")+".scn"
-    print(path)
+    #TODO
+    #add check for blank return string
+    filename = FindFilenameFromList(year, filename)
+    path = "../../../../prosjekt/Histology/bladder_cancer_images/"+year+"/"+filename
     image = openslide.OpenSlide(path)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     return deepZoomGen.get_dzi("jpeg")
@@ -48,11 +50,19 @@ def GetDzi(root, imageID, file):
     return send_file(root+"/"+imageID+"/"+file)
 
 
+def FindFilenameFromList(year, filename):
+    fileList = allAvailableImages[year]
+    for file in fileList:
+        if filename in file:
+            return file
+    return ""
+
+
 #TODO
 #FOR RUNNING ON UNIX SERVER
-'''
+
 def GetAvailableImages():
-    allAvailableImages = {}
+    global allAvailableImages
     for folderName in os.listdir("../../../../prosjekt/Histology/bladder_cancer_images"):
         if os.path.isdir("../../../../prosjekt/Histology/bladder_cancer_images/" + folderName):
             listOfFiles = []
@@ -62,18 +72,21 @@ def GetAvailableImages():
         if listOfFiles:
             allAvailableImages[folderName] = listOfFiles
     return allAvailableImages
-'''
 
+
+'''
 
 #TODO
 #FOR TESTING PURPOSES
 def GetAvailableImages():
-    allAvailableImagesTEST = {"2002": ["1.scn", "2.scn", "3.scn"],
-                              "2003": ["1.scn", "2.scn"],
-                              "2004": ["1.scn"],
-                              "2005": ["1.scn", "2.scn", "3.scn", "4.scn", "5.scn", "6.scn"]
+    global allAvailableImages
+    allAvailableImages = {"2002": ["1 6565.scn", "2 7658.scn", "3 23425.scn"],
+                              "2003": ["1 25436.scn", "225.scn"],
+                              "2004": ["125.scn"],
+                              "2005": ["1.scn", "2.scn", "3 24536.scn", "4.scn", "5.scn", "6.scn"]
                               }
-    return allAvailableImagesTEST
+    return allAvailableImages
+'''
 
 
 def GetNumericTileCoordinatesFromString(tile):

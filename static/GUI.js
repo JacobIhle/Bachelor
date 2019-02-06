@@ -33,10 +33,17 @@ function initiallizeCanvas(){
 
 function addNonViewerHandlers() {
     $("#H281").on("click", function () {
-        imageUrl = "http://152.94.1.69:5000/2002/H10295-02 E_2013-07-09 11_06_26";
+        imageUrl = "http://152.94.1.69:5000/2002/H10295-02 E_2013-07-09 11_06_26.scn";
         open_slide(imageUrl);
         addViewerHandlers();
     });
+
+    $(".ImageLinks").on("click", function () {
+        var image = this.id;
+        imageUrl = "http://152.94.1.69:5000/"+image;
+        open_slide(imageUrl);
+        addViewerHandlers();
+    })
 }
 
 function open_slide(url) {

@@ -39,7 +39,8 @@
                         <button id="thomasesbutton">{{ folder }}</button>
                             <div class="fileListDiv">
                                 {% for file in fileList %}
-                                    <a href="#">{{ file }}</a>
+                                    {% set splitFilename = file.split(" ") %}
+                                    <a class="imageLinks" id="{{ folder }}/{{ splitFilename[0] }}" href="{{ url_for('changeImage', year=folder, filename=splitFilename[0]) }}">{{ splitFilename[0] }}</a>
                                 {% endfor %}
                             </div>
                         </div>
