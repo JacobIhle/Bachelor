@@ -76,8 +76,6 @@ def GetAvailableImages():
         if temp:
             allAvailableImages[folderName1] = temp
     return allAvailableImages
-
-
 '''
 
 #TODO

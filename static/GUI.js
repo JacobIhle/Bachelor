@@ -38,8 +38,9 @@ function addNonViewerHandlers() {
         addViewerHandlers();
     });
 
-    $(".ImageLinks").on("click", function () {
+    $(".imageLinks").on("click", function () {
         var image = this.id;
+	console.log(image);
         imageUrl = "http://152.94.1.69:5000/"+image;
         open_slide(imageUrl);
         addViewerHandlers();
