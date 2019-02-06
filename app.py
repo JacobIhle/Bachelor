@@ -32,14 +32,16 @@ def changeImage(folder, year, filename):
     #TODO
     #add check for blank return string
     filename = FindFilenameFromList(folder, year, filename)
-    path = "../../../../prosjekt/Histology/"+folder+"/"+year+"/"+str.replace(filename, "%", " ")
+    str.replace(filename, "%", " ")
+    path = "../../../../prosjekt/Histology/"+folder+"/"+year+"/"+filename
+    print(path)
     image = openslide.OpenSlide(path)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     return deepZoomGen.get_dzi("jpeg")
 
 
-@app.route('/<year>/<dummyVariable>/<level>/<tile>')
-def GetTile(year, dummyVariable, level, tile):
+@app.route('/<folder>/<year>/<dummyVariable>/<level>/<tile>')
+def GetTile(folder, year, dummyVariable, level, tile):
     col, row = GetNumericTileCoordinatesFromString(tile)
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
     return serve_pil_image(img)
