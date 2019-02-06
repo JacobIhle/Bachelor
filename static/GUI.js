@@ -153,7 +153,13 @@ function jacobisGUIstuff(){
         $("#filename").text("H281 white removed");
     });
 
+    $(".label").click(function () {
+        $(this).find(".liTags").slideToggle("fast");
+        console.log("hey")
+    });
+
     $(".thomasesbutton").click(function () {
+        event.stopPropagation();
         $(this).siblings(".fileListDiv").slideToggle("fast");
         var buttonColor = $(this).css("background-color");
         if (buttonColor.toString() === "rgb(62, 142, 65)"){

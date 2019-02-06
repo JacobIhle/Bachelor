@@ -265,6 +265,18 @@ dd{
     background-color: #3e8e41;
     padding: 10px;
     border-bottom: 1px solid #424242;
+    display: block;
+}
+
+label{
+    position: relative;
+    width: 100%;
+    color: black;
+    background-color: #3e8e41;
+    padding: 10px 0 10px 0;
+    border-bottom: 1px solid #424242;
+    display: block;
+    text-align: center;
 }
 
 .fileListDiv {
@@ -291,5 +303,5 @@ dd{
 }
 
 .liTags{
-    display: block;
+    display: none;
 }
