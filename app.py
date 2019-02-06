@@ -60,7 +60,7 @@ def FindFilenameFromList(year, filename):
 
 #TODO
 #FOR RUNNING ON UNIX SERVER
-'''
+
 def GetAvailableImages():
     global allAvailableImages
     for folderName1 in os.listdir("../../../../prosjekt/Histology/"):
@@ -105,7 +105,7 @@ def GetAvailableImages():
                           }
                           }
     return allAvailableImages
-
+'''
 
 
 def GetNumericTileCoordinatesFromString(tile):
