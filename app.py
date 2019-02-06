@@ -72,7 +72,7 @@ def GetAvailableImages():
                     if ".scn" in filename:
                         listOfFiles.append(filename)
                 if listOfFiles:
-                    temp[folderName] = filename
+                    temp[folderName] = listOfFiles
         if temp:
             allAvailableImages[folderName1] = temp
     return allAvailableImages
