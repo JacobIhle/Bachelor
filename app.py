@@ -63,14 +63,18 @@ def FindFilenameFromList(year, filename):
 
 def GetAvailableImages():
     global allAvailableImages
-    for folderName in os.listdir("../../../../prosjekt/Histology/bladder_cancer_images"):
-        if os.path.isdir("../../../../prosjekt/Histology/bladder_cancer_images/" + folderName):
-            listOfFiles = []
-            for filename in os.listdir("../../../../prosjekt/Histology/bladder_cancer_images/" + folderName):
-                if ".scn" in filename:
-                    listOfFiles.append(filename)
-        if listOfFiles:
-            allAvailableImages[folderName] = listOfFiles
+    temp = {}
+    for folderName1 in os.listdir("../../../../prosjekt/Histology/"):
+        for folderName in os.listdir("../../../../prosjekt/Histology/"+folderName1):
+            if os.path.isdir("../../../../prosjekt/Histology/"+folderName1+"/"+folderName):
+                listOfFiles = []
+                for filename in os.listdir("../../../../prosjekt/Histology/"+folderName1+"/"+folderName):
+                    if ".scn" in filename:
+                        listOfFiles.append(filename)
+                if listOfFiles:
+                    temp[folderName] = filename
+        if temp:
+            allAvailableImages[folderName1] = temp
     return allAvailableImages
 
 
