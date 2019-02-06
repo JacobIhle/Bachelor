@@ -34,9 +34,9 @@
         <div id="imageExplorer">
             <ul id="theList">
                 {% for folder, fileList in images.items() %}
-                    <li id="liTags">
+                    <li class="liTags">
                         <div>
-                        <button id="thomasesbutton">{{ folder }}</button>
+                        <button class="thomasesbutton">{{ folder }}</button>
                             <div class="fileListDiv">
                                 {% for file in fileList %}
                                     {% set splitFilename = file.split(" ") %}

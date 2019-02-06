@@ -33,7 +33,7 @@ function initiallizeCanvas(){
 
 function addNonViewerHandlers() {
     $("#H281").on("click", function () {
-        imageUrl = "http://152.94.1.69:5000/2002/H10295-02 E_2013-07-09 11_06_26.scn";
+        imageUrl = "scnImages/H281.scn";
         open_slide(imageUrl);
         addViewerHandlers();
     });
@@ -152,6 +152,17 @@ function jacobisGUIstuff(){
     $("#H281test").click(function(){
         $("#filename").text("H281 white removed");
     });
+
+    $(".thomasesbutton").click(function () {
+        $(this).siblings(".fileListDiv").slideToggle("fast");
+        var buttonColor = $(this).css("background-color");
+        if (buttonColor.toString() === "rgb(62, 142, 65)"){
+            $(this).css("background-color", "#53c758");
+        } else{
+            $(this).css("background-color", "#3e8e41")
+        }
+        console.log(buttonColor.toString());
+});
 }
 
 

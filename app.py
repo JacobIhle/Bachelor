@@ -60,7 +60,7 @@ def FindFilenameFromList(year, filename):
 
 #TODO
 #FOR RUNNING ON UNIX SERVER
-
+'''
 def GetAvailableImages():
     global allAvailableImages
     temp = {}
@@ -82,13 +82,27 @@ def GetAvailableImages():
 #FOR TESTING PURPOSES
 def GetAvailableImages():
     global allAvailableImages
-    allAvailableImages = {"2002": ["1 6565.scn", "2 7658.scn", "3 23425.scn"],
-                              "2003": ["1 25436.scn", "225.scn"],
-                              "2004": ["125.scn"],
-                              "2005": ["1.scn", "2.scn", "3 24536.scn", "4.scn", "5.scn", "6.scn"]
-                              }
+    allAvailableImages = {"2002": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
+                                   "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
+                                   "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
+                                   "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
+                              "2003": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
+                                   "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
+                                   "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
+                                   "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
+                              "2004": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
+                                   "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
+                                   "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
+                                   "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
+                              "2005": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
+                              "2010": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
+                                   "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
+                                   "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
+                                   "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"]
+
+                          }
     return allAvailableImages
-'''
+
 
 
 def GetNumericTileCoordinatesFromString(tile):
