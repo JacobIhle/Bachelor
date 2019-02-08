@@ -256,6 +256,7 @@ dd{
     width: 20%;
     height: calc(100% - 80px);
     z-index: 9;
+    background-color: white;
 }
 
 .thomasesbutton{
