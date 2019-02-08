@@ -109,7 +109,7 @@ function addViewerHandlers() {
         console.log(posview);
         console.log(posviewport);
     });
-
+/*
     viewer.addHandler("canvas-click", function (e) {
         e.preventDefaultAction = true;
         var pos1 = viewer.viewport.viewerElementToImageCoordinates(e.position);
@@ -123,7 +123,7 @@ function addViewerHandlers() {
         });
         overlay.fabricCanvas().add(rect);
     });
-
+*/
 }
 
 function jacobisGUIstuff(){
