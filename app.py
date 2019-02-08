@@ -108,7 +108,7 @@ def Login():
     return render_template("login.html")
 
 @app.route("/register", methods=["GET", "POST"])
-@login_required
+#@login_required
 def Register():
     if request.method == "POST":
         registerUsername = request.form["username"]
@@ -117,7 +117,8 @@ def Register():
         newUser = User(registerUsername, registerPassword)
         db.session.add(newUser)
         db.session.commit()
-        logger.log(25, LogFormat() + current_user.username + " registered a new user: " + registerUsername)
+        #logger.log(25, LogFormat() + current_user.username + " registered a new user: " + registerUsername)
+        return render_template("login.html")
     else:
         return render_template("register.html")
 
@@ -125,12 +126,6 @@ def Register():
 @login_manager.user_loader
 def user_login(Username):
     return User.query.get(Username)
-
-#TODO: Remove before production, this breaks pretty much all security we have implemented
-@app.route("/hack")
-def ForceLogin():
-    login_user(User.query.filter_by(username="Ridalor").first())
-    return redirect("/")
 
 
 @app.route("/logout")
@@ -174,4 +169,4 @@ class User(UserMixin, db.Model):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, threaded=True, ssl_context=("local.com.cert", "local.com.key"))
+    app.run(host="0.0.0.0", port=5000, threaded=True)
