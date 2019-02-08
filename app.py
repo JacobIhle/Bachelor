@@ -30,7 +30,7 @@ with open("Login.txt", 'r') as f:
 app = Flask(__name__)
 ## TODO: Create a random secure hash
 app.config["SECRET_KEY"] = "notSecure"
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://%s:%s@localhost/flasklogintest" % (dbUser, dbPassword)
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://%s:%s@mysql2@ux.uis.no/dbthomaso" % (dbUser, dbPassword)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 logging.basicConfig(filename="logg.txt", level=logging.WARNING)
 
