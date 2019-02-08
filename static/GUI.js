@@ -31,6 +31,7 @@ function initiallizeCanvas(){
     overlay = viewer.fabricjsOverlay({scale: 1});
 }
 
+
 function addNonViewerHandlers() {
     $("#H281").on("click", function () {
         imageUrl = "scnImages/H281.scn";
@@ -150,8 +151,8 @@ function jacobisGUIstuff(){
         $("#filename").text("H281-03");
     });
 
-    $("#H281test").click(function(){
-        $("#filename").text("H281 white removed");
+    $("#imageList").click(function () {
+        $("#imageExplorer").toggle();
     });
 
     $(".label").click(function () {

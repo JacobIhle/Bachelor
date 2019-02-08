@@ -219,7 +219,7 @@ dd{
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    z-index: 10;
 }
 
 /* Links inside the dropdown */
@@ -255,7 +255,7 @@ dd{
     position: absolute;
     width: 20%;
     height: calc(100% - 80px);
-    z-index: 1000000000000000;
+    z-index: 9;
 }
 
 .thomasesbutton{

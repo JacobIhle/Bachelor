@@ -108,7 +108,7 @@ def GetAvailableImages():
                           }
                           }
     return allAvailableImages
-'''
+''' 
 
 
 def GetNumericTileCoordinatesFromString(tile):
