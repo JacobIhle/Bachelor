@@ -1,68 +1,79 @@
-
-<!--
-  OpenSlide demo site
-
-  Copyright (c) 2010-2015 Carnegie Mellon University
-  Copyright (c) 2016 Benjamin Gilbert
-
-  This program is free software; you can redistribute it and/or modify it
-  under the terms of version 2.1 of the GNU Lesser General Public License
-  as published by the Free Software Foundation.
-
-  This program is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-  License for more details.
-
-  You should have received a copy of the GNU Lesser General Public License
-  along with this library; if not, write to the Free Software Foundation,
-  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
--->
-
 <!doctype html>
-<html>
-<head>
-<title>OpenSlide Demo</title>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
+<script type="text/javascript" src="../static/openseadragon.js"></script>
+<script type="text/javascript" src="../static/openseadragon-scalebar.js"></script>
+<script type="text/javascript" src="../static/openseadragon-fabricjs-overlay.js"></script>
+<script type="text/javascript" src="../static/GUI.js"></script>
+<script type="text/javascript" src="../static/fabric.js"></script>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 <link rel="stylesheet" type="text/css" media="all" href="../static/style.css">
-<meta name="viewport" content="user-scalable=no">
-</head>
 
 <body>
-<div id="header">
-    <a href="/">
-    </a>
-    <div id="help-text">
-        <p class="no-top">These are example slides scanned on a variety of
-        different scanners.  Click a slide to explore OpenSlide's rendering
-        of the slide with the
-        <a href="http://openseadragon.github.io/">OpenSeadragon</a>
-        viewer.</p>
-        <p class="no-bottom">Move around the slide by dragging, and use the
-        mouse wheel to zoom.</p>
-    </div>
-    <div class="clear"></div>
-</div>
-<div id="content">
-    <div id="images" class="scroll-parent loading"></div>
-    <div id="viewpane">
-        <div id="retiling">
-            <div id="retiling-inner">
-                We're currently retiling the demo slides.  Things may be
-                broken for a bit.
-            </div>
-        </div>
-        <div id="view">
-            <div id="instructions">
-                Select a slide from the list at left.
-            </div>
-        </div>
-    </div>
-    <div id="details" class="scroll-parent"></div>
-</div>
+        <header>
+            <ul id="headerList">
+                <li><div id="menu" class="dropdown">
+                        <button id="menuicon" class="material-icons menu">dehaze</button>
+                        <div class="dropdown-content">
+                            <a href="#" id="imageList">Image List</a>
+                            <a href="#">Thanks to the devs</a>
+                            <a href="#">Dump to xml</a>
+                        </div>
+                    </div>
+                    <li><button id="searchicon" class="material-icons search">search</button></li>
+                    <li><form>
+                        <input id="searchField" type="text" name="search" placeholder="Search">
+                    </form></li>
+                </li>
+                <li id="fileLi"><div id="filename"></div></li>
+                <li id="infoButton">INFO</li>
+            </ul>
+        </header>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
-<script type="text/javascript" src="../static/openseadragon.min.js"></script>
-<script type="text/javascript" src="../static/openseadragon-scalebar.min.js"></script>
-<script type="text/javascript" src="../static/GUI.js"></script>
-</body>
-</html>
+        <div id="imageExplorer">
+            <ul id="theList">
+            {% for key, values in images.items() %}
+            <div class="label"><label>{{ key }}</label>
+                {% for folder, fileList in values.items() %}
+                    <li class="liTags">
+                        <div>
+                        <button class="thomasesbutton">{{ folder }}</button>
+                            <div class="fileListDiv">
+                                {% for file in fileList %}
+                                    {% set splitFilename = file.split(" ") %}
+                                    <button class="imageLinks" id="{{ key }}/{{ folder }}/{{ file }}">{{ splitFilename[0] }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+                </div>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <div id="display"></div>
+        <div id="infoField">
+            <dl id="infoFieldList">
+                <dt>InfoHeader</dt>
+                <dd>InfoText</dd>
+                <dt>InfoHeader</dt>
+                <dd>InfoText</dd>
+                <dt>InfoHeader</dt>
+                <dd>InfoText</dd>
+                <dt>InfoHeader</dt>
+                <dd>InfoText</dd>
+            </dl>
+        </div>
+
+        
+        <div id="footer">
+            <li><button id="currentZoomLevel">365.20x</button></li>
+            <li><button id="zoom4x">4x</button></li>
+            <li><button id="zoom10x">10x</button></li>
+            <li><button id="zoom20x">20x</button></li>
+            <li><button id="zoom40x">40x</button></li>
+            <li><button id="H281">H281</button></li>
+        </div>
+        </body>

@@ -28,12 +28,18 @@ ul {
     padding: 0;
 }
 
-li {
+header li {
     display: inline;
     float: left;
 }
 
-li #menuicon {
+#footer li {
+    display: inline;
+    float: left;
+}
+
+
+#menuicon {
     color: white;
     font-size: 2em;
     line-height: 40px;
@@ -43,10 +49,12 @@ li #searchicon {
     color: white;
     font-size: 1.6em;
     line-height: 40px;
+    margin-right: 5px;
 }
 
 li #searchicon:hover{
     background-color: #212121;
+    border-radius: 5px;
 }
 
 li #searchicon:active{
@@ -82,7 +90,8 @@ li form{
     color: white;
     font-size: 1.6em;
     line-height: 40px;
-    padding: 0px 4px 0px 4px;
+    padding: 0px 6px 0px 6px;
+    border-radius: 5px;
 }
 
 #infoButton:hover {
@@ -103,7 +112,7 @@ li #filename {
 #display{
     position: relative;
     width: 100%;
-    height: 500px;
+    height: calc(100% - 80px);
 }
 
 #infoField{
@@ -111,11 +120,29 @@ li #filename {
     position: absolute;
     top: 50px;
     right: 0;
-    width: 250px;
-    height: 497px;
+    width: 400px;
+    height: calc(100% - 82px);
     background-color: #BDBDBD;
     border-bottom: 2px solid #424242;
     border-left: 2px solid #424242;
+}
+
+dt{
+    position: relative;
+    height: 20px;
+    border-top: 1px solid black;
+    margin: 1px;
+    width: calc(100% - 5px);
+    font-weight: bold;
+    padding: 2px;
+}
+
+dd{
+    position: relative;
+    background-color: white;
+    margin-left: 1px;
+    margin-bottom: 10px;
+    padding: 2px;
 }
 
 #footer{
@@ -156,6 +183,7 @@ li #filename {
     height: 26px;
 }
 
+
 .expandable {
     background: #414141;
     overflow: hidden;
@@ -191,7 +219,7 @@ li #filename {
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    z-index: 10;
 }
 
 /* Links inside the dropdown */
@@ -204,7 +232,7 @@ li #filename {
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-    background-color: #f1f1f1
+    background-color: #f1f1f1;
 }
 
 /* Show the dropdown menu on hover */
@@ -215,4 +243,65 @@ li #filename {
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
+}
+
+#overlay{
+    background-color: red;
+    width: 100px;
+    height: 100px;
+}
+
+#imageExplorer{
+    position: absolute;
+    width: 20%;
+    height: calc(100% - 80px);
+    z-index: 9;
+}
+
+.thomasesbutton{
+    position: relative;
+    width: 100%;
+    color: black;
+    background-color: #3e8e41;
+    padding: 10px;
+    border-bottom: 1px solid #424242;
+    display: block;
+}
+
+label{
+    position: relative;
+    width: 100%;
+    color: black;
+    background-color: #3e8e41;
+    padding: 10px 0 10px 0;
+    border-bottom: 1px solid #424242;
+    display: block;
+    text-align: center;
+}
+
+.fileListDiv {
+    display: none;
+}
+
+.fileListDiv a{
+    display: block;
+}
+
+.fileListDiv button {
+    width: 100%;
+    text-align: center;
+    float: left;
+    clear: left;
+    height: 25px;
+    font-size: 0.9em;
+    box-shadow: 0 0 1px 1px #BDBDBD;
+}
+
+#theList{
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.liTags{
+    display: none;
 }
