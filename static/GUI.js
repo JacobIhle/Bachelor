@@ -124,6 +124,7 @@ function addViewerHandlers() {
         overlay.fabricCanvas().add(rect);
     });
 */
+
 }
 
 function jacobisGUIstuff(){
@@ -147,6 +148,7 @@ function jacobisGUIstuff(){
             infoField.style.display = "block"
         }
       });
+
     $("#H281").click(function(){
         $("#filename").text("H281-03");
     });
@@ -171,6 +173,7 @@ function jacobisGUIstuff(){
         }
         console.log(buttonColor.toString());
 });
+
 }
 
 

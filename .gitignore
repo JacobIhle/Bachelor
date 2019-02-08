@@ -3,9 +3,12 @@
 *.IDEA
 *.DS_store
 *.dzi
+*.txt
+*.log
 *.cert
 *.key
 *.txt
+
 
 ## Folders
 dziFolder
