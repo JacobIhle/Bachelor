@@ -67,11 +67,17 @@ def changeImage(folder, year, filename):
     logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     return deepZoomGen.get_dzi("jpeg")
+  
+  
 @app.route('/<folder>/<year>/<dummyVariable>/<level>/<tile>')
 def GetTile(folder, year, dummyVariable, level, tile):
     col, row = GetNumericTileCoordinatesFromString(tile)
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
     return HelperClass.serve_pil_image(img)
+
+  
+#TODO
+#FOR RUNNING ON UNIX SERVER
 def GetAvailableImages():
     global allAvailableImages
     for folderName1 in os.listdir("../../../../prosjekt/Histology/"):
@@ -87,9 +93,9 @@ def GetAvailableImages():
         if temp:
             allAvailableImages[folderName1] = temp
     return allAvailableImages
+  
+  
 '''
-
-
 # TODO
 # FOR TESTING PURPOSES
 @app.route('/scnImages/<filename>')
