@@ -123,7 +123,7 @@ def _iterdir(dirname, dironly):
         else:
             dirname = os.curdir
     try:
-        if os.access(dirname):
+        if os.access(dirname, os.R_OK):
             with os.scandir(dirname) as it:
                 for entry in it:
                     try:
