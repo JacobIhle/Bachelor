@@ -1,3 +1,3 @@
 import glob
 
-print(glob.glob("//home/prosjekt/Histology/**/*.scn", recursive=True))
+print(glob.glob("//home/prosjekt/**/*.scn", recursive=True))
