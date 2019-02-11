@@ -1,11 +1,8 @@
 import os
 import glob
 
-print(glob.glob("//home/prosjekt/**/*.scn", recursive=True))
-
 
 def RefreshImageList():
-
     try:
         listOfImages = glob.glob("//home/prosjekt/**/*.scn", recursive=True)
         with open('ImageList.txt', 'w') as f:
@@ -18,7 +15,6 @@ def RefreshImageList():
 
 
 def ReadImageListFromFile():
-
     if os.path.isfile("./ImageList.txt"):
         try:
             with open("ImageList.txt") as f:
@@ -27,8 +23,6 @@ def ReadImageListFromFile():
             return [], "500"
 
         return listOfImages, ""
-
     else:
         open("ImageList.txt", "w")
-
         return [], ""
