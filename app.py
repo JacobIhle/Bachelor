@@ -58,7 +58,7 @@ def FindFilenameFromList(folder, year, filename):
 
 #TODO
 #FOR RUNNING ON UNIX SERVER
-''' 
+
 @app.route('/<folder>/<year>/<filename>')
 def changeImage(folder, year, filename):
     global image; global deepZoomGen
@@ -141,7 +141,7 @@ def GetTile(dummyVariable, level, tile):
     col, row = HelperClass.GetNumericTileCoordinatesFromString(tile)
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
     return HelperClass.serve_pil_image(img)
-
+'''
 ## TESTING STUFF ENDS
 
 @app.route('/favicon.ico')
