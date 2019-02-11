@@ -1,3 +1,3 @@
-import glob
+import myGlob
 
-print(glob.glob("//home/prosjekt/**/*.scn", recursive=True))
+print(myGlob.glob("//home/prosjekt/**/*.scn", recursive=True))
