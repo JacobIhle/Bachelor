@@ -37,27 +37,10 @@ def Main():
     AvailableImages = GetAvailableImages()
     return render_template("index.html", images=AvailableImages)
 
-
 @app.route('/images/<filename>')
 def LoadControlImages(filename):
     return send_file("static/images/"+filename)
 
-
-@app.route('/<root>/<imageID>/<file>')
-def GetDzi(root, imageID, file):
-    return send_file(root+"/"+imageID+"/"+file)
-
-
-def FindFilenameFromList(folder, year, filename):
-    foo = allAvailableImages[folder]
-    fileList = foo[year]
-    for file in fileList:
-        if filename in file:
-            return file
-    return ""
-
-#TODO
-#FOR RUNNING ON UNIX SERVER
 
 @app.route('/<folder>/<year>/<filename>')
 def changeImage(folder, year, filename):
@@ -81,6 +64,24 @@ def GetTile(folder, year, dummyVariable, level, tile):
     return HelperClass.serve_pil_image(img)
 
 
+@app.route('/<root>/<imageID>/<file>')
+def GetDzi(root, imageID, file):
+    return send_file(root+"/"+imageID+"/"+file)
+
+
+
+def FindFilenameFromList(folder, year, filename):
+    foo = allAvailableImages[folder]
+    fileList = foo[year]
+    for file in fileList:
+        if filename in file:
+            return file
+    return ""
+
+
+#TODO
+#FOR RUNNING ON UNIX SERVER
+
 def GetAvailableImages():
     global allAvailableImages
     for folderName1 in os.listdir("../../../../prosjekt/Histology/"):
@@ -97,18 +98,8 @@ def GetAvailableImages():
             allAvailableImages[folderName1] = temp
     return allAvailableImages
 '''
-
 #TODO
 #FOR TESTING PURPOSES
-@app.route('/scnImages/<filename>')
-def changeImage(filename):
-    global image; global deepZoomGen
-    logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)
-    image = openslide.OpenSlide("scnImages/"+filename)
-    deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
-    return deepZoomGen.get_dzi("jpeg")
-
-
 def GetAvailableImages():
     global allAvailableImages
     allAvailableImages = {"somekey": {"2002": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
@@ -134,15 +125,7 @@ def GetAvailableImages():
                           }
                           }
     return allAvailableImages
-
-
-@app.route('/scnImages/<dummyVariable>/<level>/<tile>')
-def GetTile(dummyVariable, level, tile):
-    col, row = HelperClass.GetNumericTileCoordinatesFromString(tile)
-    img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
-    return HelperClass.serve_pil_image(img)
-'''
-## TESTING STUFF ENDS
+''' 
 
 @app.route('/favicon.ico')
 def favicon():
