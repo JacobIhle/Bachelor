@@ -64,11 +64,6 @@ def GetTile(folder, year, dummyVariable, level, tile):
     return HelperClass.serve_pil_image(img)
 
 
-@app.route('/<root>/<imageID>/<file>')
-def GetDzi(root, imageID, file):
-    return send_file(root+"/"+imageID+"/"+file)
-
-
 
 def FindFilenameFromList(folder, year, filename):
     foo = allAvailableImages[folder]
