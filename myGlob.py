@@ -127,11 +127,8 @@ def _iterdir(dirname, dironly):
             with os.scandir(dirname) as it:
                 for entry in it:
                     try:
-                        if os.access(entry, os.R_OK):
-                            if not dironly or entry.is_dir():
-                                yield entry.name
-                        else:
-                            pass
+                        if not dironly or entry.is_dir():
+                            yield entry.name
                     except OSError:
                         pass
         else:
