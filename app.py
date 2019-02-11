@@ -1,4 +1,4 @@
-#LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
+# LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask import Flask, send_file, render_template, send_from_directory, redirect, request, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -8,7 +8,6 @@ import os
 import customLogger
 import openslide
 import HelperClass
-
 
 allAvailableImages = {}
 
@@ -37,10 +36,23 @@ def Main():
     AvailableImages = GetAvailableImages()
     return render_template("index.html", images=AvailableImages)
 
+
 @app.route('/images/<filename>')
 def LoadControlImages(filename):
-    return send_file("static/images/"+filename)
+    return send_file("static/images/" + filename)
 
+
+def FindFilenameFromList(folder, year, filename):
+    foo = allAvailableImages[folder]
+    fileList = foo[year]
+    for file in fileList:
+        if filename in file:
+            return file
+    return ""
+
+
+# TODO
+# FOR RUNNING ON UNIX SERVER
 
 @app.route('/<folder>/<year>/<filename>')
 def changeImage(folder, year, filename):
@@ -55,28 +67,17 @@ def changeImage(folder, year, filename):
     logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     return deepZoomGen.get_dzi("jpeg")
-
-
+  
+  
 @app.route('/<folder>/<year>/<dummyVariable>/<level>/<tile>')
 def GetTile(folder, year, dummyVariable, level, tile):
     col, row = GetNumericTileCoordinatesFromString(tile)
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
     return HelperClass.serve_pil_image(img)
 
-
-
-def FindFilenameFromList(folder, year, filename):
-    foo = allAvailableImages[folder]
-    fileList = foo[year]
-    for file in fileList:
-        if filename in file:
-            return file
-    return ""
-
-
+  
 #TODO
 #FOR RUNNING ON UNIX SERVER
-
 def GetAvailableImages():
     global allAvailableImages
     for folderName1 in os.listdir("../../../../prosjekt/Histology/"):
@@ -92,41 +93,65 @@ def GetAvailableImages():
         if temp:
             allAvailableImages[folderName1] = temp
     return allAvailableImages
+  
+  
 '''
-#TODO
-#FOR TESTING PURPOSES
+# TODO
+# FOR TESTING PURPOSES
+@app.route('/scnImages/<filename>')
+def changeImage(filename):
+    global image;
+    global deepZoomGen
+    logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)
+    image = openslide.OpenSlide("scnImages/" + filename)
+    deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
+    return deepZoomGen.get_dzi("jpeg")
+
+
 def GetAvailableImages():
     global allAvailableImages
-    allAvailableImages = {"somekey": {"2002": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
-                                   "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
-                                   "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
-                                   "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
-                              "2003": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
-                                   "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
-                                   "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
-                                   "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
-                              "2004": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
-                                   "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
-                                   "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
-                                   "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
-                              "2005": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
-                              "2010": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
-                                   "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
-                                   "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
-                                   "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"]
-                                      },
-                          "someOtherKey": {
-                              "2056": ["2.scn"]
-                          }
-                          }
+    allAvailableImages = {
+        "somekey": {"2002": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
+                             "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
+                             "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
+                             "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
+                    "2003": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
+                             "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
+                             "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
+                             "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
+                    "2004": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
+                             "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
+                             "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
+                             "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
+                    "2005": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
+                             "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
+                             "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn",
+                             "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"],
+                    "2010": ["1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn",
+                             "3.scn 24536.scn", "4.scn", "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn",
+                             "5.scn", "6.scn", "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn",
+                             "1.scn", "2.scn", "3.scn 24536.scn", "4.scn", "5.scn", "6.scn"]
+                    },
+        "someOtherKey": {
+            "2056": ["2.scn"]
+        }
+        }
     return allAvailableImages
-''' 
+
+
+@app.route('/scnImages/<dummyVariable>/<level>/<tile>')
+def GetTile(dummyVariable, level, tile):
+    col, row = HelperClass.GetNumericTileCoordinatesFromString(tile)
+    img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
+    return HelperClass.serve_pil_image(img)
+'''
+## TESTING STUFF ENDS
 
 @app.route('/favicon.ico')
 def favicon():
     return send_file("static/images/favicon.ico", mimetype="image/jpeg")
 
-  
+
 def GetNumericTileCoordinatesFromString(tile):
     col, row = str.split(tile, "_")
     row = str.replace(row, ".jpeg", "")
@@ -153,7 +178,7 @@ def Login():
 
 
 @app.route("/register", methods=["GET", "POST"])
-#@login_required
+# @login_required
 def Register():
     if request.method == "POST":
         registerUsername = request.form["username"]
@@ -178,7 +203,7 @@ def user_login(Username):
 def Logout():
     logger.log(25, HelperClass.LogFormat() + current_user.username + " logged out")
     logout_user()
-    return render_template("login.html", type="logout", message = "You are now logged out")
+    return render_template("login.html", type="logout", message="You are now logged out")
 
 
 # Redirects users to login screen if they are not logged in.
@@ -189,7 +214,7 @@ def CatchNotLoggedIn():
 
 class User(UserMixin, db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
-    username = db.Column("Username", db.String,)
+    username = db.Column("Username", db.String, )
     password = db.Column("Password", db.String)
 
     def __init__(self, username, password):
