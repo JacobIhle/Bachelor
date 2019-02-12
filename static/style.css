@@ -309,7 +309,7 @@ label{
     display: none;
 }
 
-/* Login stuff */
+/* Login/register stuff */
 .login-form {
     width: 330px;
     margin: 30px auto;
@@ -347,4 +347,23 @@ label{
     font-size: 15px;
     font-weight: bold;
     border-radius: 2px;
+}
+
+.form-group input{
+    margin-bottom: 5px;
+}
+
+
+.warning {
+    color: red;
+    text-align: center;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.info {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0091EA;
 }

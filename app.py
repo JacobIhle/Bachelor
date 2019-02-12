@@ -53,7 +53,7 @@ def FindFilenameFromList(folder, year, filename):
 
 # TODO
 # FOR RUNNING ON UNIX SERVER
-
+'''
 @app.route('/<folder>/<year>/<filename>')
 def changeImage(folder, year, filename):
     global image; global deepZoomGen
@@ -100,7 +100,7 @@ def GetAvailableImages():
 # FOR TESTING PURPOSES
 @app.route('/scnImages/<filename>')
 def changeImage(filename):
-    global image;
+    global image
     global deepZoomGen
     logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)
     image = openslide.OpenSlide("scnImages/" + filename)
@@ -144,7 +144,7 @@ def GetTile(dummyVariable, level, tile):
     col, row = HelperClass.GetNumericTileCoordinatesFromString(tile)
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
     return HelperClass.serve_pil_image(img)
-'''
+
 ## TESTING STUFF ENDS
 
 @app.route('/favicon.ico')
@@ -162,7 +162,7 @@ def GetNumericTileCoordinatesFromString(tile):
 @app.route("/login", methods=["GET", "POST"])
 def Login():
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["username"].lower()
         password = request.form["password"]
         user = User.query.filter_by(username=username).first()
 
@@ -172,23 +172,34 @@ def Login():
             return redirect("/")
         else:
             logger.log(25, HelperClass.LogFormat() + "Attempted loggin with username: " + username)
-            return render_template("login.html", type="login", message="Wrong username or password")
+            return render_template("login.html", className = "warning", message="Wrong username or password")
 
     return render_template("login.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
-# @login_required
+#@login_required
 def Register():
-    if request.method == "POST":
-        registerUsername = request.form["username"]
-        registerPassword = request.form["firstPassField"]
+    #print(str(current_user.type))
+    #if str(current_user.type) != "Admin":
+    #    return redirect("/")
+    if request.method == "POST" and request.form["username"].lower() is not None:
+        registerUsername = request.form["username"].lower()
+        firstPassField = request.form["firstPassField"]
+        userType = request.form.get("userType")
 
-        newUser = User(registerUsername, registerPassword)
+        if User.query.filter_by(username=registerUsername).first() is not None:
+            return render_template("register.html", className = "warning", message = "Username already exists.")
+
+        if request.form["secondPassField"] != firstPassField:
+            return render_template("register.html", className = "warning", message = "Passwords does not match")
+
+
+        newUser = User(registerUsername, firstPassField, userType)
         db.session.add(newUser)
         db.session.commit()
-        logger.log(25, HelperClass.LogFormat() + current_user.username + " registered a new user: " + registerUsername)
-        redirect("/login")
+        #logger.log(25, HelperClass.LogFormat() + current_user.username + " registered a new user: " + registerUsername)
+        return redirect("/")
 
     return render_template("register.html")
 
@@ -203,7 +214,7 @@ def user_login(Username):
 def Logout():
     logger.log(25, HelperClass.LogFormat() + current_user.username + " logged out")
     logout_user()
-    return render_template("login.html", type="logout", message="You are now logged out")
+    return render_template("login.html", className="info", message="Logged out")
 
 
 # Redirects users to login screen if they are not logged in.
@@ -213,13 +224,15 @@ def CatchNotLoggedIn():
 
 
 class User(UserMixin, db.Model):
-    id = db.Column("id", db.Integer, primary_key=True)
+    id = db.Column("ID", db.Integer, primary_key=True)
     username = db.Column("Username", db.String, )
     password = db.Column("Password", db.String)
+    type = db.Column("Type", db.String)
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, type):
         self.username = username
         self.password = self.set_password(password)
+        self.type = type
 
     def set_password(self, password):
         return generate_password_hash(password)
