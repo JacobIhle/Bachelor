@@ -176,7 +176,8 @@ def Login():
 
     return render_template("login.html")
 
-
+#TODO
+#Remove comments when the database at gorina is changed, and an admin user is created.
 @app.route("/register", methods=["GET", "POST"])
 #@login_required
 def Register():
