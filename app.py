@@ -8,8 +8,9 @@ import os
 import customLogger
 import openslide
 import HelperClass
+import imageList
 
-allAvailableImages = {}
+availableImages = {}
 
 dateTime = customLogger.DateTime()
 logger = customLogger.StartLogging()
@@ -33,8 +34,9 @@ login_manager.init_app(app)
 @app.route('/')
 @login_required
 def Main():
-    AvailableImages = GetAvailableImages()
-    return render_template("index.html", images=AvailableImages)
+    global availableImages
+    GetAvailableImages()
+    return render_template("index.html", images=availableImages)
 
 
 @app.route('/images/<filename>')
@@ -79,20 +81,10 @@ def GetTile(folder, year, dummyVariable, level, tile):
 #TODO
 #FOR RUNNING ON UNIX SERVER
 def GetAvailableImages():
-    global allAvailableImages
-    for folderName1 in os.listdir("../../../../prosjekt/Histology/"):
-        temp = {}
-        for folderName in os.listdir("../../../../prosjekt/Histology/"+folderName1):
-            if os.path.isdir("../../../../prosjekt/Histology/"+folderName1+"/"+folderName):
-                listOfFiles = []
-                for filename in os.listdir("../../../../prosjekt/Histology/"+folderName1+"/"+folderName):
-                    if ".scn" in filename:
-                        listOfFiles.append(filename)
-                if listOfFiles:
-                    temp[folderName] = listOfFiles
-        if temp:
-            allAvailableImages[folderName1] = temp
-    return allAvailableImages
+    global availableImages
+    imagesPaths = imageList.ReadImageListFromFile()
+    availableImages = imageList.BuildNested(imagesPaths[0])
+
   
   
 '''

@@ -28,7 +28,7 @@ def ReadImageListFromFile():
         return [], ""
 
 
-def build_nested_helper(path, text, container):
+def BuildNestedHelper(path, text, container):
     segs = path.split('/')
     head = segs[0]
     tail = segs[1:]
@@ -42,18 +42,18 @@ def build_nested_helper(path, text, container):
     else:
         if head not in container:
             container[head] = {}
-        build_nested_helper('/'.join(tail), text, container[head])
+        BuildNestedHelper('/'.join(tail), text, container[head])
 
 
-def build_nested(paths):
+def BuildNested(paths):
     container = {}
     for path in paths:
         path = path[2:]
-        build_nested_helper(path, path, container)
+        BuildNestedHelper(path, path, container)
     return container
 
 
-def testing():
+def Testing():
     list = ReadImageListFromFile()
-    dict = build_nested(list[0])
-    test.recursiveFuck(dict)
+    dict = BuildNested(list[0])
+    test.CallFromJinja(dict)

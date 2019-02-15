@@ -39,19 +39,25 @@ foo = {
 
 
 
-def recursiveFuck(dict):
+def RecursiveFuck(dict, returnString):
 
     for key, value in dict.items():
         if type(value) is list:
-            print("<div class=" + key + ">")
+            returnString = returnString+"<div class=" + key + ">\n"
             for image in value:
-                print("<div id="+image+"></div>")
-            print("</div>")
+                returnString = returnString +"<div id="+image+"></div>\n"
+                returnString = returnString +"</div>\n"
         else:
-            print("<div class="+key+">")
-            recursiveFuck(value)
-            print("</div>")
+            returnString = returnString +"<div class="+key+">\n"
+            RecursiveFuck(value)
+            returnString = returnString +"</div>\n"
     return
 
 
-#recursiveFuck(foo)
+def CallFromJinja(dict):
+
+    returnString = ""
+    RecursiveFuck(dict, returnString)
+    return returnString
+
+#RecursiveFuck(foo)
