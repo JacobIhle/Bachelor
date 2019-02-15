@@ -56,4 +56,4 @@ def BuildNested(paths):
 def Testing():
     list = ReadImageListFromFile()
     dict = BuildNested(list[0])
-    test.CallFromJinja(dict)
+    return test.CallFromJinja(dict)
