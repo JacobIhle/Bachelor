@@ -49,7 +49,7 @@ def RecursiveFuck(dict, returnString):
                 returnString = returnString +"</div>\n"
         else:
             returnString = returnString +"<div class="+key+">\n"
-            RecursiveFuck(value)
+            RecursiveFuck(value, returnString)
             returnString = returnString +"</div>\n"
     return
 
@@ -60,4 +60,4 @@ def CallFromJinja(dict):
     RecursiveFuck(dict, returnString)
     return returnString
 
-#RecursiveFuck(foo)
+
