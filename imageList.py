@@ -32,8 +32,13 @@ def build_nested_helper(path, text, container):
     segs = path.split('/')
     head = segs[0]
     tail = segs[1:]
-    if not tail:
-        container[head] = lambda: msg(text)
+    tailtail = segs[2:]
+    if not tailtail:
+        if head not in container:
+            container[head] = []
+        container[head].append(tailtail)
+    elif not tail:
+        container[head] = text
     else:
         if head not in container:
             container[head] = {}
