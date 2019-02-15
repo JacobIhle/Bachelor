@@ -1,6 +1,6 @@
 import os
 import glob
-
+import test
 
 def RefreshImageList():
     try:
@@ -51,3 +51,9 @@ def build_nested(paths):
         path = path[2:]
         build_nested_helper(path, path, container)
     return container
+
+
+def test():
+    list = ReadImageListFromFile()
+    dict = build_nested(list[0])
+    test.recursiveFuck(dict)
