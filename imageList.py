@@ -51,7 +51,3 @@ def build_nested(paths):
         path = path[2:]
         build_nested_helper(path, path, container)
     return container
-
-
-def msg(path):
-    return path.lower()

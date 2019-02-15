@@ -37,7 +37,7 @@ def recursiveFuck(dict):
             for image in value:
                 print("<div id="+image+"></div>")
             print("</div>")
-            return
+            continue
         else:
             print("<div class="+key+">")
             recursiveFuck(value)
