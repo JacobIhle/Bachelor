@@ -46,7 +46,7 @@ def RecursiveFuck(dict, returnString):
             returnString.append("<div class=" + key + ">\n")
             for image in value:
                 returnString.append("<div id="+image+"></div>\n")
-                returnString.append("</div>\n")
+            returnString.append("</div>\n")
         else:
             returnString.append("<div class="+key+">\n")
             RecursiveFuck(value, returnString)
