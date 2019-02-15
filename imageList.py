@@ -48,6 +48,7 @@ def build_nested_helper(path, text, container):
 def build_nested(paths):
     container = {}
     for path in paths:
+        path.strip("/")
         build_nested_helper(path, path, container)
     return container
 
