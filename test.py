@@ -19,15 +19,25 @@ foo = {
                 "images": [
                     "H2352.scn",
                     "H9989.scn"
+                ],
+                "images1": [
+                    "H2352.scn",
+                    "H9989.scn"
+                ],
+                "images2": [
+                    "H2352.scn",
+                    "H9989.scn"
+                ],
+                "images3": [
+                    "H2352.scn",
+                    "H9989.scn"
                 ]
             }
         }
     }
 }
 
-print(foo["Histology"]["mary"]["poppins"])
-foo["Histology"]["mary"]["poppinses"] = "hei"
-print(foo["Histology"]["mary"]["poppinses"])
+
 
 def recursiveFuck(dict):
 
@@ -37,7 +47,6 @@ def recursiveFuck(dict):
             for image in value:
                 print("<div id="+image+"></div>")
             print("</div>")
-            continue
         else:
             print("<div class="+key+">")
             recursiveFuck(value)

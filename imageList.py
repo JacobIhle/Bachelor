@@ -53,7 +53,7 @@ def build_nested(paths):
     return container
 
 
-def test():
+def testing():
     list = ReadImageListFromFile()
     dict = build_nested(list[0])
     test.recursiveFuck(dict)
