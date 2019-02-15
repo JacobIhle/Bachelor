@@ -43,21 +43,21 @@ def RecursiveFuck(dict, returnString):
 
     for key, value in dict.items():
         if type(value) is list:
-            returnString = returnString+"<div class=" + key + ">\n"
+            returnString.append("<div class=" + key + ">\n")
             for image in value:
-                returnString = returnString +"<div id="+image+"></div>\n"
-                returnString = returnString +"</div>\n"
+                returnString.append("<div id="+image+"></div>\n")
+                returnString.append("</div>\n")
         else:
-            returnString = returnString +"<div class="+key+">\n"
+            returnString.append("<div class="+key+">\n")
             RecursiveFuck(value, returnString)
-            returnString = returnString +"</div>\n"
+            returnString.append("</div>\n")
     return
 
 
 def CallFromJinja(dict):
 
-    returnString = ""
+    returnString = []
     RecursiveFuck(dict, returnString)
-    return returnString
+    return "".join(returnString)
 
 
