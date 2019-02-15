@@ -178,7 +178,7 @@ def Login():
 
 
 @app.route("/register", methods=["GET", "POST"])
-# @login_required
+@login_required
 def Register():
     if request.method == "POST":
         registerUsername = request.form["username"]

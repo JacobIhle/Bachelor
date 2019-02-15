@@ -32,6 +32,6 @@ def serve_pil_image(pil_img):
 def ConfigureApp(app):
     dbUser, dbPassword = ReadDatabaseCredentialsFromFile()
     ## TODO: Create a random secure hash
-    app.config["SECRET_KEY"] = "notSecure"
+    app.config["SECRET_KEY"] = "fdb65327aa5cc58d59142890c40555"
     app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://%s:%s@mysql2.ux.uis.no/dbthomaso" % (dbUser, dbPassword)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
