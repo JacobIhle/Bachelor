@@ -15,6 +15,8 @@ def RefreshImageList():
 
 
 def ReadImageListFromFile():
+    #TODO
+    #write paths to dict with key = filename, value = path
     if os.path.isfile("./ImageList.txt"):
         try:
             with open("ImageList.txt") as f:
@@ -46,6 +48,8 @@ def BuildNestedHelper(path, text, container):
 
 
 def BuildNested(paths):
+    #TODO
+    #paths will according to plan be converted to a dict
     container = {}
     for path in paths:
         path = path[2:]
@@ -54,6 +58,6 @@ def BuildNested(paths):
 
 
 def Testing():
-    list = ReadImageListFromFile()
-    dict = BuildNested(list[0])
+    list, err = ReadImageListFromFile()
+    dict = BuildNested(list)
     return test.CallFromJinja(dict)

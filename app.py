@@ -44,8 +44,10 @@ def LoadControlImages(filename):
     return send_file("static/images/" + filename)
 
 
+#TODO
+#Something WILL break with this one when migrating to the dynamic imagelist thingie
 def FindFilenameFromList(folder, year, filename):
-    foo = allAvailableImages[folder]
+    foo = availableImages[folder]
     fileList = foo[year]
     for file in fileList:
         if filename in file:
