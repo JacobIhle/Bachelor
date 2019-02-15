@@ -36,7 +36,7 @@ def build_nested_helper(path, text, container):
     if not tailtail:
         if head not in container:
             container[head] = []
-        container[head].append(tail)
+        container[head].append(tail[0])
     elif not tail:
         container[head] = text
     else:
