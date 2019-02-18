@@ -42,7 +42,7 @@ function addNonViewerHandlers() {
     $(".imageLinks").on("click", function () {
         var image = this.id;
 	    console.log(image);
-        imageUrl = "http://152.94.1.69:5000/"+image;
+        imageUrl = "https://histology.ux.uis.no:8082/"+image;
         open_slide(imageUrl);
         addViewerHandlers();
         $("#filename").text(image);
