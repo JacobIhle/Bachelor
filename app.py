@@ -59,8 +59,8 @@ def changeImage(filename):
     return deepZoomGen.get_dzi("jpeg")
   
   
-@app.route('/app/<level>/<tile>')
-def GetTile(level, tile):
+@app.route('/app/<dummy>/<level>/<tile>')
+def GetTile(dummy, level, tile):
     col, row = GetNumericTileCoordinatesFromString(tile)
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
     return HelperClass.serve_pil_image(img)
