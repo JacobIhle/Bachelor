@@ -35,8 +35,9 @@ login_manager.init_app(app)
 @app.route('/')
 @login_required
 def Main():
+    foo = GenerateImageListHtml()
     GetAvailableImages()
-    return render_template("index.html")
+    return render_template("index.html", imageList = foo)
 
 
 @app.route('/images/<filename>')
@@ -88,9 +89,6 @@ def GetNumericTileCoordinatesFromString(tile):
 def GenerateImageListHtml():
     global nestedImageList
     return imageList.CallFromJinja(nestedImageList)
-
-
-app.jinja_env.globals.update(GenerateImageList=GenerateImageListHtml)
 
 
 # User handling methods
