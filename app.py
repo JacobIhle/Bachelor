@@ -45,13 +45,10 @@ def LoadControlImages(filename):
     return send_file("static/images/" + filename)
 
 
-# TODO
-# FOR RUNNING ON UNIX SERVER
-
 @app.route('/app/<filename>')
 def changeImage(filename):
     global image; global deepZoomGen; global imagePathLookupTable
-    path = imagePathLookupTable[filename]
+    path = "//home/prosjekt"+imagePathLookupTable[filename]
     print(path)
     image = openslide.OpenSlide(path)
     logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)

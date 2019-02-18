@@ -4,29 +4,36 @@ import glob
 def RefreshImageList():
     try:
         listOfImages = glob.glob("//home/prosjekt/**/*.scn", recursive=True)
+        strippedListOfImages = stripBeginningOfPaths(listOfImages)
         with open('ImageList.txt', 'w') as f:
-            for item in listOfImages:
+            for item in strippedListOfImages:
                 f.write("%s\n" % item)
     except OSError:
         return [], "500"
 
-    return imageListToDict(listOfImages), ""
+    return imageListToDict(strippedListOfImages), ""
 
 
 def ReadImageListFromFile():
-    #TODO
-    #write paths to dict with key = filename, value = path  DONE
     if os.path.isfile("./ImageList.txt"):
         try:
             with open("ImageList.txt") as f:
-                listOfImages = f.read().splitlines()
+                strippedListOfImages = f.read().splitlines()
         except OSError:
             return [], "500"
 
-        return imageListToDict(listOfImages), ""
+        return imageListToDict(strippedListOfImages), ""
     else:
         open("ImageList.txt", "w")
         return [], ""
+
+
+def stripBeginningOfPaths(list):
+    foo = []
+    for element in list:
+         foo.append(element.replace("//home/prosjekt", ""))
+    return foo
+
 
 
 def imageListToDict(list):

@@ -1,5 +1,5 @@
 import imageList
 
-test = ["hei/folder/test/fuuuuuuu/shit/dritt.scn", "hei/folder/test/fuuuuuuu/shit/ass.scn"]
-
-print(imageList.imageListToDict(test))
+test = ["//home/prosjekt/test/fuuuuuuu/shit/dritt.scn", "//home/prosjekt/test/fuuuuuuu/shit/ass.scn"]
+foo = imageList.stripBeginningOfPaths(test)
+print(imageList.imageListToDict(foo))
