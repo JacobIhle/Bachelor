@@ -41,11 +41,12 @@ function addNonViewerHandlers() {
 
     $(".imageLinks").on("click", function () {
         var image = this.id;
+        var name = this.html;
 	    console.log(image);
-        imageUrl = "http://152.94.1.69:5000/"+image;
+        imageUrl = "https://histology.ux.uis.no/app"+image;
         open_slide(imageUrl);
         addViewerHandlers();
-        $("#filename").text(image);
+        $("#filename").text(name);
     })
 }
 

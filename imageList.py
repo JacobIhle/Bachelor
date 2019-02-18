@@ -1,6 +1,5 @@
 import os
 import glob
-import test
 
 def RefreshImageList():
     try:
@@ -11,12 +10,12 @@ def RefreshImageList():
     except OSError:
         return [], "500"
 
-    return listOfImages, ""
+    return imageListToDict(listOfImages), ""
 
 
 def ReadImageListFromFile():
     #TODO
-    #write paths to dict with key = filename, value = path
+    #write paths to dict with key = filename, value = path  DONE
     if os.path.isfile("./ImageList.txt"):
         try:
             with open("ImageList.txt") as f:
@@ -24,10 +23,19 @@ def ReadImageListFromFile():
         except OSError:
             return [], "500"
 
-        return listOfImages, ""
+        return imageListToDict(listOfImages[0]), ""
     else:
         open("ImageList.txt", "w")
         return [], ""
+
+
+def imageListToDict(list):
+    result = {}
+    for element in list:
+        image = element.split("/")[-1]
+        result[image] = element
+    return result
+
 
 
 def BuildNestedHelper(path, text, container):
@@ -49,15 +57,33 @@ def BuildNestedHelper(path, text, container):
 
 def BuildNested(paths):
     #TODO
-    #paths will according to plan be converted to a dict
+    #paths will according to plan be converted to a dict DONE
     container = {}
-    for path in paths:
+    for key, path in paths:
         path = path[2:]
         BuildNestedHelper(path, path, container)
     return container
 
 
-def Testing():
-    list, err = ReadImageListFromFile()
-    dict = BuildNested(list)
-    return test.CallFromJinja(dict)
+
+
+def RecursiveFuck(dict, returnString):
+    for key, value in dict.items():
+        if type(value) is list:
+            returnString.append("<div class='folder'>\n")
+            returnString.append("<button class='folderButtons'>"+key+"</button>\n")
+            for image in value:
+                returnString.append("<button class='imageLinks' id="+image+">"+image+"</button>\n")
+            returnString.append("</div>\n")
+        else:
+            returnString.append("<div class='folder'>\n")
+            returnString.append("<button class='folderButtons'>" + key + "</button>\n")
+            RecursiveFuck(value, returnString)
+            returnString.append("</div>\n")
+    return
+
+
+def CallFromJinja(availableImages):
+    returnString = []
+    RecursiveFuck(availableImages, returnString)
+    return "".join(returnString)

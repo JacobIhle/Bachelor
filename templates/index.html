@@ -34,25 +34,7 @@
         </header>
 
         <div id="imageExplorer">
-            <ul id="theList">
-            {% for key, values in images.items() %}
-            <div class="label"><label>{{ key }}</label>
-                {% for folder, fileList in values.items() %}
-                    <li class="liTags">
-                        <div>
-                        <button class="thomasesbutton">{{ folder }}</button>
-                            <div class="fileListDiv">
-                                {% for file in fileList %}
-                                    {% set splitFilename = file.split(" ") %}
-                                    <button class="imageLinks" id="{{ key }}/{{ folder }}/{{ file }}">{{ splitFilename[0] }}</button>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </li>
-                {% endfor %}
-                </div>
-            {% endfor %}
-            </ul>
+            {{ GenerateImageList() }}
         </div>
 
         <div id="display"></div>
