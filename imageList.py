@@ -10,7 +10,7 @@ def RefreshImageList():
     except OSError:
         return [], "500"
 
-    return imageListToDict(listOfImages[0]), ""
+    return imageListToDict(listOfImages), ""
 
 
 def ReadImageListFromFile():
@@ -23,7 +23,7 @@ def ReadImageListFromFile():
         except OSError:
             return [], "500"
 
-        return imageListToDict(listOfImages[0]), ""
+        return imageListToDict(listOfImages), ""
     else:
         open("ImageList.txt", "w")
         return [], ""

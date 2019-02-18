@@ -70,7 +70,7 @@ def GetTile(level, tile):
 def GetAvailableImages():
     global nestedImageList
     global imagePathLookupTable
-    imagePathLookupTable = imageList.ReadImageListFromFile()
+    imagePathLookupTable, _ = imageList.ReadImageListFromFile()
     nestedImageList = imageList.BuildNested(imagePathLookupTable)
 
 
