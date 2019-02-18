@@ -43,7 +43,7 @@ function addNonViewerHandlers() {
         var image = this.id;
         var name = this.html;
 	    console.log(image);
-        imageUrl = "https://histology.ux.uis.no/app/"+image;
+        imageUrl = "https://histology.ux.uis.no/app/"+name;
         open_slide(imageUrl);
         addViewerHandlers();
         $("#filename").text(name);
