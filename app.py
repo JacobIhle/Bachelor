@@ -175,6 +175,7 @@ def Login():
 @app.route("/register", methods=["GET", "POST"])
 @login_required
 def Register():
+    ## DONT PUSH THIS TO GORINA BEFORE THE DATABASE IS UPDATED TO SUPPORT DIFFERENT TYPE OF USERS
     if str(current_user.type) != "Admin":
         return render_template("401.html"), 401
     if request.method == "POST" and request.form["username"].lower() is not None:
