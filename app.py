@@ -11,9 +11,6 @@ import HelperClass
 
 allAvailableImages = {}
 
-dateTime = customLogger.DateTime()
-logger = customLogger.StartLogging()
-
 image = None
 deepZoomGen = None
 
@@ -158,32 +155,28 @@ def GetNumericTileCoordinatesFromString(tile):
     return col, row
 
 
-# User handling methods
 @app.route("/login", methods=["GET", "POST"])
 def Login():
     if request.method == "POST":
         username = request.form["username"].lower()
         password = request.form["password"]
         user = User.query.filter_by(username=username).first()
-
         if user is not None and username == user.username and user.check_password(password):
             logger.log(25, HelperClass.LogFormat() + username + " logged in")
             login_user(user)
             return redirect("/")
         else:
-            logger.log(25, HelperClass.LogFormat() + "Attempted loggin with username: " + username)
+            logger.log(25, HelperClass.LogFormat() + "Attempted log in with username: " + username)
             return render_template("login.html", className = "warning", message="Wrong username or password")
+    else:
+        return render_template("login.html")
 
-    return render_template("login.html")
 
-#TODO
-#Remove comments when the database at gorina is changed, and an admin user is created.
 @app.route("/register", methods=["GET", "POST"])
-#@login_required
+@login_required
 def Register():
-    #print(str(current_user.type))
-    #if str(current_user.type) != "Admin":
-    #    return redirect("/")
+    if str(current_user.type) != "Admin":
+        return render_template("401.html"), 401
     if request.method == "POST" and request.form["username"].lower() is not None:
         registerUsername = request.form["username"].lower()
         firstPassField = request.form["firstPassField"]
@@ -195,11 +188,10 @@ def Register():
         if request.form["secondPassField"] != firstPassField:
             return render_template("register.html", className = "warning", message = "Passwords does not match")
 
-
         newUser = User(registerUsername, firstPassField, userType)
         db.session.add(newUser)
         db.session.commit()
-        #logger.log(25, HelperClass.LogFormat() + current_user.username + " registered a new user: " + registerUsername)
+        logger.log(25, HelperClass.LogFormat() + current_user.username + " registered a new user: " + registerUsername)
         return redirect("/")
 
     return render_template("register.html")
@@ -222,6 +214,11 @@ def Logout():
 @login_manager.unauthorized_handler
 def CatchNotLoggedIn():
     return redirect("/login")
+
+
+@app.errorhandler(401)
+def not_found():
+    return render_template('401.html'), 401
 
 
 class User(UserMixin, db.Model):
