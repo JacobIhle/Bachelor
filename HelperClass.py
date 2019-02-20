@@ -1,7 +1,7 @@
 from time import gmtime, strftime
-from flask import Flask, send_file, render_template, send_from_directory, redirect, request, url_for
+from flask import send_file, request
 from io import BytesIO
-
+from datetime import timedelta
 
 def ReadDatabaseCredentialsFromFile():
     with open("Login.txt", 'r') as f:
@@ -35,3 +35,4 @@ def ConfigureApp(app):
     app.config["SECRET_KEY"] = "notSecure"
     app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://%s:%s@mysql2.ux.uis.no/dbthomaso" % (dbUser, dbPassword)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.permanent_session_lifetime = timedelta(minutes=10)
