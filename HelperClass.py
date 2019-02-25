@@ -10,6 +10,13 @@ def ReadDatabaseCredentialsFromFile():
     return user, password
 
 
+def ReadSecretKeyFromFile():
+    with open("SecretKey.txt", 'r') as f:
+        key = f.readline()
+        f.close()
+    return key
+
+
 def LogFormat():
     DateTime = str(strftime("%Y-%m-%d %H:%M:%S" , gmtime()))
     ip = request.remote_addr
@@ -32,7 +39,7 @@ def serve_pil_image(pil_img):
 def ConfigureApp(app):
     dbUser, dbPassword = ReadDatabaseCredentialsFromFile()
     ## TODO: Create a random secure hash
-    app.config["SECRET_KEY"] = "fdb65327aa5cc58d59142890c40555"
+    app.config["SECRET_KEY"] = ReadSecretKeyFromFile()
     app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://%s:%s@mysql2.ux.uis.no/dbthomaso" % (dbUser, dbPassword)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 

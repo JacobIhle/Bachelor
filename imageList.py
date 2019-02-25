@@ -74,7 +74,7 @@ def BuildNested(paths):
 
 
 
-def RecursiveFuck(dict, returnString):
+def BuildImageListHTML(dict, returnString):
     for key, value in dict.items():
         if type(value) is list:
             returnString.append("<div class='folder'>\n")
@@ -85,12 +85,12 @@ def RecursiveFuck(dict, returnString):
         else:
             returnString.append("<div class='folder'>\n")
             returnString.append("<button class='folderButtons'>" + key + "</button>\n")
-            RecursiveFuck(value, returnString)
+            BuildImageListHTML(value, returnString)
             returnString.append("</div>\n")
     return
 
 
-def CallFromJinja(availableImages):
+def GetImageListHTML(availableImages):
     returnString = []
-    RecursiveFuck(availableImages, returnString)
+    BuildImageListHTML(availableImages, returnString)
     return "".join(returnString)

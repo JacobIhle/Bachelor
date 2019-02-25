@@ -1,6 +1,6 @@
 # LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from flask import Flask, send_file, render_template, send_from_directory, redirect, request, url_for
+from flask import Flask, send_file, render_template, redirect, request, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from openslide.deepzoom import DeepZoomGenerator
 from flask_sqlalchemy import SQLAlchemy
@@ -35,9 +35,9 @@ login_manager.init_app(app)
 @app.route('/')
 @login_required
 def Main():
-    foo = GenerateImageListHtml()
+    ImageListHTML = GenerateImageListHtml()
     GetAvailableImages()
-    return render_template("index.html", imageList = foo)
+    return render_template("index.html", imageList=ImageListHTML)
 
 
 @app.route('/images/<filename>')
@@ -68,8 +68,11 @@ def GetTile(dummy, level, tile):
 def GetAvailableImages():
     global nestedImageList
     global imagePathLookupTable
-    imagePathLookupTable, _ = imageList.ReadImageListFromFile()
-    nestedImageList = imageList.BuildNested(imagePathLookupTable)
+    imagePathLookupTable, err = imageList.ReadImageListFromFile()
+    if err is not "":
+        abort(500)
+    else:
+        nestedImageList = imageList.BuildNested(imagePathLookupTable)
 
 
 @app.route('/favicon.ico')
@@ -83,9 +86,13 @@ def GetNumericTileCoordinatesFromString(tile):
     return col, row
 
 
+@app.errorhandler(500)
+def handle500(error):
+    return "SOMETHING BAD HAPPENED ON OUR END, SAWWIII", 500
+
 def GenerateImageListHtml():
     global nestedImageList
-    return imageList.CallFromJinja(nestedImageList)
+    return imageList.GetImageListHTML(nestedImageList)
 
 
 # User handling methods
