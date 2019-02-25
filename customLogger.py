@@ -15,7 +15,7 @@ def StartLogging():
     logging.addLevelName(25, "Server")
     # add custom logger that writes to file
     UserLog = logging.getLogger("Server")
-    UserLog.addHandler(logging.FileHandler("logging\\" + DateTime() + '.log', 'a'))
+    UserLog.addHandler(logging.FileHandler("logging/" + DateTime() + '.log', 'a'))
     UserLog.setLevel(25)
 
     return UserLog
