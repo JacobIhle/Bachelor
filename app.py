@@ -1,6 +1,6 @@
 # LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from flask import Flask, send_file, render_template, send_from_directory, redirect, request, url_for
+from flask import Flask, send_file, render_template, send_from_directory, redirect, request, url_for, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from openslide.deepzoom import DeepZoomGenerator
 from flask_sqlalchemy import SQLAlchemy
@@ -177,7 +177,7 @@ def Login():
 def Register():
     ## DONT PUSH THIS TO GORINA BEFORE THE DATABASE IS UPDATED TO SUPPORT DIFFERENT TYPE OF USERS
     if str(current_user.type) != "Admin":
-        return render_template("401.html"), 401
+        abort(401)
     if request.method == "POST" and request.form["username"].lower() is not None:
         registerUsername = request.form["username"].lower()
         firstPassField = request.form["firstPassField"]
@@ -218,7 +218,7 @@ def CatchNotLoggedIn():
 
 
 @app.errorhandler(401)
-def not_found():
+def not_found(error):
     return render_template('401.html'), 401
 
 
