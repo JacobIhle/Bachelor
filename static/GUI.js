@@ -40,12 +40,11 @@ function addNonViewerHandlers() {
     });
 
     $(".imageLinks").on("click", function () {
-        var image = this.id;
-        console.log(image);
-        imageUrl = "http://152.94.1.69:5000/" + image;
+        var name = this.innerHTML;
+        imageUrl = "https://histology.ux.uis.no/app/" + name;
         open_slide(imageUrl);
         addViewerHandlers();
-        $("#filename").text(image);
+        $("#filename").text(name);
     })
 }
 
@@ -157,27 +156,17 @@ function jacobisGUIstuff() {
         $("#imageExplorer").toggle();
     });
 
-    $(".label").click(function () {
-        $(this).find(".liTags").slideToggle("fast");
-        console.log("hey")
-    });
-
-    $(".thomasesbutton").click(function () {
+    $(".folderButtons").click(function () {
         event.stopPropagation();
-        $(this).siblings(".fileListDiv").slideToggle("fast");
+        $(this).siblings(".folder").slideToggle("fast");
         var buttonColor = $(this).css("background-color");
         if (buttonColor.toString() === "rgb(62, 142, 65)") {
-            $(this).css("background-color", "#53c758");
-        } else {
-            $(this).css("background-color", "#3e8e41")
-        }
-        console.log(buttonColor.toString());
-    });
 
-    $("#imageExplorer").click(function () {
-        $(event.target).siblings(".folder").slideDown("fast");
+            $(this).css("background-color", "#4caf50"); // Light green
+        } else {
+            $(this).css("background-color", "#3e8e41"); // Dark green
+        }
+
+        $(this).siblings(".imageLinks").toggle();
     });
 }
-
-
-
