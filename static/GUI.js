@@ -161,6 +161,7 @@ function jacobisGUIstuff() {
         $(this).siblings(".folder").slideToggle("fast");
         var buttonColor = $(this).css("background-color");
         if (buttonColor.toString() === "rgb(62, 142, 65)") {
+
             $(this).css("background-color", "#4caf50"); // Light green
         } else {
             $(this).css("background-color", "#3e8e41"); // Dark green

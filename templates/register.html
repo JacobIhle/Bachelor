@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta http-equiv="Content-Security-Policy" content="default-src https:">
     <title>Register new user</title>
@@ -10,21 +11,34 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../static/style.css">
 </head>
+
 <body>
 <div class="login-form">
     <h2>Register new user</h2>
-    <form action="/register" method="post">
+    <form action="/register" method="post" data-toggle="validator" role="form">
         <div class="text-center">
             <img src="../static/images/avatar.gif" class="img-circle avatar" alt="Avatar">
         </div>
         <div class="form-group">
             <input class="form-control" placeholder="Username" required="required" name="username">
-            <input type="password" id="firstPassField" class="form-control" placeholder="Password" required="required" name="firstPassField">
+            <input type="password" id="firstPassField" class="form-control" placeholder="Password" required="required"
+                   name="firstPassField">
+            <input class="form-control" type="password" id="secondPassField" placeholder="Confirm Password"
+                   required="required" name="secondPassField">
+        </div>
+        <div class="form-group">
+            <p> Select user type</p>
+            <select class="form-control" name="userType">
+                <option>Admin</option>
+                <option selected>User</option>
+            </select>
         </div>
         <div class="form-group">
             <button type="submit" id="loginbutton" class="btn btn-primary btn-block">Register</button>
         </div>
+        <div class="{{ className }}"> {{ message }}</div>
     </form>
 </div>
 </body>
 </html>
+
