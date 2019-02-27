@@ -74,7 +74,7 @@ def BuildNested(paths):
 
 
 
-def BuildImageListHTML(dict, returnString):
+def BuildImageListHTML(dict, returnString, level):
     for key, value in dict.items():
         if type(value) is list:
             returnString.append("<div class='folder'>\n")
@@ -82,15 +82,20 @@ def BuildImageListHTML(dict, returnString):
             for image in value:
                 returnString.append("<button class='imageLinks' id="+image+">"+image+"</button>\n")
             returnString.append("</div>\n")
+        elif level is 0:
+            returnString.append("<div class='topFolders'>\n")
+            returnString.append("<button class='folderButtons'>" + key + "</button>\n")
+            BuildImageListHTML(value, returnString, level+1)
+            returnString.append("</div>\n")
         else:
             returnString.append("<div class='folder'>\n")
             returnString.append("<button class='folderButtons'>" + key + "</button>\n")
-            BuildImageListHTML(value, returnString)
+            BuildImageListHTML(value, returnString, level+1)
             returnString.append("</div>\n")
     return
 
 
 def GetImageListHTML(availableImages):
     returnString = []
-    BuildImageListHTML(availableImages, returnString)
+    BuildImageListHTML(availableImages, returnString, 0)
     return "".join(returnString)
