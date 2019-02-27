@@ -40,12 +40,11 @@ function addNonViewerHandlers() {
     });
 
     $(".imageLinks").on("click", function () {
-        var image = this.id;
-        console.log(image);
-        imageUrl = "http://152.94.1.69:5000/" + image;
+        var name = this.innerHTML;
+        imageUrl = "https://histology.ux.uis.no/app/" + name;
         open_slide(imageUrl);
         addViewerHandlers();
-        $("#filename").text(image);
+        $("#filename").text(name);
     })
 }
 
@@ -153,16 +152,9 @@ function jacobisGUIstuff() {
         $("#filename").text("H281-03");
     });
 
-    $(".imageList").click(function () {
+    $("#imageList").click(function () {
         $("#imageExplorer").toggle();
     });
-
-    $("#imageExplorer").click(function () {
-       var test = $(event.target);
-       console.log(test)
-    });
-
-
 
     $(".folderButtons").click(function () {
         event.stopPropagation();
@@ -173,7 +165,6 @@ function jacobisGUIstuff() {
         } else {
             $(this).css("background-color", "#3e8e41"); // Dark green
         }
-        console.log(buttonColor);
 
         $(this).siblings(".imageLinks").toggle();
     });
