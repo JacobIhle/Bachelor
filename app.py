@@ -85,7 +85,7 @@ def GetNumericTileCoordinatesFromString(tile):
 
 @app.errorhandler(500)
 def handle500(error):
-    return "SOMETHING BAD HAPPENED ON OUR END, SAWWIII", 500
+    return "SOMETHING BAD HAPPENED ON OUR END", 500
 
 def GenerateImageListHtml():
     global nestedImageList
