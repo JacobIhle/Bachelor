@@ -255,13 +255,15 @@ dd{
 /* Image list stuff*/
 #imageExplorer{
     position: absolute;
-    width: 20%;
+    width: 30%;
     height: calc(100% - 80px);
     z-index: 9;
     background-color: white;
+    display: block;
+    overflow-y: scroll;
 }
 
-.thomasesbutton{
+.folderButtons{
     position: relative;
     width: 100%;
     color: black;
@@ -269,47 +271,27 @@ dd{
     padding: 10px;
     border-bottom: 1px solid #424242;
     display: block;
+    margin: 0;
 }
 
-label{
+.folder{
+    display: none;
+}
+
+.imageLinks{
     position: relative;
-    width: 100%;
-    color: black;
-    background-color: #3e8e41;
-    padding: 10px 0 10px 0;
-    border-bottom: 1px solid #424242;
-    display: block;
+    height: 35px;
+    border-bottom: 1px solid black;
     text-align: center;
-}
-
-.fileListDiv {
     display: none;
-}
-
-.fileListDiv a{
-    display: block;
-}
-
-.fileListDiv button {
     width: 100%;
-    text-align: center;
-    float: left;
-    clear: left;
-    height: 25px;
-    font-size: 0.9em;
-    box-shadow: 0 0 1px 1px #BDBDBD;
 }
 
-#theList{
-    overflow-y: scroll;
-    height: 100%;
+.imageLinks:hover {
+    background-color: #BDBDBD;
 }
 
-.liTags{
-    display: none;
-}
-
-/* Login stuff */
+/* Login/register stuff */
 .login-form {
     width: 330px;
     margin: 30px auto;
@@ -347,4 +329,23 @@ label{
     font-size: 15px;
     font-weight: bold;
     border-radius: 2px;
+}
+
+.form-group input{
+    margin-bottom: 5px;
+}
+
+
+.warning {
+    color: red;
+    text-align: center;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.info {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0091EA;
 }

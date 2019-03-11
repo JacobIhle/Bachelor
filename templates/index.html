@@ -1,5 +1,6 @@
 <!doctype html>
 <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src https:">
     <meta charset="UTF-8">
     <title>Scan Viewer</title>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
@@ -12,62 +13,53 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
-        <header>
-            <ul id="headerList">
-                <li><div id="menu" class="dropdown">
-                        <button id="menuicon" class="material-icons menu">dehaze</button>
-                        <div class="dropdown-content">
-                            <a href="#" id="imageList">Image List</a>
-                            <a href="register">Register new User</a>
-                            <a href="" id="showLog">Show Log</a>
-                            <a href="logout" id="Logout">Log out</a>
-                        </div>
-                    </div>
-                    <li><button id="searchicon" class="material-icons search">search</button></li>
-                    <li><form>
-                        <input id="searchField" type="text" name="search" placeholder="Search">
-                    </form></li>
-                </li>
-                <li id="fileLi"><div id="filename"></div></li>
-                <li id="infoButton">INFO</li>
-            </ul>
-        </header>
+<header>
+    <ul id="headerList">
+        <li>
+            <div id="menu" class="dropdown">
+                <button id="menuicon" class="material-icons menu">dehaze</button>
+                <div class="dropdown-content">
+                    <a href="#" id="imageList">Image List</a>
+                    <a href="register">Register new User</a>
+                    <a href="" id="showLog">Show Log</a>
+                    <a href="logout" id="Logout">Log out</a>
+                </div>
+            </div>
+        <li>
+            <button id="searchicon" class="material-icons search">search</button>
+        </li>
+        <li>
+            <form>
+                <input id="searchField" type="text" name="search" placeholder="Search">
+            </form>
+        </li>
+        </li>
+        <li id="fileLi">
+            <div id="filename"></div>
+        </li>
+        <li id="infoButton">INFO</li>
+    </ul>
+</header>
 
         <div id="imageExplorer">
-            <ul id="theList">
-            {% for key, values in images.items() %}
-            <div class="label"><label>{{ key }}</label>
-                {% for folder, fileList in values.items() %}
-                    <li class="liTags">
-                        <div>
-                        <button class="thomasesbutton">{{ folder }}</button>
-                            <div class="fileListDiv">
-                                {% for file in fileList %}
-                                    {% set splitFilename = file.split(" ") %}
-                                    <button class="imageLinks" id="{{ key }}/{{ folder }}/{{ file }}">{{ splitFilename[0] }}</button>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </li>
-                {% endfor %}
-                </div>
-            {% endfor %}
-            </ul>
+            {{ imageList|safe }}
         </div>
 
-        <div id="display"></div>
-        <div id="infoField">
-            <dl id="infoFieldList">
-                <dt>InfoHeader</dt>
-                <dd>InfoText</dd>
-                <dt>InfoHeader</dt>
-                <dd>InfoText</dd>
-                <dt>InfoHeader</dt>
-                <dd>InfoText</dd>
-                <dt>InfoHeader</dt>
-                <dd>InfoText</dd>
-            </dl>
-        </div>
+<div id="display"></div>
+<div id="infoField">
+    <dl id="infoFieldList">
+        <dt>InfoHeader</dt>
+        <dd>InfoText</dd>
+        <dt>InfoHeader</dt>
+        <dd>InfoText</dd>
+        <dt>InfoHeader</dt>
+        <dd>InfoText</dd>
+        <dt>InfoHeader</dt>
+        <dd>InfoText</dd>
+    </dl>
+</div>
+
+
 
         
         <div id="footer">

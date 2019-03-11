@@ -3,13 +3,13 @@ var imageUrl;
 var overlay;
 var i = 0;
 
-$(document).ready(function() {
+$(document).ready(function () {
     addNonViewerHandlers();
     jacobisGUIstuff();
     initiallizeCanvas();
 });
 
-function initiallizeCanvas(){
+function initiallizeCanvas() {
 
     if (viewer) {
         // Never reuse an existing viewer to avoid a timer leak
@@ -40,12 +40,11 @@ function addNonViewerHandlers() {
     });
 
     $(".imageLinks").on("click", function () {
-        var image = this.id;
-	    console.log(image);
-        imageUrl = "http://152.94.1.69:5000/"+image;
+        var name = this.innerHTML;
+        imageUrl = "https://histology.ux.uis.no/app/" + name;
         open_slide(imageUrl);
         addViewerHandlers();
-        $("#filename").text(image);
+        $("#filename").text(name);
     })
 }
 
@@ -109,47 +108,47 @@ function addViewerHandlers() {
         console.log(posview);
         console.log(posviewport);
     });
-/*
-    viewer.addHandler("canvas-click", function (e) {
-        e.preventDefaultAction = true;
-        var pos1 = viewer.viewport.viewerElementToImageCoordinates(e.position);
-        var pos = viewer.viewport.imageToViewportCoordinates(pos1);
-        var rect = new fabric.Rect({
-          left: pos.x-0.5025,
-          top: pos.y-0.5025,
-          fill: 'blue',
-          width: 0.005,
-          height: 0.005
+    /*
+        viewer.addHandler("canvas-click", function (e) {
+            e.preventDefaultAction = true;
+            var pos1 = viewer.viewport.viewerElementToImageCoordinates(e.position);
+            var pos = viewer.viewport.imageToViewportCoordinates(pos1);
+            var rect = new fabric.Rect({
+              left: pos.x-0.5025,
+              top: pos.y-0.5025,
+              fill: 'blue',
+              width: 0.005,
+              height: 0.005
+            });
+            overlay.fabricCanvas().add(rect);
         });
-        overlay.fabricCanvas().add(rect);
-    });
-*/
+    */
 
 }
 
-function jacobisGUIstuff(){
-    $("#menuicon").hover(function(){
+function jacobisGUIstuff() {
+    $("#menuicon").hover(function () {
         $("#menuicon").css({"background-color": "#212121", "border-radius": "5px"});
-    }, function(){
+    }, function () {
         $("#menuicon").css({"background-color": "#424242", "border-radius": "5px"});
     });
 
-    $("a").hover(function(){
+    $("a").hover(function () {
         $("#menuicon").css({"background-color": "#212121", "border-radius": "5px"});
-    }, function(){
+    }, function () {
         $("#menuicon").css({"background-color": "#424242", "border-radius": "5px"});
     });
 
-    $("#infoButton").click(function(){
+    $("#infoButton").click(function () {
         var infoField = document.getElementById("infoField");
-        if (infoField.style.display == "block"){
+        if (infoField.style.display == "block") {
             infoField.style.display = "none"
         } else {
             infoField.style.display = "block"
         }
-      });
+    });
 
-    $("#H281").click(function(){
+    $("#H281").click(function () {
         $("#filename").text("H281-03");
     });
 
@@ -157,24 +156,17 @@ function jacobisGUIstuff(){
         $("#imageExplorer").toggle();
     });
 
-    $(".label").click(function () {
-        $(this).find(".liTags").slideToggle("fast");
-        console.log("hey")
-    });
-
-    $(".thomasesbutton").click(function () {
+    $(".folderButtons").click(function () {
         event.stopPropagation();
-        $(this).siblings(".fileListDiv").slideToggle("fast");
+        $(this).siblings(".folder").slideToggle("fast");
         var buttonColor = $(this).css("background-color");
-        if (buttonColor.toString() === "rgb(62, 142, 65)"){
-            $(this).css("background-color", "#53c758");
-        } else{
-            $(this).css("background-color", "#3e8e41")
+        if (buttonColor.toString() === "rgb(62, 142, 65)") {
+
+            $(this).css("background-color", "#4caf50"); // Light green
+        } else {
+            $(this).css("background-color", "#3e8e41"); // Dark green
         }
-        console.log(buttonColor.toString());
-});
 
+        $(this).siblings(".imageLinks").toggle();
+    });
 }
-
-
-
