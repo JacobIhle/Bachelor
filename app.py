@@ -110,9 +110,8 @@ def Login():
 
 
 @app.route("/register", methods=["GET", "POST"])
-#@login_required
+@login_required
 def Register():
-    ## DONT PUSH THIS TO GORINA BEFORE THE DATABASE IS UPDATED TO SUPPORT DIFFERENT TYPE OF USERS
     if str(current_user.type) != "Admin":
         abort(401)
     if request.method == "POST" and request.form["username"].lower() is not None:
@@ -129,7 +128,7 @@ def Register():
         newUser = User(registerUsername, firstPassField, userType)
         db.session.add(newUser)
         db.session.commit()
-        #logger.log(25, HelperClass.LogFormat() + current_user.username + " registered a new user: " + registerUsername)
+        logger.log(25, HelperClass.LogFormat() + current_user.username + " registered a new user: " + registerUsername)
         return redirect("/")
 
     return render_template("register.html")
