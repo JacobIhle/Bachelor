@@ -8,6 +8,7 @@ import customLogger
 import openslide
 import HelperClass
 import imageList
+from collections import deque
 
 nestedImageList = {}
 imagePathLookupTable = {}
@@ -178,6 +179,34 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+class OurDataStructure():
+    dictionary = {}
+    doubleSidedQueue = deque()
+    counter = 0
+
+    def append(self, key, deepZoomGen):
+
+        try:
+            if self.counter >= 1000:
+                oldestKey = self.doubleSidedQueue.pop()
+                self.doubleSidedQueue.appendleft(key)
+
+                self.dictionary[key] = deepZoomGen
+                self.dictionary.pop(oldestKey, None)
+            else:
+                self.doubleSidedQueue.appendleft(key)
+                self.dictionary[key] = deepZoomGen
+                self.counter += 1
+            return True
+        except:
+            return False
+
+    def get(self, key):
+        try:
+            return self.dictionary[key]
+        except:
+            return None
 
 
 if __name__ == '__main__':
