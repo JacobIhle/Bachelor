@@ -36,7 +36,6 @@ login_manager.init_app(app)
 def Main():
     ImageListHTML = GenerateImageListHtml()
     GetAvailableImages()
-    session["ID"] = binascii.hexlify(os.urandom(20))
     return render_template("index.html", imageList=ImageListHTML)
 
 
@@ -48,6 +47,7 @@ def LoadControlImages(filename):
 @app.route('/app/<filename>')
 def changeImage(filename):
     global imagePathLookupTable
+    session["ID"] = binascii.hexlify(os.urandom(20))
     path = "//home/prosjekt"+imagePathLookupTable[filename]
     print(path)
     image = openslide.OpenSlide(path)
