@@ -1,6 +1,6 @@
 # LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from flask import Flask, send_file, render_template, redirect, request, abort
+from flask import Flask, send_file, render_template, redirect, request, abort, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from openslide.deepzoom import DeepZoomGenerator
 from flask_sqlalchemy import SQLAlchemy
@@ -8,12 +8,14 @@ import customLogger
 import openslide
 import HelperClass
 import imageList
+import binascii
+import os
+from QueueDictClass import OurDataStructure
 
 nestedImageList = {}
 imagePathLookupTable = {}
 
-image = None
-deepZoomGen = None
+deepZoomList = OurDataStructure()
 
 dateTime = customLogger.DateTime()
 logger = customLogger.StartLogging()
@@ -34,6 +36,7 @@ login_manager.init_app(app)
 def Main():
     ImageListHTML = GenerateImageListHtml()
     GetAvailableImages()
+    session["ID"] = binascii.hexlify(os.urandom(20))
     return render_template("index.html", imageList=ImageListHTML)
 
 
@@ -44,18 +47,20 @@ def LoadControlImages(filename):
 
 @app.route('/app/<filename>')
 def changeImage(filename):
-    global image; global deepZoomGen; global imagePathLookupTable
+    global imagePathLookupTable
     path = "//home/prosjekt"+imagePathLookupTable[filename]
     print(path)
     image = openslide.OpenSlide(path)
     logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
+    deepZoomList.append(session["ID"], deepZoomGen)
     return deepZoomGen.get_dzi("jpeg")
   
   
 @app.route('/app/<dummy>/<level>/<tile>')
 def GetTile(dummy, level, tile):
     col, row = GetNumericTileCoordinatesFromString(tile)
+    deepZoomGen = deepZoomList.get(session["ID"])
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
     return HelperClass.serve_pil_image(img)
 
