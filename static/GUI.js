@@ -41,7 +41,7 @@ function addNonViewerHandlers() {
 
     $(".imageLinks").on("click", function () {
         var id = this.id;
-        var name = id.replace("{space}", " ");
+        var name = id.replace(new RegExp("{space}", "g"), " ");
         imageUrl = "https://histology.ux.uis.no/app/" + name;
         open_slide(imageUrl);
         addViewerHandlers();
