@@ -40,8 +40,8 @@ function addNonViewerHandlers() {
     });
 
     $(".imageLinks").on("click", function () {
-        var name = this.id;
-        name = name.replace("{space}", " ");
+        var id = this.id;
+        var name = id.replace("{space}", " ");
         imageUrl = "https://histology.ux.uis.no/app/" + name;
         open_slide(imageUrl);
         addViewerHandlers();
