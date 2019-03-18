@@ -45,7 +45,7 @@ function addNonViewerHandlers() {
         imageUrl = "https://histology.ux.uis.no/app/" + name;
         open_slide(imageUrl);
         addViewerHandlers();
-        $("#filename").text(name);
+        $("#filename").text(name.split("/")[1]);
     })
 }
 
