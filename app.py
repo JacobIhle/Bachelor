@@ -44,11 +44,11 @@ def LoadControlImages(filename):
     return send_file("static/images/" + filename)
 
 
-@app.route('/app/<filename>')
-def changeImage(filename):
+@app.route('/app/<folder>/<filename>')
+def changeImage(folder, filename):
     global imagePathLookupTable
     session["ID"] = binascii.hexlify(os.urandom(20))
-    path = "//home/prosjekt"+imagePathLookupTable[filename]
+    path = "//home/prosjekt"+imagePathLookupTable[folder+"/"+filename]
     print(path)
     image = openslide.OpenSlide(path)
     logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)
@@ -57,8 +57,8 @@ def changeImage(filename):
     return deepZoomGen.get_dzi("jpeg")
   
   
-@app.route('/app/<dummy>/<level>/<tile>')
-def GetTile(dummy, level, tile):
+@app.route('/app/<dummy>/<dummy2>/<level>/<tile>')
+def GetTile(dummy, dummy2, level, tile):
     col, row = GetNumericTileCoordinatesFromString(tile)
     deepZoomGen = deepZoomList.get(session["ID"])
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))

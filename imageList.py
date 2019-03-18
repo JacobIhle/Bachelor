@@ -40,7 +40,9 @@ def imageListToDict(list):
     result = {}
     for element in list:
         image = element.split("/")[-1]
-        result[image] = element
+        head = element.split("/")[-2]
+        key = head+"/"+image
+        result[key] = element
     return result
 
 
@@ -80,7 +82,7 @@ def BuildImageListHTML(dict, returnString, level):
             returnString.append("<div class='folder'>\n")
             returnString.append("<button class='folderButtons'>"+key+"</button>\n")
             for image in value:
-                returnString.append("<button class='imageLinks' id="+image+">"+image+"</button>\n")
+                returnString.append("<button class='imageLinks' id="+image+">"+key+"/"+image+"</button>\n")
             returnString.append("</div>\n")
         elif level is 0:
             returnString.append("<div class='topFolders'>\n")

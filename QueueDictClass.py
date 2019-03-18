@@ -7,7 +7,7 @@ class OurDataStructure:
 
     def append(self, key, deepZoomGen):
         try:
-            if self.counter >= 10:
+            if self.counter >= 1000:
                 oldestKey = self.doubleSidedQueue.pop()
                 self.doubleSidedQueue.appendleft(key)
 
