@@ -9,6 +9,7 @@ import openslide
 import HelperClass
 import imageList
 import binascii
+import sys
 import os
 from QueueDictClass import OurDataStructure
 
@@ -54,6 +55,7 @@ def changeImage(folder, filename):
     logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     deepZoomList.append(session["ID"], deepZoomGen)
+    print(sys.getsizeof(deepZoomList))
     return deepZoomGen.get_dzi("jpeg")
   
   
