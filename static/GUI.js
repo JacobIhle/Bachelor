@@ -48,8 +48,8 @@ function addNonViewerHandlers() {
             fetch("https://histology.ux.uis.no/authenticated")
                 .then(function (response) {
                     if (response.status === 401){
-                        window.location.reload();
-                        $("#loginMessage").text("You have been logged out for inactivity");
+                        window.location.reload(true);
+                        alert("You have been logged out for inactivity")
                     }
                 });
 
@@ -58,8 +58,8 @@ function addNonViewerHandlers() {
             fetch("https://histology.ux.uis.no/authenticated")
                 .then(function (response) {
                     if (response.status === 401){
-                        window.location.reload();
-                        $("#loginMessage").text("You have been logged out for inactivity");
+                        window.location.reload(true);
+                        alert("You have been logged out for inactivity")
                     }
                 });
         });
