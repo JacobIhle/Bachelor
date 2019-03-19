@@ -51,19 +51,23 @@ function addNonViewerHandlers() {
 
 function open_slide(url) {
 
-    viewer.open(url);
+    if (viewer.open(url)){
+        viewer.scalebar({
+            stayInsideImage: false,
+            backgroundColor: "#616161",
+            fontColor: "white",
+            color: "#212121",
 
-    viewer.scalebar({
-        stayInsideImage: false,
-        backgroundColor: "#616161",
-        fontColor: "white",
-        color: "#212121",
+            xOffset: 45,
+            yOffset: 15,
+            maxWidth: 0.18,
+            pixelsPerMeter: 4000000
+        });
+    }else{
+        console.log("YOU CAN USE THIS BUGGER")
+    }
 
-        xOffset: 45,
-        yOffset: 15,
-        maxWidth: 0.18,
-        pixelsPerMeter: 4000000
-    });
+
 }
 
 function addViewerHandlers() {

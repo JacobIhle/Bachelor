@@ -16359,7 +16359,6 @@ ImageJob.prototype = {
                 headers: this.ajaxHeaders,
                 responseType: "arraybuffer",
                 success: function(request) {
-                    console.log(request.response);
                     var blb;
                     // Make the raw data into a blob.
                     // BlobBuilder fallback adapted from
@@ -16379,10 +16378,6 @@ ImageJob.prototype = {
                             blb = bb.getBlob();
                         }
                     }
-                    if (request.response === "please login"){
-                        window.location.href = "/login";
-                        self.finish(true);
-                    }
                     // If the blob is empty for some reason consider the image load a failure.
                     if (blb.size === 0) {
                         self.errorMsg = "Empty image response.";
@@ -16397,11 +16392,7 @@ ImageJob.prototype = {
                     self.errorMsg = "Image load aborted - XHR error";
                     self.finish(false);
                 }
-            }).done(function () {
-                    if (request.response === "please login"){
-                        window.location.href = "/login";
-                    };
-                });
+            });
 
             // Provide a function to properly abort the request.
             this.abort = function() {
