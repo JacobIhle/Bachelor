@@ -30,7 +30,6 @@ db.create_all()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = '/login'
 
 
 @app.route('/')
@@ -47,8 +46,10 @@ def LoadControlImages(filename):
 
 
 @app.route('/app/<folder>/<filename>')
-@login_required
 def changeImage(folder, filename):
+    if not current_user.is_authenticated:
+        return redirect('/login')
+
     global imagePathLookupTable
     session["ID"] = binascii.hexlify(os.urandom(20))
     path = "//home/prosjekt"+imagePathLookupTable[folder+"/"+filename]
@@ -62,8 +63,10 @@ def changeImage(folder, filename):
   
   
 @app.route('/app/<dummy>/<dummy2>/<level>/<tile>')
-@login_required
 def GetTile(dummy, dummy2, level, tile):
+    if not current_user.is_authenticated:
+        return redirect('/login')
+
     col, row = GetNumericTileCoordinatesFromString(tile)
     deepZoomGen = deepZoomList.get(session["ID"])
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
@@ -157,8 +160,7 @@ def Logout():
     return render_template("login.html", className="info", message="Logged out")
 
 
-# Redirects users to login screen if they are not logged in.
-#@login_manager.unauthorized_handler
+@login_manager.unauthorized_handler
 def CatchNotLoggedIn():
     return redirect("/login")
 
