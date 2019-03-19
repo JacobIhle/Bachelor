@@ -1,6 +1,6 @@
 # LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from flask import Flask, send_file, render_template, redirect, request, abort, session, url_for
+from flask import Flask, send_file, render_template, redirect, request, abort, session, url_for, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from openslide.deepzoom import DeepZoomGenerator
 from flask_sqlalchemy import SQLAlchemy
@@ -46,27 +46,21 @@ def LoadControlImages(filename):
 
 
 @app.route('/app/<folder>/<filename>')
+@login_required
 def changeImage(folder, filename):
-    if not current_user.is_authenticated:
-        return "please login"
-
     global imagePathLookupTable
     session["ID"] = binascii.hexlify(os.urandom(20))
     path = "//home/prosjekt"+imagePathLookupTable[folder+"/"+filename]
-    print(path)
     image = openslide.OpenSlide(path)
     logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     deepZoomList.append(session["ID"], deepZoomGen)
-    print(sys.getsizeof(deepZoomList))
     return deepZoomGen.get_dzi("jpeg")
   
   
 @app.route('/app/<dummy>/<dummy2>/<level>/<tile>')
+@login_required
 def GetTile(dummy, dummy2, level, tile):
-    if not current_user.is_authenticated:
-        return redirect(url_for("Login"))
-
     col, row = GetNumericTileCoordinatesFromString(tile)
     deepZoomGen = deepZoomList.get(session["ID"])
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
@@ -88,6 +82,12 @@ def GetAvailableImages():
 @app.route('/favicon.ico')
 def favicon():
     return send_file("static/images/favicon.ico", mimetype="image/jpeg")
+
+
+@app.route('/authenticated')
+def isAuthenticated():
+    if not current_user.is_authenticated:
+        return "", 401
 
 
 def GetNumericTileCoordinatesFromString(tile):

@@ -45,9 +45,23 @@ function addNonViewerHandlers() {
         imageUrl = "https://histology.ux.uis.no/app/" + name;
 
         viewer.addHandler("open-failed", function () {
-            console.log("JACKPOT");
+            $.fetch("https://histology.ux.uis.no/authenticated")
+                .then(function (response) {
+                    if (response.status === 401){
+                        window.location.reload();
+                    }
+                });
+
         });
-        
+        viewer.addHandler("tile-load-failed", function () {
+            $.fetch("https://histology.ux.uis.no/authenticated")
+                .then(function (response) {
+                    if (response.status === 401){
+                        window.location.reload();
+                    }
+                });
+        });
+
         open_slide(imageUrl);
         addViewerHandlers();
         $("#filename").text(name.split("/")[1]);
