@@ -30,6 +30,7 @@ db.create_all()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = '/login'
 
 
 @app.route('/')
@@ -148,7 +149,7 @@ def user_login(Username):
     return User.query.get(Username)
 
 
-@app.route("/logout")
+@app.route("/login")
 @login_required
 def Logout():
     logger.log(25, HelperClass.LogFormat() + current_user.username + " logged out")
@@ -157,7 +158,7 @@ def Logout():
 
 
 # Redirects users to login screen if they are not logged in.
-@login_manager.unauthorized_handler
+#@login_manager.unauthorized_handler
 def CatchNotLoggedIn():
     return redirect("/login")
 
