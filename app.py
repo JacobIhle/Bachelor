@@ -65,7 +65,7 @@ def changeImage(folder, filename):
 @app.route('/app/<dummy>/<dummy2>/<level>/<tile>')
 def GetTile(dummy, dummy2, level, tile):
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return render_template("login.html")
 
     col, row = GetNumericTileCoordinatesFromString(tile)
     deepZoomGen = deepZoomList.get(session["ID"])
