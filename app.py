@@ -46,6 +46,7 @@ def LoadControlImages(filename):
 
 
 @app.route('/app/<folder>/<filename>')
+@login_required
 def changeImage(folder, filename):
     global imagePathLookupTable
     session["ID"] = binascii.hexlify(os.urandom(20))
@@ -60,6 +61,7 @@ def changeImage(folder, filename):
   
   
 @app.route('/app/<dummy>/<dummy2>/<level>/<tile>')
+@login_required
 def GetTile(dummy, dummy2, level, tile):
     col, row = GetNumericTileCoordinatesFromString(tile)
     deepZoomGen = deepZoomList.get(session["ID"])
