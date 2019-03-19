@@ -43,6 +43,11 @@ function addNonViewerHandlers() {
         var id = this.id;
         var name = id.replace(new RegExp("{space}", "g"), " ");
         imageUrl = "https://histology.ux.uis.no/app/" + name;
+
+        viewer.addHandler("open-failed", function () {
+            console.log("JACKPOT");
+        });
+        
         open_slide(imageUrl);
         addViewerHandlers();
         $("#filename").text(name.split("/")[1]);
@@ -51,23 +56,19 @@ function addNonViewerHandlers() {
 
 function open_slide(url) {
 
-    if (viewer.open(url)){
-        viewer.scalebar({
-            stayInsideImage: false,
-            backgroundColor: "#616161",
-            fontColor: "white",
-            color: "#212121",
+    viewer.open(url);
 
-            xOffset: 45,
-            yOffset: 15,
-            maxWidth: 0.18,
-            pixelsPerMeter: 4000000
-        });
-    }else{
-        console.log("YOU CAN USE THIS BUGGER")
-    }
+    viewer.scalebar({
+        stayInsideImage: false,
+        backgroundColor: "#616161",
+        fontColor: "white",
+        color: "#212121",
 
-
+        xOffset: 45,
+        yOffset: 15,
+        maxWidth: 0.18,
+        pixelsPerMeter: 4000000
+    });
 }
 
 function addViewerHandlers() {
