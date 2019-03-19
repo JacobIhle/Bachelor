@@ -49,6 +49,7 @@ function addNonViewerHandlers() {
                 .then(function (response) {
                     if (response.status === 401){
                         window.location.reload();
+                        $("#loginMessage").text("You have been logged out for inactivity");
                     }
                 });
 
@@ -58,6 +59,7 @@ function addNonViewerHandlers() {
                 .then(function (response) {
                     if (response.status === 401){
                         window.location.reload();
+                        $("#loginMessage").text("You have been logged out for inactivity");
                     }
                 });
         });
