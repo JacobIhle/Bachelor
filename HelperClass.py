@@ -43,5 +43,5 @@ def ConfigureApp(app):
     app.config["SECRET_KEY"] = ReadSecretKeyFromFile()
     app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://%s:%s@mysql2.ux.uis.no/dbthomaso" % (dbUser, dbPassword)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.permanent_session_lifetime = timedelta(minutes=1)
+    app.permanent_session_lifetime = timedelta(seconds=15)
 

@@ -48,7 +48,7 @@ def LoadControlImages(filename):
 @app.route('/app/<folder>/<filename>')
 def changeImage(folder, filename):
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return render_template("login.html")
 
     global imagePathLookupTable
     session["ID"] = binascii.hexlify(os.urandom(20))
