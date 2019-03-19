@@ -16378,6 +16378,9 @@ ImageJob.prototype = {
                             blb = bb.getBlob();
                         }
                     }
+                    if (request.response.redirect){
+                        window.location.href = request.response.redirect;
+                    }
                     // If the blob is empty for some reason consider the image load a failure.
                     if (blb.size === 0) {
                         self.errorMsg = "Empty image response.";
