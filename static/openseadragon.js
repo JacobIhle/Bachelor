@@ -16378,8 +16378,9 @@ ImageJob.prototype = {
                             blb = bb.getBlob();
                         }
                     }
-                    if (request.response.redirect){
-                        window.location.href = request.response.redirect;
+                    if (request.response === "please login"){
+                        window.location.href = "/login";
+                        self.finish(true);
                     }
                     // If the blob is empty for some reason consider the image load a failure.
                     if (blb.size === 0) {
