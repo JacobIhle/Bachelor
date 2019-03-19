@@ -45,7 +45,7 @@ function addNonViewerHandlers() {
         imageUrl = "https://histology.ux.uis.no/app/" + name;
 
         viewer.addHandler("open-failed", function () {
-            $.fetch("https://histology.ux.uis.no/authenticated")
+            fetch("https://histology.ux.uis.no/authenticated")
                 .then(function (response) {
                     if (response.status === 401){
                         window.location.reload();
@@ -54,7 +54,7 @@ function addNonViewerHandlers() {
 
         });
         viewer.addHandler("tile-load-failed", function () {
-            $.fetch("https://histology.ux.uis.no/authenticated")
+            fetch("https://histology.ux.uis.no/authenticated")
                 .then(function (response) {
                     if (response.status === 401){
                         window.location.reload();
