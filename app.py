@@ -1,6 +1,6 @@
 # LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from flask import Flask, send_file, render_template, redirect, request, abort, session
+from flask import Flask, send_file, render_template, redirect, request, abort, session, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from openslide.deepzoom import DeepZoomGenerator
 from flask_sqlalchemy import SQLAlchemy
@@ -48,7 +48,7 @@ def LoadControlImages(filename):
 @app.route('/app/<folder>/<filename>')
 def changeImage(folder, filename):
     if not current_user.is_authenticated:
-        return render_template("login.html")
+        return redirect(url_for("Login"))
 
     global imagePathLookupTable
     session["ID"] = binascii.hexlify(os.urandom(20))
