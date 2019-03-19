@@ -2,6 +2,7 @@ var viewer;
 var imageUrl;
 var overlay;
 var i = 0;
+var aborts = 0;
 
 $(document).ready(function () {
     addNonViewerHandlers();
@@ -35,8 +36,8 @@ function initiallizeCanvas() {
 function addNonViewerHandlers() {
     $("#H281").on("click", function () {
         imageUrl = "scnImages/H281.scn";
-        open_slide(imageUrl);
         addViewerHandlers();
+        open_slide(imageUrl);
     });
 
     $(".imageLinks").on("click", function () {
@@ -44,25 +45,6 @@ function addNonViewerHandlers() {
         var name = id.replace(new RegExp("{space}", "g"), " ");
         imageUrl = "https://histology.ux.uis.no/app/" + name;
 
-        viewer.addHandler("open-failed", function () {
-            fetch("https://histology.ux.uis.no/authenticated")
-                .then(function (response) {
-                    if (response.status === 401){
-                        window.location.reload(true);
-                        alert("You have been logged out for inactivity")
-                    }
-                });
-
-        });
-        viewer.addHandler("tile-load-failed", function () {
-            fetch("https://histology.ux.uis.no/authenticated")
-                .then(function (response) {
-                    if (response.status === 401){
-                        window.location.reload(true);
-                        alert("You have been logged out for inactivity")
-                    }
-                });
-        });
 
         open_slide(imageUrl);
         addViewerHandlers();
@@ -129,6 +111,33 @@ function addViewerHandlers() {
         console.log(pos);
         console.log(posview);
         console.log(posviewport);
+    });
+
+    viewer.addHandler("open-failed", function () {
+        fetch("https://histology.ux.uis.no/authenticated")
+            .then(function (response) {
+                if (response.status === 401) {
+                    window.location.reload(true);
+                    if(aborts === 0){
+                        alert("You have been logged out for inactivity");
+                        aborts++;
+                    }
+
+                }
+            });
+    });
+
+    viewer.addHandler("tile-load-failed", function () {
+        fetch("https://histology.ux.uis.no/authenticated")
+            .then(function (response) {
+                if (response.status === 401) {
+                    window.location.reload(true);
+                    if(aborts === 0){
+                        alert("You have been logged out for inactivity");
+                        aborts++;
+                    }
+                }
+            });
     });
     /*
         viewer.addHandler("canvas-click", function (e) {
