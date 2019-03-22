@@ -152,7 +152,7 @@ def user_login(Username):
     return User.query.get(Username)
 
 
-@app.route("/login")
+@app.route("/logout")
 @login_required
 def Logout():
     logger.log(25, HelperClass.LogFormat() + current_user.username + " logged out")
