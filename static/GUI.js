@@ -31,16 +31,7 @@ function initiallizeCanvas() {
     });
 
     //overlay = viewer.fabricjsOverlay({scale: 1});
-    canvasOverlay = viewer.canvasOverlay({
-        onRedraw:function(){
-            console.log("redraw");
-            canvasOverlay.context2d().fillStyle = "red";
-            canvasOverlay.context2d().fillRect(0, 0, 200, 200);
-            canvasOverlay.context2d().fillRect(400, 500, 200, 200);
-            canvasOverlay.context2d().fillRect(250, 400, 200, 200);
-        },
-        clearBeforeRedraw:true
-    });
+
 }
 
 
@@ -77,6 +68,17 @@ function open_slide(url) {
         yOffset: 15,
         maxWidth: 0.18,
         pixelsPerMeter: 4000000
+    });
+
+    canvasOverlay = viewer.canvasOverlay({
+        onRedraw:function(){
+            console.log("redraw");
+            canvasOverlay.context2d().fillStyle = "red";
+            canvasOverlay.context2d().fillRect(0, 0, 200, 200);
+            canvasOverlay.context2d().fillRect(400, 500, 200, 200);
+            canvasOverlay.context2d().fillRect(250, 400, 200, 200);
+        },
+        clearBeforeRedraw:true
     });
 }
 
