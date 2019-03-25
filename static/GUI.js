@@ -173,6 +173,9 @@ function addViewerHandlers() {
         canvasOverlay.context2d().fillRect(pos.x-0.5025, pos.y-0.5025, 10, 10);
 
     });
+    viewer.addHandler("animation-finish", function () {
+        canvasOverlay.resize();
+    });
 
 }
 
