@@ -31,7 +31,13 @@ function initiallizeCanvas() {
     });
 
     overlay = viewer.fabricjsOverlay({scale: 1});
-    canvasOverlay = viewer.canvasOverlay();
+    canvasOverlay = viewer.canvasOverlay({
+        onRedraw:function() {
+            overlay.context2d().fillStyle = "red";
+            overlay.context2d().fillRect(0, 0, 500, 500);
+        },
+        clearBeforeRedraw:true
+    });
 }
 
 
