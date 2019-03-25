@@ -73,7 +73,7 @@ function open_slide(url) {
     overlay = viewer.canvasOverlay({
         onRedraw:function(){
             console.log("redraw");
-            overlay.context2d().clearRect(0, 0, overlay.canvas().width, overlay.canvas().height);
+            overlay.context2d().clearRect(0, 0, overlay.context2d().canvas.width, overlay.context2d().canvas.height);
             overlay.context2d().fillStyle = "red";
             if(canvasObjects.length > 1) {
                 for(var i=0; i<canvasObjects.length; i++){
