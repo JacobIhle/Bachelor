@@ -70,10 +70,10 @@ function open_slide(url) {
     });
 
     overlay = viewer.canvasOverlay({
-        onDraw:function(){
+        onRedraw:function(){
             console.log("redraw");
             overlay.context2d().fillStyle = "red";
-            overlay.context2d().fillRect(250, 250, 200, 200);
+            overlay.context2d().fillRect(0, 0, 600, 600);
         }
     });
     $(window).resize(function() {
