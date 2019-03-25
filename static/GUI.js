@@ -74,7 +74,7 @@ function open_slide(url) {
         onRedraw:function(){
             console.log("redraw");
             overlay.canvas().width = overlay.canvas().width;
-            overlay.context2d().fillStyle = "red";
+            overlay.context2d().strokeStyle = "red";
             if(canvasObjects.length > 1) {
                 for(var i=0; i<canvasObjects.length; i++){
                     if(i === 0){
