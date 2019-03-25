@@ -196,7 +196,7 @@ function addViewerHandlers() {
         canvasObjects.push({x:pos.x, y:pos.y});
 
         if(canvasObjects.length > 1) {
-            overlay.context2d().lineTo(canvasObjects[last].x, canvasObjects[last].y);
+            overlay.context2d().lineTo(canvasObjects[last+1].x, canvasObjects[last+1].y);
             overlay.context2d().stroke();
             overlay.context2d().closePath();
         }
