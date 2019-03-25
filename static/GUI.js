@@ -154,12 +154,15 @@ function addViewerHandlers() {
             overlay.fabricCanvas().add(rect);
         });
     */
-    viewer.addHandler('update-viewport', function() {
+    viewer.addHandler('canvas-click', function(e) {
+    e.preventDefaultAction = true;
+    var pos1 = viewer.viewport.viewerElementToImageCoordinates(e.position);
+    var pos = viewer.viewport.imageToViewportCoordinates(pos1);
     var canvas = viewer.drawer.canvas;
     var ctx = viewer.drawer.context;
     ctx.strokeStyle = 'red';
     ctx.lineWidth = 10;
-    ctx.strokeRect(2,2, canvas.width-4, canvas.height-4);
+    ctx.strokeRect(pos.x-0.5025,pos.y-0.05025, 0.005, 0.005);
 
 });
 
