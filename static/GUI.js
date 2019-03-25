@@ -75,16 +75,16 @@ function open_slide(url) {
             console.log("redraw");
             overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
             if(canvasObjects.length > 1) {
+                overlay.context2d().beginPath();
                 for(var i=0; i<canvasObjects.length; i++){
                     if(i === 0){
-
+                        overlay.context2d().moveTo(canvasObjects[i].x, canvasObjects[i].y);
                     }else if(i === canvasObjects.length-1){
-                        
-
-                    }else{
-                        overlay.context2d().moveTo(canvasObjects[i-1].x, canvasObjects[i-1].y);
                         overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
                         overlay.context2d().stroke();
+                        overlay.context2d().closePath();
+                    }else{
+                        overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
                     }
                 }
             }
