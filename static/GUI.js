@@ -73,9 +73,7 @@ function open_slide(url) {
         onRedraw:function(){
             console.log("redraw");
             overlay.context2d().fillStyle = "red";
-            overlay.context2d().fillRect(0, 0, 200, 200);
-            overlay.context2d().fillRect(400, 500, 200, 200);
-            overlay.context2d().fillRect(250, 400, 200, 200);
+            overlay.context2d().fillRect(250, 250, 200, 200);
         }
     });
     $(window).resize(function() {
