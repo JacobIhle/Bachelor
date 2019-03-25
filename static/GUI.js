@@ -191,6 +191,7 @@ function addViewerHandlers() {
         var last = canvasObjects.length-1;
 
         if (canvasObjects.length > 1) {
+            overlay.context2d().beginPath();
             overlay.context2d().moveTo(canvasObjects[last].x, canvasObjects[last].y);
         }
         canvasObjects.push({x:pos.x, y:pos.y});
