@@ -30,7 +30,7 @@ function initiallizeCanvas() {
         showNavigator: true,
     });
 
-    overlay = viewer.fabricjsOverlay({scale: 1});
+    //overlay = viewer.fabricjsOverlay({scale: 1});
     canvasOverlay = viewer.canvasOverlay({
         onRedraw:function() {
             overlay.context2d().fillStyle = "red";
@@ -104,14 +104,14 @@ function addViewerHandlers() {
         viewer.viewport.zoomTo(0.6);
     });
 
-    viewer.addHandler("animation-start", function () {
+    /*viewer.addHandler("animation-start", function () {
         overlay._canvasdiv.style.opacity = "0";
     });
 
     viewer.addHandler("animation-finish", function () {
         overlay._canvasdiv.style.opacity = "1";
     });
-
+    */
     viewer.addHandler("canvas-click", function (e) {
         var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
         var posview = viewer.viewport.imageToWindowCoordinates(pos);

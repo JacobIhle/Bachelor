@@ -2,10 +2,8 @@
 
 (function() {
 
-    $ = OpenSeadragon;
-
     // ----------
-    $.Viewer.prototype.canvasOverlay = function(options) {
+    OpenSeadragon.Viewer.prototype.canvasOverlay = function(options) {
 
         if (this._canvasOverlayInfo) {
             return this._canvasOverlayInfo;
