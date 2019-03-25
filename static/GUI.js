@@ -154,6 +154,14 @@ function addViewerHandlers() {
             overlay.fabricCanvas().add(rect);
         });
     */
+    viewer.addHandler('update-viewport', function() {
+    var canvas = viewer.drawer.canvas;
+    var ctx = viewer.drawer.context;
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 10;
+    ctx.strokeRect(2,2, canvas.width-4, canvas.height-4);
+
+});
 
 }
 
