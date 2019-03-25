@@ -166,8 +166,8 @@ function addViewerHandlers() {
     */
     viewer.addHandler('canvas-click', function(e) {
         e.preventDefaultAction = true;
-        var pos1 = viewer.viewport.viewerElementToImageCoordinates(e.position);
-        var pos = viewer.viewport.imageToViewportCoordinates(pos1);
+        var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
+        
 
         canvasOverlay.context2d().fillStyle = "red";
         canvasOverlay.context2d().fillRect(pos.x-0.5025, pos.y-0.5025, 10, 10);
