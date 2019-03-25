@@ -30,14 +30,7 @@ function initiallizeCanvas() {
     });
 
     //overlay = viewer.fabricjsOverlay({scale: 1});
-    overlay = viewer.canvasOverlay({
-        onRedraw:function(){
-            console.log("redraw");
-            overlay.context2d().fillStyle = "red";
-            overlay.context2d().fillRect(70000, 140000, 6000, 6000);
-        },
-        clearBeforeRedraw:false
-    });
+
 }
 
 
@@ -74,6 +67,15 @@ function open_slide(url) {
         yOffset: 15,
         maxWidth: 0.18,
         pixelsPerMeter: 4000000
+    });
+
+    overlay = viewer.canvasOverlay({
+        onRedraw:function(){
+            console.log("redraw");
+            overlay.context2d().fillStyle = "red";
+            overlay.context2d().fillRect(70000, 140000, 3000, 3000);
+        },
+        clearBeforeRedraw:false
     });
 
     $(window).resize(function() {
