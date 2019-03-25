@@ -177,6 +177,7 @@ function addViewerHandlers() {
         e.preventDefaultAction = true;
         var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
         canvasObjects.push({x:pos.x, y:pos.y, w:2000, h:2000});
+        overlay.context2d().fillRect(pos.x, pos.y, 2000, 2000);
 
     });
 
