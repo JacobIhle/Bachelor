@@ -193,7 +193,7 @@ function addViewerHandlers() {
 
         if (canvasObjects.length > 1) {
             overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
-            overlay.context2d().lineWidth = 1/viewer.viewport.getZoom(true);
+            overlay.context2d().lineWidth = 2/viewer.viewport.getZoom(true);
             overlay.context2d().beginPath();
             overlay.context2d().moveTo(canvasObjects[last].viewportX, canvasObjects[last].viewportY);
         }
