@@ -34,7 +34,7 @@ function initiallizeCanvas() {
         onRedraw:function(){
             console.log("redraw");
             overlay.context2d().fillStyle = "red";
-            overlay.context2d().fillRect(0, 200, 600, 600);
+            overlay.context2d().fillRect(0, 20000, 600, 600);
         },
         clearBeforeRedraw:false
     });
@@ -120,6 +120,7 @@ function addViewerHandlers() {
         var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
         var posview = viewer.viewport.imageToWindowCoordinates(pos);
         var posviewport = viewer.viewport.imageToViewportCoordinates(pos);
+        console.log(e.position);
         console.log(pos);
         console.log(posview);
         console.log(posviewport);
