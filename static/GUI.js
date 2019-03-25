@@ -154,17 +154,14 @@ function addViewerHandlers() {
             overlay.fabricCanvas().add(rect);
         });
     */
-    viewer.addHandler('update-viewport', function(e) {
-    e.preventDefaultAction = true;
-    var pos1 = viewer.viewport.viewerElementToImageCoordinates(e.position);
-    var pos = viewer.viewport.imageToViewportCoordinates(pos1);
-    var canvas = viewer.drawer.canvas;
-    var ctx = viewer.drawer.context;
-    ctx.strokeStyle = 'red';
-    ctx.lineWidth = 10;
-    ctx.strokeRect(20,20, 150, 100);
+    viewer.addHandler('update-viewport', function() {
+        var canvas = viewer.drawer.canvas;
+        var ctx = viewer.drawer.context;
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 10;
+        ctx.strokeRect(20,20, 150, 100);
 
-});
+    });
 
 }
 
