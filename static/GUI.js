@@ -3,6 +3,7 @@ var imageUrl;
 var overlay;
 var i = 0;
 var aborts = 0;
+var canvasObjects;
 
 $(document).ready(function () {
     addNonViewerHandlers();
@@ -68,14 +69,16 @@ function open_slide(url) {
         maxWidth: 0.18,
         pixelsPerMeter: 4000000
     });
-
+    canvasObjects = [];
     overlay = viewer.canvasOverlay({
         onRedraw:function(){
             console.log("redraw");
             overlay.context2d().fillStyle = "red";
-            overlay.context2d().fillRect(70000, 140000, 3000, 3000);
+            canvasObjects.forEach(function (element) {
+               overlay.context2d().fillRect(element.x, element.y, element.w, element.h);
+            });
         },
-        clearBeforeRedraw:false
+        clearBeforeRedraw:true
     });
 
     $(window).resize(function() {
@@ -169,17 +172,14 @@ function addViewerHandlers() {
             overlay.fabricCanvas().add(rect);
         });
     */
-    /*
+
     viewer.addHandler('canvas-click', function(e) {
         e.preventDefaultAction = true;
         var pos = e.position;
-
-
-        canvasOverlay.context2d().fillStyle = "red";
-        canvasOverlay.context2d().fillRect(pos.x-0.5025, pos.y-0.5025, 10, 10);
+        canvasObjects.push({x:pos.x, y:pos.y, w:2000, h:2000});
 
     });
-    */
+
 }
 
 function jacobisGUIstuff() {
