@@ -2,7 +2,7 @@
 
 (function() {
 
-    $ = OpenSeadragon;
+    $ = window.OpenSeadragon;
 
     // ----------
     $.Viewer.prototype.canvasOverlay = function(options) {
