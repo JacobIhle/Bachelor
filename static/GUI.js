@@ -35,9 +35,9 @@ function initiallizeCanvas() {
         onRedraw:function(){
             console.log("redraw");
             canvasOverlay.context2d().fillStyle = "red";
-            canvasOverlay.context2d().fillRect(0, 0, 20, 20);
-            canvasOverlay.context2d().fillRect(400, 500, 20, 20);
-            canvasOverlay.context2d().fillRect(250, 400, 20, 20);
+            canvasOverlay.context2d().fillRect(0, 0, 200, 200);
+            canvasOverlay.context2d().fillRect(400, 500, 200, 200);
+            canvasOverlay.context2d().fillRect(250, 400, 200, 200);
         },
         clearBeforeRedraw:true
     });
