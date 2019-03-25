@@ -70,15 +70,17 @@ function open_slide(url) {
         pixelsPerMeter: 4000000
     });
 
-    canvasOverlay = viewer.canvasOverlay({
+    viewer.canvasOverlay({
         onRedraw:function(){
             console.log("redraw");
             canvasOverlay.context2d().fillStyle = "red";
             canvasOverlay.context2d().fillRect(0, 0, 200, 200);
             canvasOverlay.context2d().fillRect(400, 500, 200, 200);
             canvasOverlay.context2d().fillRect(250, 400, 200, 200);
-        },
-        clearBeforeRedraw:true
+        }
+    });
+    $(window).resize(function() {
+        overlay.resize();
     });
 }
 
