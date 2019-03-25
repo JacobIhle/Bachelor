@@ -175,7 +175,7 @@ function addViewerHandlers() {
 
     viewer.addHandler('canvas-click', function(e) {
         e.preventDefaultAction = true;
-        var pos = e.position;
+        var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
         canvasObjects.push({x:pos.x, y:pos.y, w:2000, h:2000});
 
     });
