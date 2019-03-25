@@ -1,6 +1,7 @@
 var viewer;
 var imageUrl;
 var overlay;
+var canvasOverlay;
 var i = 0;
 var aborts = 0;
 
@@ -30,6 +31,7 @@ function initiallizeCanvas() {
     });
 
     overlay = viewer.fabricjsOverlay({scale: 1});
+    canvasOverlay = viewer.canvasOverlay({scale: 1});
 }
 
 
@@ -154,12 +156,13 @@ function addViewerHandlers() {
             overlay.fabricCanvas().add(rect);
         });
     */
-    viewer.addHandler('update-viewport', function() {
-        var canvas = viewer.drawer.canvas;
-        var ctx = viewer.drawer.context;
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 10;
-        ctx.strokeRect(20,20, 150, 100);
+    viewer.addHandler('canvas-click', function(e) {
+        e.preventDefaultAction = true;
+        var pos1 = viewer.viewport.viewerElementToImageCoordinates(e.position);
+        var pos = viewer.viewport.imageToViewportCoordinates(pos1);
+
+        canvasOverlay.context2d().fillStyle = "red";
+        canvasOverlay.context2d().fillRect(pos.x-0.5025, pos.y-0.5025, 10, 10);
 
     });
 
