@@ -1,7 +1,6 @@
 var viewer;
 var imageUrl;
 var overlay;
-var canvasOverlay;
 var i = 0;
 var aborts = 0;
 
@@ -70,13 +69,13 @@ function open_slide(url) {
         pixelsPerMeter: 4000000
     });
 
-    viewer.canvasOverlay({
+    overlay = viewer.canvasOverlay({
         onRedraw:function(){
             console.log("redraw");
-            this.context2d().fillStyle = "red";
-            this.context2d().fillRect(0, 0, 200, 200);
-            this.context2d().fillRect(400, 500, 200, 200);
-            this.context2d().fillRect(250, 400, 200, 200);
+            overlay.context2d().fillStyle = "red";
+            overlay.context2d().fillRect(0, 0, 200, 200);
+            overlay.context2d().fillRect(400, 500, 200, 200);
+            overlay.context2d().fillRect(250, 400, 200, 200);
         }
     });
     $(window).resize(function() {

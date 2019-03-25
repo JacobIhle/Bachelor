@@ -2,9 +2,10 @@
 
 (function() {
 
+    $ = OpenSeadragon;
 
     // ----------
-    OpenSeadragon.Viewer.prototype.canvasOverlay = function(options) {
+    $.Viewer.prototype.canvasOverlay = function(options) {
 
         if (this._canvasOverlayInfo) {
             return this._canvasOverlayInfo;
@@ -79,7 +80,7 @@
                 this._canvasdiv.setAttribute('height', this._containerHeight);
                 this._canvas.setAttribute('height', this._containerHeight);
             }
-            this._viewportOrigin = new OpenSeadragon.Point(0, 0);
+            this._viewportOrigin = new $.Point(0, 0);
             var boundsRect = this._viewer.viewport.getBounds(true);
             this._viewportOrigin.x = boundsRect.x;
             this._viewportOrigin.y = boundsRect.y * this.imgAspectRatio;
