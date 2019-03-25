@@ -77,12 +77,14 @@ function open_slide(url) {
             if(canvasObjects.length > 1) {
                 for(var i=0; i<canvasObjects.length; i++){
                     if(i === 0){
-                        overlay.context2d().moveTo(canvasObjects[i].x, canvasObjects[i].y);
+
                     }else if(i === canvasObjects.length-1){
+                        
+
+                    }else{
+                        overlay.context2d().moveTo(canvasObjects[i-1].x, canvasObjects[i-1].y);
                         overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
                         overlay.context2d().stroke();
-                    }else{
-                        overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
                     }
                 }
             }
