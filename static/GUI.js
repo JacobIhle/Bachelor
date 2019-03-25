@@ -188,14 +188,15 @@ function addViewerHandlers() {
     viewer.addHandler('canvas-click', function(e) {
         e.preventDefaultAction = true;
         var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
+        var last = canvasObjects.length-1;
 
         if (canvasObjects.length > 1) {
-            overlay.context2d().moveTo(canvasObjects[-1].x, canvasObjects[-1].y);
+            overlay.context2d().moveTo(canvasObjects[last].x, canvasObjects[last].y);
         }
         canvasObjects.push({x:pos.x, y:pos.y});
 
         if(canvasObjects.length > 1) {
-            overlay.context2d().lineTo(canvasObjects[-1].x, canvasObjects[-1].y);
+            overlay.context2d().lineTo(canvasObjects[last].x, canvasObjects[last].y);
             overlay.context2d().stroke();
             overlay.context2d().closePath();
         }
