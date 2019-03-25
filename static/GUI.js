@@ -32,7 +32,7 @@ function initiallizeCanvas() {
 
     //overlay = viewer.fabricjsOverlay({scale: 1});
     canvasOverlay = viewer.canvasOverlay({
-        clearBeforeRedraw:true
+        clearBeforeRedraw:false
     });
 }
 
