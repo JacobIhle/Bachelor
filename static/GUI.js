@@ -5,6 +5,16 @@ var i = 0;
 var aborts = 0;
 var canvasObjects;
 
+//TODO
+/*
+frontend buttons(JACOB): new drawing, finish drawing, toggle dragging/drawing stuff, undo button
+migrate drawings to their own objectstructure thingie
+import drawings
+export drawings
+give finished drawing name and tags and description
+
+ */
+
 $(document).ready(function () {
     addNonViewerHandlers();
     jacobisGUIstuff();
