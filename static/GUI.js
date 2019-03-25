@@ -154,7 +154,7 @@ function addViewerHandlers() {
             overlay.fabricCanvas().add(rect);
         });
     */
-    viewer.addHandler('canvas-click', function(e) {
+    viewer.addHandler('update-viewport', function(e) {
     e.preventDefaultAction = true;
     var pos1 = viewer.viewport.viewerElementToImageCoordinates(e.position);
     var pos = viewer.viewport.imageToViewportCoordinates(pos1);
