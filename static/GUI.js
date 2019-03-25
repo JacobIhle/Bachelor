@@ -73,10 +73,10 @@ function open_slide(url) {
     viewer.canvasOverlay({
         onRedraw:function(){
             console.log("redraw");
-            canvasOverlay.context2d().fillStyle = "red";
-            canvasOverlay.context2d().fillRect(0, 0, 200, 200);
-            canvasOverlay.context2d().fillRect(400, 500, 200, 200);
-            canvasOverlay.context2d().fillRect(250, 400, 200, 200);
+            this.context2d().fillStyle = "red";
+            this.context2d().fillRect(0, 0, 200, 200);
+            this.context2d().fillRect(400, 500, 200, 200);
+            this.context2d().fillRect(250, 400, 200, 200);
         }
     });
     $(window).resize(function() {
