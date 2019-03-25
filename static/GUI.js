@@ -31,7 +31,7 @@ function initiallizeCanvas() {
     });
 
     overlay = viewer.fabricjsOverlay({scale: 1});
-    canvasOverlay = viewer.canvasOverlay({scale: 1});
+    canvasOverlay = viewer.canvasOverlay();
 }
 
 
