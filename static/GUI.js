@@ -70,7 +70,7 @@ function open_slide(url) {
     });
 
     overlay = viewer.canvasOverlay({
-        onRedraw:function(){
+        onDraw:function(){
             console.log("redraw");
             overlay.context2d().fillStyle = "red";
             overlay.context2d().fillRect(250, 250, 200, 200);
@@ -175,9 +175,6 @@ function addViewerHandlers() {
         canvasOverlay.context2d().fillStyle = "red";
         canvasOverlay.context2d().fillRect(pos.x-0.5025, pos.y-0.5025, 10, 10);
 
-    });
-    viewer.addHandler("animation-finish", function () {
-        canvasOverlay.resize();
     });
     */
 }
