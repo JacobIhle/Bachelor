@@ -74,9 +74,19 @@ function open_slide(url) {
         onRedraw:function(){
             console.log("redraw");
             overlay.context2d().fillStyle = "red";
-            canvasObjects.forEach(function (element) {
-               overlay.context2d().fillRect(element.x, element.y, element.w, element.h);
-            });
+            if(canvasObjects.length > 1) {
+                var element;
+                var previousElement;
+                for(var i=0; i<canvasObjects.length; i++){
+                    if(i === 0){
+                        overlay.context2d().moveTo(canvasObjects[i].x, canvasObjects[i].y);
+                    }else if(i === canvasObjects.length-1){
+                        overlay.context2d().stroke();
+                    }else{
+                        overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
+                    }
+                }
+            }
         },
         clearBeforeRedraw:true
     });
@@ -177,7 +187,6 @@ function addViewerHandlers() {
         e.preventDefaultAction = true;
         var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
         canvasObjects.push({x:pos.x, y:pos.y, w:2000, h:2000});
-        overlay.context2d().fillRect(e.position.x, e.position.y, 10, 10);
 
     });
 
