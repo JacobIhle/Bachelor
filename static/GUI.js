@@ -189,20 +189,11 @@ function addViewerHandlers() {
     viewer.addHandler('canvas-click', function(e) {
         e.preventDefaultAction = true;
         var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
-        var last = canvasObjects.length-1;
 
-        if (canvasObjects.length > 1) {
-            overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
-            overlay.context2d().lineWidth = 2/viewer.viewport.getZoom(true);
-            overlay.context2d().beginPath();
-            overlay.context2d().moveTo(canvasObjects[last].viewportX, canvasObjects[last].viewportY);
-        }
-        canvasObjects.push({x:pos.x, y:pos.y, viewportX: e.position.x, viewportY: e.position.y});
+        canvasObjects.push({x:pos.x, y:pos.y});
 
         if(canvasObjects.length > 1) {
-            overlay.context2d().lineTo(canvasObjects[last+1].viewportX, canvasObjects[last+1].viewportY);
-            overlay.context2d().stroke();
-            overlay.context2d().closePath();
+            overlay._updateCanvas();
         }
     });
 
