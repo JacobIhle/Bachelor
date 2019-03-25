@@ -34,11 +34,11 @@ function initiallizeCanvas() {
     canvasOverlay = viewer.canvasOverlay({
         onRedraw:function(){
             canvasOverlay.context2d().fillStyle = "red";
-            canvasOverlay.context2d().fillRect(0.75, 0.5, 10, 10);
-            canvasOverlay.context2d().fillRect(0.87, 0.76, 10, 10);
-            canvasOverlay.context2d().fillRect(0.45, 0.2, 10, 10);
+            canvasOverlay.context2d().fillRect(300, 500, 20, 20);
+            canvasOverlay.context2d().fillRect(400, 500, 20, 20);
+            canvasOverlay.context2d().fillRect(250, 400, 20, 20);
         },
-        clearBeforeRedraw:false
+        clearBeforeRedraw:true
     });
 }
 
@@ -164,6 +164,7 @@ function addViewerHandlers() {
             overlay.fabricCanvas().add(rect);
         });
     */
+    /*
     viewer.addHandler('canvas-click', function(e) {
         e.preventDefaultAction = true;
         var pos = e.position;
@@ -176,7 +177,7 @@ function addViewerHandlers() {
     viewer.addHandler("animation-finish", function () {
         canvasOverlay.resize();
     });
-
+    */
 }
 
 function jacobisGUIstuff() {
