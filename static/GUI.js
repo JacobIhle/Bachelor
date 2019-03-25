@@ -70,6 +70,7 @@ function open_slide(url) {
         pixelsPerMeter: 4000000
     });
     canvasObjects = [];
+
     overlay = viewer.canvasOverlay({
         onRedraw:function(){
             console.log("redraw");
@@ -192,12 +193,12 @@ function addViewerHandlers() {
 
         if (canvasObjects.length > 1) {
             overlay.context2d().beginPath();
-            overlay.context2d().moveTo(canvasObjects[last].x, canvasObjects[last].y);
+            overlay.context2d().moveTo(canvasObjects[last].viewportX, canvasObjects[last].viewportY);
         }
-        canvasObjects.push({x:pos.x, y:pos.y});
+        canvasObjects.push({x:pos.x, y:pos.y, viewportX: e.position.x, viewportY: e.position.y});
 
         if(canvasObjects.length > 1) {
-            overlay.context2d().lineTo(canvasObjects[last+1].x, canvasObjects[last+1].y);
+            overlay.context2d().lineTo(canvasObjects[last+1].viewportX, canvasObjects[last+1].viewportY);
             overlay.context2d().stroke();
             overlay.context2d().closePath();
         }
