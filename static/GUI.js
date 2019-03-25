@@ -162,7 +162,7 @@ function addViewerHandlers() {
     var ctx = viewer.drawer.context;
     ctx.strokeStyle = 'red';
     ctx.lineWidth = 10;
-    ctx.strokeRect(pos.x-0.5025,pos.y-0.05025, 0.005, 0.005);
+    ctx.strokeRect(20,20, 150, 100);
 
 });
 
