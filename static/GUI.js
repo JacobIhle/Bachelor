@@ -32,8 +32,13 @@ function initiallizeCanvas() {
 
     //overlay = viewer.fabricjsOverlay({scale: 1});
     canvasOverlay = viewer.canvasOverlay({
-        clearBeforeRedraw:false,
-        scale: 1
+        onRedraw: function(){
+            canvasOverlay.context2d().fillStyle = "red";
+            canvasOverlay.context2d().fillRect(0.75, 0.5, 10, 10);
+            canvasOverlay.context2d().fillRect(0.87, 0.76, 10, 10);
+            canvasOverlay.context2d().fillRect(0.45, 0.2, 10, 10);
+        },
+        clearBeforeRedraw:true
     });
 }
 
