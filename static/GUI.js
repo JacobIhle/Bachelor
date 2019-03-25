@@ -73,8 +73,6 @@ function open_slide(url) {
     overlay = viewer.canvasOverlay({
         onRedraw:function(){
             console.log("redraw");
-            overlay.canvas().width = overlay.canvas().width;
-            overlay.resize();
             overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
             if(canvasObjects.length > 1) {
                 for(var i=0; i<canvasObjects.length; i++){
