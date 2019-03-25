@@ -87,7 +87,7 @@ function open_slide(url) {
                 }
             }
         },
-        clearBeforeRedraw:false
+        clearBeforeRedraw:true
     });
 
     $(window).resize(function() {
