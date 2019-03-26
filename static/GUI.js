@@ -272,13 +272,14 @@ function jacobisGUIstuff() {
         }else if($(this).text() === "Save Drawing"){
             //prompt user for name and tags
             if(canvasObjects > 1) {
-            //add to database
-            //save data to xml file
-            drawings.push(new Drawing("name", canvasObjects, ["tag1", "tag2"]));
-            canvasObjects = [];
-        }
-        $("#Drawing").html("New Drawing");
-        console.log("save");
+                //add to database
+                //save data to xml file
+                drawings.push(new Drawing("name", canvasObjects, ["tag1", "tag2"]));
+                canvasObjects = [];
+            }
+            toggleDrawing();
+            $("#Drawing").html("New Drawing");
+            console.log("save");
         }
     });
 }
