@@ -107,6 +107,7 @@ function open_slide(url) {
 
             drawings.forEach(function (element) {
                 var points = element.points;
+                overlay.context2d().beginPath();
                 for(var i=0; i<points.length; i++){
                     if(i === 0){
                         overlay.context2d().moveTo(points[i].x, points[i].y);
