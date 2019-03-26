@@ -88,13 +88,14 @@ function open_slide(url) {
             //this + draw saved drawing objects
             console.log("redraw");
             overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
+            overlay.context2d().fillStyle = "rgba(255,0,0,1)";
             overlay.context2d().lineWidth = 200/viewer.viewport.getZoom(true);
 
             if(canvasObjects.length > 0) {
                 if(canvasObjects.length === 1){
                     overlay.context2d().beginPath();
                     overlay.context2d().arc(canvasObjects[0].x, canvasObjects[0].y,
-                        400/viewer.viewport.getZoom(true), 0, 2*Math.PI);
+                        450/viewer.viewport.getZoom(true), 0, 2*Math.PI);
                     overlay.context2d().fill();
                     overlay.context2d().closePath();
                 }else {
