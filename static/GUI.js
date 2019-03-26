@@ -348,7 +348,7 @@ function generateXML() {
     });
 
     annotation.appendChild(regions);
-    annotations.appendChild(annotations);
+    annotations.appendChild(annotation);
 
     return xml;
 }
