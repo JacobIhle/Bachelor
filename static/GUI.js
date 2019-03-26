@@ -275,8 +275,8 @@ function jacobisGUIstuff() {
                 //add to database
                 //save data to xml file
                 drawings.push(new Drawing("name", canvasObjects, ["tag1", "tag2"]));
-                canvasObjects = [];
             }
+            canvasObjects = [];
             toggleDrawing();
             $("#Drawing").html("New Drawing");
             console.log("save");
