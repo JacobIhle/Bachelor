@@ -272,7 +272,8 @@ function jacobisGUIstuff() {
  $("#Drawing").on("click", function () {
      if ($(this).text() === "New Drawing"){
          toggleDrawing();
-         $(this).html("Save Drawing");
+         $("#Drawing").html("Save Drawing");
+         console.log("new");
 
 
      }else if($(this).text() === "Save Drawing"){
@@ -283,7 +284,8 @@ function jacobisGUIstuff() {
              drawings.push(new Drawing("name", canvasObjects, ["tag1", "tag2"]));
              canvasObjects = [];
          }
-         $(this).html("New Drawing")
+         $(#Drawing).html("New Drawing");
+         console.log("save");
      }
  });
 
