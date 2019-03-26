@@ -52,12 +52,12 @@ li #searchicon {
 }
 
 
-li #searchicon:hover{
+li #searchicon:hover {
     background-color: #212121;
     border-radius: 5px;
 }
 
-li #searchicon:active{
+li #searchicon:active {
     background-color: #424242;
 }
 
@@ -69,16 +69,16 @@ li #Drawing {
     padding: 0 5px 0 5px;
 }
 
-li #Drawing:hover{
+li #Drawing:hover {
     background-color: #212121;
     border-radius: 5px;
 }
 
-li #Drawing:active{
+li #Drawing:active {
     background-color: #424242;
 }
 
-li form{
+li form {
     line-height: 40px;
     width: 200px;
 }
@@ -99,7 +99,7 @@ li form{
 
 #infoButton {
     /* Makes the text non selectable */
-    -webkit-user-select: none; /* Safari */        
+    -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
@@ -115,7 +115,7 @@ li form{
     background-color: #212121;
 }
 
-#info:active{
+#info:active {
     background-color: #424242;
 }
 
@@ -126,13 +126,13 @@ li #filename {
     left: 45%
 }
 
-#display{
+#display {
     position: relative;
     width: 100%;
     height: calc(100% - 80px);
 }
 
-#infoField{
+#infoField {
     display: none;
     position: absolute;
     top: 50px;
@@ -144,7 +144,7 @@ li #filename {
     border-left: 2px solid #424242;
 }
 
-dt{
+dt {
     position: relative;
     height: 20px;
     border-top: 1px solid black;
@@ -154,7 +154,7 @@ dt{
     padding: 2px;
 }
 
-dd{
+dd {
     position: relative;
     background-color: white;
     margin-left: 1px;
@@ -162,19 +162,19 @@ dd{
     padding: 2px;
 }
 
-#footer{
-    -webkit-user-select: none; /* Safari */        
+#footer {
+    -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 30px;
+    height: 35px;
     background-color: #BDBDBD;
 }
 
-#footer #ZoomLevels li{
+#footer #ZoomLevels li {
     position: relative;
     font-size: 20px;
     width: 35px;
@@ -182,24 +182,46 @@ dd{
     padding: 2px;
 }
 
-#footer #ZoomLevels li:first-child{
-    height: 26px;
+#footer #ZoomLevels li:first-child {
+    height: 30px;
     width: 60px;
     border-right: 1px solid black;
     padding-right: 5px;
 }
 
 /* Needed for it to look nice with 4x, since it's length is different from 10,20 and 40px */
-#footer #ZoomLevels li:nth-child(2){
+#footer #ZoomLevels li:nth-child(2) {
     padding-left: 0;
     left: 5px;
 }
 
-#footer #ZoomLevels li:hover{
+#footer #ZoomLevels li:hover {
     background-color: #9E9E9E9E;
-    height: 26px;
+    height: 30px;
 }
 
+#DrawingTools li {
+    position: relative;
+    display: inline-block;
+    padding: 5px 5px 0 5px;
+    text-align: center;
+    font-size: 10px;
+    float: right;
+    right: 2%;
+    height: 30px;
+}
+
+#DrawingTools li:hover {
+    background-color: #9E9E9E9E;
+}
+
+#DrawingTools li:active {
+    background-color: #BDBDBD;
+}
+
+#Dragging{
+
+}
 
 .expandable {
     background: #414141;
@@ -208,11 +230,6 @@ dd{
     line-height: 50px;
     transition: all .5s ease-in-out;
     height: 0;
-}
-
-#DrawingTools{
-    display: inline;
-    float: right;
 }
 
 .expandable:target {
@@ -268,24 +285,24 @@ dd{
     background-color: #3e8e41;
 }
 
-#overlay{
+#overlay {
     background-color: red;
     width: 100px;
     height: 100px;
 }
 
 /* Image list stuff*/
-#imageExplorer{
+#imageExplorer {
     position: absolute;
     width: 30%;
-    height: calc(100% - 80px);
+    height: calc(100% - 85px);
     z-index: 9;
     background-color: white;
     display: block;
     overflow-y: scroll;
 }
 
-.folderButtons{
+.folderButtons {
     position: relative;
     width: 100%;
     color: black;
@@ -296,11 +313,11 @@ dd{
     margin: 0;
 }
 
-.folder{
+.folder {
     display: none;
 }
 
-.imageLinks{
+.imageLinks {
     position: relative;
     height: 35px;
     border-bottom: 1px solid black;
@@ -318,42 +335,50 @@ dd{
     width: 330px;
     margin: 30px auto;
 }
+
 .login-form h2 {
     font-size: 19px;
     margin-bottom: 15px;
     text-align: center;
 }
+
 .login-form form {
     background: #f7f7f7;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
     margin-bottom: 10px;
     padding: 30px;
 }
+
 .login-form .avatar {
     width: 90px;
     margin-bottom: 20px;
 }
+
 .login-form .form-control, .login-form .btn {
     min-height: 38px;
 }
+
 .login-form input[type="email"] {
     border-radius: 2px 2px 0 0;
 }
+
 .login-form input[type="password"] {
     border-radius: 0 0 2px 2px;
     margin-top: -1px;
 }
+
 .login-form input.form-control:focus {
     position: relative;
     z-index: 2;
 }
+
 .login-form .btn {
     font-size: 15px;
     font-weight: bold;
     border-radius: 2px;
 }
 
-.form-group input{
+.form-group input {
     margin-bottom: 5px;
 }
 
