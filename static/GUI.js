@@ -269,7 +269,7 @@ function jacobisGUIstuff() {
         overlay._updateCanvas();
     });
 
- $("#Drawing").on("click", function () {
+ $("#Drawing").click(function () {
      if ($(this).text() === "New Drawing"){
          toggleDrawing();
          $("#Drawing").html("Save Drawing");
