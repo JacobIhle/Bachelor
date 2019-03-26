@@ -126,7 +126,7 @@ function open_slide(url) {
         },
         clearBeforeRedraw:true
     });
-    
+
 
     $(window).resize(function() {
         overlay.resize();
@@ -286,6 +286,10 @@ function jacobisGUIstuff() {
             console.log("save");
         }
     });
+
+    $("#Dragging").on("click", function () {
+        toggleDrawing();
+    });
 }
 
 
@@ -304,9 +308,7 @@ $("#UndoButton").on("click", function () {
     overlay._updateCanvas();
 });
 
-$("#Dragging").on("click", function () {
-    toggleDrawing();
-});
+
 
 function toggleDrawing() {
     if(drawingEnabled === true){
