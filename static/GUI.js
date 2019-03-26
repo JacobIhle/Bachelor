@@ -126,8 +126,7 @@ function open_slide(url) {
         },
         clearBeforeRedraw:true
     });
-
-    overlay._updateCanvas();
+    
 
     $(window).resize(function() {
         overlay.resize();
