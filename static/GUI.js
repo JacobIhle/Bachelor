@@ -3,7 +3,9 @@ var imageUrl;
 var overlay;
 var i = 0;
 var aborts = 0;
-var canvasObjects;
+var canvasObjects = [];
+var drawings = [];
+var drawingEnabled = false;
 
 //TODO
 /*
@@ -12,7 +14,6 @@ migrate drawings to their own objectstructure thingie
 import drawings
 export drawings
 give finished drawing name and tags and description
-
  */
 
 $(document).ready(function () {
@@ -79,13 +80,16 @@ function open_slide(url) {
         maxWidth: 0.18,
         pixelsPerMeter: 4000000
     });
-    canvasObjects = [];
+
 
     overlay = viewer.canvasOverlay({
         onRedraw:function(){
+            //TODO REFACTOR
+            //this + draw saved drawing objects
             console.log("redraw");
             overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
             overlay.context2d().lineWidth = 200/viewer.viewport.getZoom(true);
+
             if(canvasObjects.length > 1) {
                 overlay.context2d().beginPath();
                 for(var i=0; i<canvasObjects.length; i++){
@@ -100,6 +104,22 @@ function open_slide(url) {
                     }
                 }
             }
+
+            drawings.forEach(function (element) {
+                var points = element.points;
+                for(var i=0; i<points.length; i++){
+                    if(i === 0){
+                        overlay.context2d().moveTo(points[i].x, points[i].y);
+                    }else if(i === points.length-1){
+                        overlay.context2d().lineTo(points[i].x, points[i].y);
+                        overlay.context2d().stroke();
+                        overlay.context2d().closePath();
+                    }else{
+                        overlay.context2d().lineTo(points[i].x, points[i].y);
+                    }
+                }
+            });
+
         },
         clearBeforeRedraw:true
     });
@@ -127,7 +147,6 @@ function addViewerHandlers() {
         viewer.viewport.zoomTo(40);
     });
 
-
     viewer.addHandler("animation-finish", function () {
         $("#currentZoomLevel").html(Math.round(viewer.viewport.getZoom(true) * 100) / 100 + "x");
     });
@@ -136,14 +155,6 @@ function addViewerHandlers() {
         viewer.viewport.zoomTo(0.6);
     });
 
-    /*viewer.addHandler("animation-start", function () {
-        overlay._canvasdiv.style.opacity = "0";
-    });
-
-    viewer.addHandler("animation-finish", function () {
-        overlay._canvasdiv.style.opacity = "1";
-    });
-    */
     viewer.addHandler("canvas-click", function (e) {
         var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
         var posview = viewer.viewport.imageToWindowCoordinates(pos);
@@ -180,32 +191,29 @@ function addViewerHandlers() {
                 }
             });
     });
-    /*
-        viewer.addHandler("canvas-click", function (e) {
-            e.preventDefaultAction = true;
-            var pos1 = viewer.viewport.viewerElementToImageCoordinates(e.position);
-            var pos = viewer.viewport.imageToViewportCoordinates(pos1);
-            var rect = new fabric.Rect({
-              left: pos.x-0.5025,
-              top: pos.y-0.5025,
-              fill: 'blue',
-              width: 0.005,
-              height: 0.005
-            });
-            overlay.fabricCanvas().add(rect);
-        });
-    */
 
     viewer.addHandler('canvas-click', function(e) {
-        e.preventDefaultAction = true;
-        var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
+        if(drawingEnabled) {
+            e.preventDefaultAction = true;
+            var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
 
-        canvasObjects.push({x:pos.x, y:pos.y});
+            canvasObjects.push({x: pos.x, y: pos.y});
 
-        if(canvasObjects.length > 1) {
-            overlay._updateCanvas();
+            if (canvasObjects.length > 1) {
+                overlay._updateCanvas();
+            }
+        }else{
+            e.preventDefaultAction = false;
         }
     });
+
+    viewer.addHandler('canvas-drag', function (e) {
+        if(drawingEnabled){
+            e.preventDefaultAction = true;
+        }else{
+            e.preventDefaultAction = false;
+        }
+    })
 
 }
 
@@ -252,4 +260,48 @@ function jacobisGUIstuff() {
 
         $(this).siblings(".imageLinks").toggle();
     });
+}
+
+
+    $("#CancelDrawing").on("click", function () {
+        //prompt user to confirm cancel
+        canvasObjects = [];
+        overlay._updateCanvas();
+    });
+
+ $("#Drawing").on("click", function () {
+     if ($(this).text() === "New Drawing"){
+         toggleDrawing();
+         $(this).html("Save Drawing");
+
+
+     }else if($(this).text() === "Save Drawing"){
+         //prompt user for name and tags
+         if(canvasObjects > 1) {
+             //add to database
+             //save data to xml file
+             drawings.push(new Drawing("name", canvasObjects, ["tag1", "tag2"]));
+             canvasObjects = [];
+         }
+         $(this).html("New Drawing")
+     }
+ });
+
+$("#UndoButton").on("click", function () {
+    if(canvasObjects.length > 0) {
+        canvasObjects.pop();
+    }
+    overlay._updateCanvas();
+});
+
+$("#Dragging").on("click", function () {
+    toggleDrawing();
+});
+
+function toggleDrawing() {
+    if(drawingEnabled === true){
+        drawingEnabled = false;
+    }else{
+        drawingEnabled = true;
+    }
 }
