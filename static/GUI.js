@@ -67,6 +67,8 @@ function addNonViewerHandlers() {
 
 function open_slide(url) {
 
+    drawings = [];
+
     viewer.open(url);
 
     viewer.scalebar({
@@ -87,7 +89,7 @@ function open_slide(url) {
             //TODO REFACTOR
             //this + draw saved drawing objects
             console.log("redraw");
-            overlay.context2d().strokeStyle = "rgba(0,229,255,1)";
+            overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
             overlay.context2d().lineWidth = 200/viewer.viewport.getZoom(true);
 
             if(canvasObjects.length > 1) {
@@ -124,6 +126,8 @@ function open_slide(url) {
         },
         clearBeforeRedraw:true
     });
+
+    overlay._updateCanvas();
 
     $(window).resize(function() {
         overlay.resize();
