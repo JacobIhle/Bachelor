@@ -260,34 +260,37 @@ function jacobisGUIstuff() {
 
         $(this).siblings(".imageLinks").toggle();
     });
+
+
+    $("#Drawing").click(function () {
+        if ($(this).text() === "New Drawing"){
+            toggleDrawing();
+            $("#Drawing").html("Save Drawing");
+            console.log("new");
+
+
+        }else if($(this).text() === "Save Drawing"){
+            //prompt user for name and tags
+            if(canvasObjects > 1) {
+            //add to database
+            //save data to xml file
+            drawings.push(new Drawing("name", canvasObjects, ["tag1", "tag2"]));
+            canvasObjects = [];
+        }
+        $("#Drawing").html("New Drawing");
+        console.log("save");
+        }
+    });
 }
 
 
-    $("#CancelDrawing").on("click", function () {
-        //prompt user to confirm cancel
-        canvasObjects = [];
-        overlay._updateCanvas();
-    });
-
- $("#Drawing").click(function () {
-     if ($(this).text() === "New Drawing"){
-         toggleDrawing();
-         $("#Drawing").html("Save Drawing");
-         console.log("new");
+$("#CancelDrawing").on("click", function () {
+    //prompt user to confirm cancel
+    canvasObjects = [];
+    overlay._updateCanvas();
+});
 
 
-     }else if($(this).text() === "Save Drawing"){
-         //prompt user for name and tags
-         if(canvasObjects > 1) {
-             //add to database
-             //save data to xml file
-             drawings.push(new Drawing("name", canvasObjects, ["tag1", "tag2"]));
-             canvasObjects = [];
-         }
-         $("#Drawing").html("New Drawing");
-         console.log("save");
-     }
- });
 
 $("#UndoButton").on("click", function () {
     if(canvasObjects.length > 0) {
