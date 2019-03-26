@@ -92,17 +92,24 @@ function open_slide(url) {
             overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
             overlay.context2d().lineWidth = 200/viewer.viewport.getZoom(true);
 
-            if(canvasObjects.length > 1) {
-                overlay.context2d().beginPath();
-                for(var i=0; i<canvasObjects.length; i++){
-                    if(i === 0){
-                        overlay.context2d().moveTo(canvasObjects[i].x, canvasObjects[i].y);
-                    }else if(i === canvasObjects.length-1){
-                        overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
-                        overlay.context2d().stroke();
-                        overlay.context2d().closePath();
-                    }else{
-                        overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
+            if(canvasObjects.length > 0) {
+                if(canvasObjects.length === 1){
+                    overlay.context2d().beginPath();
+                    overlay.context2d().arc(canvasObjects[0].x, canvasObjects[0].y,
+                        200/viewer.viewport.getZoom(true), 0, 2*Math.PI);
+                    overlay.context2d().closePath();
+                }else {
+                    overlay.context2d().beginPath();
+                    for (var i = 0; i < canvasObjects.length; i++) {
+                        if (i === 0) {
+                            overlay.context2d().moveTo(canvasObjects[i].x, canvasObjects[i].y);
+                        } else if (i === canvasObjects.length - 1) {
+                            overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
+                            overlay.context2d().stroke();
+                            overlay.context2d().closePath();
+                        } else {
+                            overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
+                        }
                     }
                 }
             }
