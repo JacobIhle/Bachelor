@@ -274,6 +274,7 @@ function jacobisGUIstuff() {
 
 
         }else if($(this).text() === "Save Drawing"){
+            //TODO
             //prompt user for name and tags
             if(canvasObjects.length > 1) {
                 //add to database
@@ -294,9 +295,10 @@ function jacobisGUIstuff() {
 
 
 $("#CancelDrawing").on("click", function () {
-    //prompt user to confirm cancel
-    canvasObjects = [];
-    overlay._updateCanvas();
+    if(confirm("Confirm Cancellation")){
+        canvasObjects = [];
+        overlay._updateCanvas();
+    }
 });
 
 
