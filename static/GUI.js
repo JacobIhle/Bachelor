@@ -337,9 +337,9 @@ function generateXML() {
         
         points.forEach(function (point) {
             var vertex = xml.createElement("Vertex");
-            vertex.setAttribute("Vertex X", ""+point.x);
-            vertex.setAttribute("Vertex Y", ""+point.y);
-            vertex.setAttribute("Vertex Z", "0");
+            vertex.setAttribute("X", ""+point.x);
+            vertex.setAttribute("Y", ""+point.y);
+            vertex.setAttribute("Z", "0");
             vertices.appendChild(vertex);
         });
 
