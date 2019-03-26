@@ -36,13 +36,11 @@ function initiallizeCanvas() {
         zoomPerScroll: 1.10,
         animationTime: 0.5,
         tileSource: imageUrl,
+        showNavigationControl: false,
 
         navigatorId: "",
         showNavigator: true,
     });
-
-    //overlay = viewer.fabricjsOverlay({scale: 1});
-
 }
 
 
@@ -211,7 +209,7 @@ function addViewerHandlers() {
 
             canvasObjects.push({x: pos.x, y: pos.y});
 
-            if (canvasObjects.length > 1) {
+            if (canvasObjects.length > 0) {
                 overlay._updateCanvas();
             }
         }else{
