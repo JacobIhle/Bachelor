@@ -236,6 +236,7 @@ dd {
     display: inline-block;
     float: right;
     margin: 0 5px 0 5px;
+    display: none;
 }
 
 #DrawingTools li:hover {
