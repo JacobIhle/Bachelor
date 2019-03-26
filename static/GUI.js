@@ -311,7 +311,6 @@ function jacobisGUIstuff() {
 
     $("#DownloadXML").click(function () {
         var xml = generateXML();
-        console.log(xml);
         download("file.xml", xml);
     });
 }
@@ -351,7 +350,7 @@ function generateXML() {
     annotation.appendChild(regions);
     annotations.appendChild(annotation);
     xml.appendChild(annotations);
-    console.log(xml);
+    
     var serializer = new XMLSerializer();
 
     return serializer.serializeToString(xml);
