@@ -231,12 +231,15 @@ dd {
     height: 30px;
 }
 
+#DrawingTools{
+    display: none;
+}
+
 #DrawingTools li {
     position: relative;
     display: inline-block;
     float: right;
     margin: 0 5px 0 5px;
-    display: none;
 }
 
 #DrawingTools li:hover {
