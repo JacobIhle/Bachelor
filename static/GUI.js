@@ -296,7 +296,6 @@ function jacobisGUIstuff() {
             $("#Dragging").attr("title", "Enable Dragging");
             $("#Dragging").css("background-color", "");
         }
-    });
         toggleDrawing();
     });
 
