@@ -288,18 +288,18 @@ function jacobisGUIstuff() {
         }
     });
 
-    $("#Dragging").on("click", function () {
+    $("#Dragging").click(function () {
         toggleDrawing();
     });
 
-    $("#UndoButton").on("click", function () {
+    $("#UndoButton").click(function () {
         if(canvasObjects.length > 0) {
             canvasObjects.pop();
         }
         overlay._updateCanvas();
     });
 
-    $("#CancelDrawing").on("click", function () {
+    $("#CancelDrawing").click(function () {
         if(confirm("Confirm Cancellation")){
             canvasObjects = [];
             overlay._updateCanvas();
@@ -308,12 +308,60 @@ function jacobisGUIstuff() {
 
         }
     });
+
+    $("#DownloadXML").click(function () {
+        var xml = generateXML();
+        download("file.xml", xml);
+    });
 }
 
 function toggleDrawing() {
-    if(drawingEnabled === true){
+    if(drawingEnabled){
         drawingEnabled = false;
     }else{
         drawingEnabled = true;
     }
+}
+
+function generateXML() {
+    var xml = document.implementation.createDocument("", "", null);
+
+    var annotations = xml.createElement("Annotations");
+    var annotation = xml.createElement("Annotation");
+    var regions = xml.createElement("Regions");
+
+    drawings.forEach(function (drawing) {
+        var points = drawing.points;
+        var region = xml.createElement("Region");
+        var vertices = xml.createElement("Vertices");
+        
+        points.forEach(function (point) {
+            var vertex = xml.createElement("Vertex");
+            vertex.setAttribute("Vertex X", ""+point.x);
+            vertex.setAttribute("Vertex Y", ""+point.y);
+            vertex.setAttribute("Vertex Z", "0");
+            vertices.appendChild(vertex);
+        });
+
+        region.appendChild(vertices);
+        regions.appendChild(region);
+    });
+
+    annotation.appendChild(regions);
+    annotations.appendChild(annotations);
+
+    return xml;
+}
+
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
 }
