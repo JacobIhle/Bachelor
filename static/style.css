@@ -347,7 +347,7 @@ dd {
 /* Image list stuff*/
 #imageExplorer {
     position: absolute;
-    width: 30%;
+    width: 23%;
     height: calc(100% - 85px);
     z-index: 9;
     background-color: white;
