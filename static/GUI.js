@@ -303,6 +303,9 @@ function jacobisGUIstuff() {
         if(confirm("Confirm Cancellation")){
             canvasObjects = [];
             overlay._updateCanvas();
+            toggleDrawing();
+            $("#Drawing").html("New Drawing");
+
         }
     });
 }
