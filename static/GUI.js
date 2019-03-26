@@ -291,26 +291,21 @@ function jacobisGUIstuff() {
     $("#Dragging").on("click", function () {
         toggleDrawing();
     });
-}
 
-
-$("#CancelDrawing").on("click", function () {
-    if(confirm("Confirm Cancellation")){
-        canvasObjects = [];
+    $("#UndoButton").on("click", function () {
+        if(canvasObjects.length > 0) {
+            canvasObjects.pop();
+        }
         overlay._updateCanvas();
-    }
-});
+    });
 
-
-
-$("#UndoButton").on("click", function () {
-    if(canvasObjects.length > 0) {
-        canvasObjects.pop();
-    }
-    overlay._updateCanvas();
-});
-
-
+    $("#CancelDrawing").on("click", function () {
+        if(confirm("Confirm Cancellation")){
+            canvasObjects = [];
+            overlay._updateCanvas();
+        }
+    });
+}
 
 function toggleDrawing() {
     if(drawingEnabled === true){
