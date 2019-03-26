@@ -62,6 +62,23 @@ li #searchicon:active{
     background-color: #424242;
 }
 
+li #Drawing {
+    color: white;
+    font-size: 1.4em;
+    line-height: 40px;
+    margin-right: 5px;
+    padding: 0 5px 0 5px;
+}
+
+li #Drawing:hover{
+    background-color: #212121;
+    border-radius: 5px;
+}
+
+li #Drawing:active{
+    background-color: #424242;
+}
+
 li form{
     line-height: 40px;
     width: 200px;
