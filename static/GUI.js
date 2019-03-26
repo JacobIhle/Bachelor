@@ -349,6 +349,7 @@ function generateXML() {
 
     annotation.appendChild(regions);
     annotations.appendChild(annotation);
+    xml.appendChild(annotations);
 
     return xml;
 }
