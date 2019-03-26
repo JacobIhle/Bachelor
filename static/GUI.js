@@ -95,7 +95,7 @@ function open_slide(url) {
                 if(canvasObjects.length === 1){
                     overlay.context2d().beginPath();
                     overlay.context2d().arc(canvasObjects[0].x, canvasObjects[0].y,
-                        450/viewer.viewport.getZoom(true), 0, 2*Math.PI);
+                        350/viewer.viewport.getZoom(true), 0, 2*Math.PI);
                     overlay.context2d().fill();
                     overlay.context2d().closePath();
                 }else {
