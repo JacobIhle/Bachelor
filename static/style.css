@@ -33,11 +33,10 @@ header li {
     float: left;
 }
 
-#footer li {
+#footer #ZoomLevels li {
     display: inline;
     float: left;
 }
-
 
 #menuicon {
     color: white;
@@ -45,13 +44,13 @@ header li {
     line-height: 40px;
 }
 
-
 li #searchicon {
     color: white;
     font-size: 1.6em;
     line-height: 40px;
     margin-right: 5px;
 }
+
 
 li #searchicon:hover{
     background-color: #212121;
@@ -91,7 +90,7 @@ li form{
     transition: width 1s;
     background-color: #EEEEEE;
     padding: 2px;
-    border: 0px;
+    border: 0;
 }
 
 #searchField:hover {
@@ -108,7 +107,7 @@ li form{
     color: white;
     font-size: 1.6em;
     line-height: 40px;
-    padding: 0px 6px 0px 6px;
+    padding: 0 6px 0 6px;
     border-radius: 5px;
 }
 
@@ -175,7 +174,7 @@ dd{
     background-color: #BDBDBD;
 }
 
-#footer li{
+#footer #ZoomLevels li{
     position: relative;
     font-size: 20px;
     width: 35px;
@@ -183,7 +182,7 @@ dd{
     padding: 2px;
 }
 
-#footer li:first-child{
+#footer #ZoomLevels li:first-child{
     height: 26px;
     width: 60px;
     border-right: 1px solid black;
@@ -191,12 +190,12 @@ dd{
 }
 
 /* Needed for it to look nice with 4x, since it's length is different from 10,20 and 40px */
-#footer li:nth-child(2){
+#footer #ZoomLevels li:nth-child(2){
     padding-left: 0;
     left: 5px;
 }
 
-#footer li:hover{
+#footer #ZoomLevels li:hover{
     background-color: #9E9E9E9E;
     height: 26px;
 }
@@ -211,6 +210,11 @@ dd{
     height: 0;
 }
 
+#DrawingTools{
+    display: inline;
+    float: right;
+}
+
 .expandable:target {
     height: 50px;
 }
@@ -223,6 +227,7 @@ dd{
     border: none;
     cursor: pointer;
 }
+
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
