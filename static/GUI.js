@@ -284,7 +284,7 @@ function jacobisGUIstuff() {
              drawings.push(new Drawing("name", canvasObjects, ["tag1", "tag2"]));
              canvasObjects = [];
          }
-         $(#Drawing).html("New Drawing");
+         $("#Drawing").html("New Drawing");
          console.log("save");
      }
  });
