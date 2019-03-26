@@ -44,9 +44,9 @@
     </ul>
 </header>
 
-        <div id="imageExplorer">
-            {{ imageList|safe }}
-        </div>
+<div id="imageExplorer">
+    {{ imageList|safe }}
+</div>
 
 <div id="display"></div>
 <div id="infoField">
@@ -62,15 +62,32 @@
     </dl>
 </div>
 
+<div id="footer">
+    <ul id="ZoomLevels">
+        <li>
+            <button id="currentZoomLevel">365.20x</button>
+        </li>
+        <li>
+            <button id="zoom4x">4x</button>
+        </li>
+        <li>
+            <button id="zoom10x">10x</button>
+        </li>
+        <li>
+            <button id="zoom20x">20x</button>
+        </li>
+        <li>
+            <button id="zoom40x">40x</button>
+        </li>
+    </ul>
 
-
-        
-        <div id="footer">
-            <li><button id="currentZoomLevel">365.20x</button></li>
-            <li><button id="zoom4x">4x</button></li>
-            <li><button id="zoom10x">10x</button></li>
-            <li><button id="zoom20x">20x</button></li>
-            <li><button id="zoom40x">40x</button></li>
-            <li><button id="H281">H281</button></li>
-        </div>
-        </body>
+    <ul id="DrawingTools">
+        <li>
+            <button class="material-icons" title="Enable Dragging" id="DrawingDragging">open_with</button>
+        </li>
+        <li>
+            <button id="CancelDrawing"></button>
+        </li>
+    </ul>
+</div>
+</body>
