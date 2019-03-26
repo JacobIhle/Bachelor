@@ -289,6 +289,14 @@ function jacobisGUIstuff() {
     });
 
     $("#Dragging").click(function () {
+        if ($("#Dragging").attr("title") === "Enable Dragging") {
+            $("#Dragging").attr("title", "Disable Dragging");
+            $("#Dragging").css("background-color", "#757575");
+        } else if ($("#Dragging").attr("Title") === "Disable Dragging") {
+            $("#Dragging").attr("title", "Enable Dragging");
+            $("#Dragging").css("background-color", "");
+        }
+    });
         toggleDrawing();
     });
 
