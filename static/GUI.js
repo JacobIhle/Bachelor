@@ -87,7 +87,7 @@ function open_slide(url) {
             //TODO REFACTOR
             //this + draw saved drawing objects
             console.log("redraw");
-            overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
+            overlay.context2d().strokeStyle = "rgba(24,255,255,1)";
             overlay.context2d().lineWidth = 200/viewer.viewport.getZoom(true);
 
             if(canvasObjects.length > 1) {
