@@ -12,6 +12,7 @@ import binascii
 import sys
 import os
 import xml.etree.ElementTree as ET
+import traceback
 from QueueDictClass import OurDataStructure
 
 nestedImageList = {}
@@ -78,6 +79,7 @@ def PostXML(foldername, filename):
         xmlTree = ET.ElementTree(xmlThing)
         xmlTree.write("//home/prosjekt/Histology/thomaso/"+file)
     except:
+        traceback.print_exc()
         return "", 500
     return "", 200
 
