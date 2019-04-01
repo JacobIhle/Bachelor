@@ -355,7 +355,7 @@ function sendXMLtoServer(xml, action) {
         }
     };
 
-    xmlHttp.open("POST", "postxml/"+currentImage.substring(0, currentImage.length - 4)+".xml");
+    xmlHttp.open("POST", "postxml/"+currentImage.substring(0, currentImage.length - 4));
     xmlHttp.send(jQuery.parseXML(xml));
 }
 
