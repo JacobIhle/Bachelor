@@ -1,6 +1,6 @@
 # LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from flask import Flask, send_file, render_template, redirect, request, abort, session, url_for, make_response
+from flask import Flask, send_file, render_template, redirect, request, abort, session, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from openslide.deepzoom import DeepZoomGenerator
 from flask_sqlalchemy import SQLAlchemy
@@ -83,7 +83,16 @@ def PostXML(foldername, filename):
         return "", 500
     return "", 200
 
-  
+
+@app.route('/getxml/<foldername>/<filename>')
+@login_required
+def GetXML(foldername, filename):
+    path = "//home/prosjekt/Histology/thomaso/"+filename
+    if os.path.isfile(path):
+        return send_from_directory(path)
+    return "", 500
+
+
 #TODO
 #FOR RUNNING ON UNIX SERVER
 def GetAvailableImages():

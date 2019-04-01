@@ -52,10 +52,9 @@ function addNonViewerHandlers() {
         currentImage = id.replace(new RegExp("{space}", "g"), " ");
         imageUrl = "https://histology.ux.uis.no/app/" + currentImage;
 
-
         open_slide(imageUrl);
         addViewerHandlers();
-        $("#filename").text(name.split("/")[1]);
+        getXMLfromServer();
     })
 }
 
@@ -277,7 +276,7 @@ function jacobisGUIstuff() {
                 //save data to xml file
                 var drawing = new Drawing(name, canvasObjects, tags);
                 drawings.push(drawing);
-                sendXMLtoServer(generateXML([drawing]))
+                sendXMLtoServer(generateXML([drawing]), 0)
             }
             canvasObjects = [];
             toggleDrawing();
@@ -337,25 +336,39 @@ function jacobisGUIstuff() {
         reader.onload = readerEvent => {
             var content = readerEvent.target.result;
 
-            sendXMLtoServer(content)
+            sendXMLtoServer(content, 1)
         }
     })
 }
 
 
-function sendXMLtoServer(xml) {
+function sendXMLtoServer(xml, action) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
         if(this.readyState == 4 && this.status == 200){
-            XMLtoDrawing(xml)
+            if(action === 1) {
+                XMLtoDrawing(xml)
+            }
         }
         else if(this.readyState == 4){
             alert("Something went wrong, please try again.")
         }
     };
 
-    xmlHttp.open("POST", "postxml/"+currentImage);
+    xmlHttp.open("POST", "postxml/"+currentImage.substring(0, currentImage.length - 4)+".xml");
     xmlHttp.send(jQuery.parseXML(xml));
+}
+
+
+function getXMLfromServer() {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+        if(this.readyState == 4 && this.status == 200){
+            XMLtoDrawing(xmlHttp.responseXML)
+        }
+    };
+    xmlHttp.open("GET", "getxml/"+currentImage.substring(0, currentImage.length - 4)+".xml");
+    xmlHttp.send();
 }
 
 
