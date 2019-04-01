@@ -67,9 +67,9 @@ def GetTile(dummy, dummy2, level, tile):
     return HelperClass.serve_pil_image(img)
 
 
-@app.route('/postxml/<filename>')
+@app.route('/postxml/<foldername>/<filename>')
 @login_required
-def PostXML(filename):
+def PostXML(foldername, filename):
     return "", 200
 
   
