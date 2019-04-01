@@ -337,7 +337,6 @@ function jacobisGUIstuff() {
 
         reader.onload = readerEvent => {
             var content = readerEvent.target.result;
-            var xml = jQuery.parseXML(content);
 
             sendXMLtoServer(content)
         }
@@ -351,10 +350,13 @@ function sendXMLtoServer(xml) {
         if(this.readyState == 4 && this.status == 200){
             XMLtoDrawing(xml)
         }
+        else if(this.readyState == 4){
+            alert("Something went wrong, please try again.")
+        }
     };
 
     xmlHttp.open("POST", "postxml/"+currentImage);
-    xmlHttp.send(xml);
+    xmlHttp.send(jQuery.parseXML(xml));
 }
 
 

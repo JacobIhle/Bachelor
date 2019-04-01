@@ -94,6 +94,7 @@ def favicon():
 def isAuthenticated():
     if not current_user.is_authenticated:
         return "", 401
+    return "", 200
 
 
 def GetNumericTileCoordinatesFromString(tile):
