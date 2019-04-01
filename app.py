@@ -87,7 +87,7 @@ def PostXML(foldername, filename):
 @app.route('/getxml/<foldername>/<filename>')
 @login_required
 def GetXML(foldername, filename):
-    folder = "//home/prosjekt/Histology/thomaso/"+filename
+    folder = "//home/prosjekt/Histology/thomaso/"
     foo = filename.replace("%20", " ")
     if os.path.isfile(folder+foo):
         return send_from_directory(folder, foo)
