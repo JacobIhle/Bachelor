@@ -113,10 +113,6 @@ function addOverlays() {
         clearBeforeRedraw:true
     });
 
-
-    $(window).resize(function() {
-        overlay.resize();
-    });
 }
 
 function addNonViewerHandlers() {
@@ -135,6 +131,10 @@ function addNonViewerHandlers() {
 function open_slide(url) {
     drawings = [];
     viewer.open(url);
+
+    $(window).resize(function() {
+        overlay.resize();
+    });
 }
 
 function addViewerHandlers() {
