@@ -316,7 +316,7 @@ function jacobisGUIstuff() {
             overlay._updateCanvas();
             toggleDrawing();
             $("#Drawing").html("New Drawing");
-
+            $("#DrawingTools").toggle();
         }
     });
 
