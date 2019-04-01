@@ -89,7 +89,8 @@ def PostXML(foldername, filename):
 def GetXML(foldername, filename):
     folder = "//home/prosjekt/Histology/thomaso/"+filename
     if os.path.isfile(folder+filename):
-        return send_from_directory(folder, filename)
+        foo = filename.replace("%20", " ")
+        return send_from_directory(folder, foo)
     return "", 500
 
 
