@@ -162,16 +162,6 @@ function addViewerHandlers() {
         viewer.viewport.zoomTo(0.6);
     });
 
-    viewer.addHandler("canvas-click", function (e) {
-        var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
-        var posview = viewer.viewport.imageToWindowCoordinates(pos);
-        var posviewport = viewer.viewport.imageToViewportCoordinates(pos);
-        console.log(e.position);
-        console.log(pos);
-        console.log(posview);
-        console.log(posviewport);
-    });
-
     viewer.addHandler("open-failed", function () {
         fetch("https://histology.ux.uis.no/authenticated")
             .then(function (response) {
@@ -280,10 +270,14 @@ function jacobisGUIstuff() {
         }else if($(this).text() === "Save Drawing"){
             //TODO
             //prompt user for name and tags
+            var name = "";
+            var tags = [];
             if(canvasObjects.length > 1) {
                 //add to database
                 //save data to xml file
-                drawings.push(new Drawing("name", canvasObjects, ["tag1", "tag2"]));
+                var drawing = new Drawing(name, canvasObjects, tags);
+                drawings.push(drawing);
+                sendXMLtoServer(generateXML([drawing]))
             }
             canvasObjects = [];
             toggleDrawing();
@@ -322,7 +316,7 @@ function jacobisGUIstuff() {
 
     $("#DownloadXML").click(function () {
         if(currentImage) {
-            var xml = generateXML();
+            var xml = generateXML(drawings);
             download(currentImage.substring(0, currentImage.length - 4)+".xml", xml);
         }else{
             alert("No image selected");
@@ -397,14 +391,14 @@ function toggleDrawing() {
     }
 }
 
-function generateXML() {
+function generateXML(listOfDrawings) {
     var xml = document.implementation.createDocument("", "", null);
 
     var annotations = xml.createElement("Annotations");
     var annotation = xml.createElement("Annotation");
     var regions = xml.createElement("Regions");
 
-    drawings.forEach(function (drawing) {
+    listOfDrawings.forEach(function (drawing) {
         var points = drawing.points;
         var region = xml.createElement("Region");
         var vertices = xml.createElement("Vertices");
