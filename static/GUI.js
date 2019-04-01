@@ -374,6 +374,8 @@ function XMLtoDrawing(xml) {
             console.log({x: x, y: y});
             points.push({x: x, y: y});
         });
+        console.log(vertices);
+        console.log(regions);
         console.log(points);
         drawings.push(new Drawing(name, points, tags));
     })
