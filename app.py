@@ -66,6 +66,12 @@ def GetTile(dummy, dummy2, level, tile):
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
     return HelperClass.serve_pil_image(img)
 
+
+@app.route('/postxml/<filename>')
+@login_required
+def PostXML(filename):
+    return "", 200
+
   
 #TODO
 #FOR RUNNING ON UNIX SERVER

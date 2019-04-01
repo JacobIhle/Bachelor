@@ -1,5 +1,6 @@
 var viewer;
 var imageUrl;
+var currentImage;
 var overlay;
 var i = 0;
 var aborts = 0;
@@ -45,16 +46,11 @@ function initiallizeCanvas() {
 
 
 function addNonViewerHandlers() {
-    $("#H281").on("click", function () {
-        imageUrl = "scnImages/H281.scn";
-        addViewerHandlers();
-        open_slide(imageUrl);
-    });
 
     $(".imageLinks").on("click", function () {
         var id = this.id;
-        var name = id.replace(new RegExp("{space}", "g"), " ");
-        imageUrl = "https://histology.ux.uis.no/app/" + name;
+        currentImage = id.replace(new RegExp("{space}", "g"), " ");
+        imageUrl = "https://histology.ux.uis.no/app/" + currentImage;
 
 
         open_slide(imageUrl);
@@ -328,7 +324,58 @@ function jacobisGUIstuff() {
         var xml = generateXML();
         download("file.xml", xml);
     });
+    
+    $("#UploadXML").click(function () {
+        $("#FileInput").trigger("click");
+    });
+    
+    $("#FileInput").on("change", function (e) {
+        var file = e.target.files[0];
+
+        var reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+
+        reader.onload = readerEvent => {
+            var content = readerEvent.target.result;
+            var xml = jQuery.parseXML(content);
+
+            sendXMLtoServer(content)
+        }
+    })
 }
+
+
+function sendXMLtoServer(xml) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+        if(this.readyState == 4 && this.status == 200){
+            XMLtoDrawing(xml)
+        }
+    };
+
+    xmlHttp.open("POST", "postxml/"+currentImage);
+    xmlHttp.send(xml);
+}
+
+
+function XMLtoDrawing(xml) {
+    var regions = xml.find("Region");
+    regions.each(function (region) {
+        //TODO add name and tags to xml
+        var name = "";
+        var points = [];
+        var tags = [];
+        var vertices = regions.find("Vertex");
+
+        vertices.each(function (vertex) {
+            var x = vertex.find("X");
+            var Y = vertex.find("Y");
+            points.push({x: x, y: y});
+        });
+        drawings.push(new Drawing(name, points, tags));
+    })
+}
+
 
 function toggleDrawing() {
     if(drawingEnabled){
