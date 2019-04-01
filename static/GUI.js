@@ -18,9 +18,9 @@ give finished drawing name and tags and description
  */
 
 $(document).ready(function () {
+    addNonViewerHandlers();
     jacobisGUIstuff();
     initiallizeCanvas();
-    addNonViewerHandlers();
 });
 
 function initiallizeCanvas() {
@@ -339,7 +339,12 @@ function jacobisGUIstuff() {
 
 function cancelDrawing() {
     canvasObjects = [];
-    overlay._updateCanvas();
+    try {
+        overlay._updateCanvas();
+    }
+    catch (e) {
+        console.log("oops");
+    }
     if(drawingEnabled){toggleDrawing();}
     $("#Drawing").html("New Drawing");
     $("#DrawingTools").hide();
