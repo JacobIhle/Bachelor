@@ -42,31 +42,12 @@ function initiallizeCanvas() {
         navigatorId: "",
         showNavigator: true,
     });
+
+    addOverlays();
+    addViewerHandlers();
 }
 
-
-function addNonViewerHandlers() {
-
-    $(".imageLinks").on("click", function () {
-        if(drawingEnabled){
-            $("#CancelDrawing").trigger("click");
-        }
-        var id = this.id;
-        currentImage = id.replace(new RegExp("{space}", "g"), " ");
-        imageUrl = "https://histology.ux.uis.no/app/" + currentImage;
-
-        open_slide(imageUrl);
-        addViewerHandlers();
-        getXMLfromServer();
-    })
-}
-
-function open_slide(url) {
-
-    drawings = [];
-
-    viewer.open(url);
-
+function addOverlays() {
     viewer.scalebar({
         stayInsideImage: false,
         backgroundColor: "#616161",
@@ -136,6 +117,26 @@ function open_slide(url) {
     $(window).resize(function() {
         overlay.resize();
     });
+}
+
+function addNonViewerHandlers() {
+
+    $(".imageLinks").on("click", function () {
+        if(drawingEnabled){
+            $("#CancelDrawing").trigger("click");
+        }
+        var id = this.id;
+        currentImage = id.replace(new RegExp("{space}", "g"), " ");
+        imageUrl = "https://histology.ux.uis.no/app/" + currentImage;
+
+        open_slide(imageUrl);
+        getXMLfromServer();
+    })
+}
+
+function open_slide(url) {
+    drawings = [];
+    viewer.open(url);
 }
 
 function addViewerHandlers() {
