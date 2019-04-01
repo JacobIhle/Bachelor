@@ -376,7 +376,7 @@ function XMLtoDrawing(xml) {
         });
         console.log(vertices);
         console.log(regions);
-        console.log(points);
+        console.log(region);
         drawings.push(new Drawing(name, points, tags));
     })
 }
