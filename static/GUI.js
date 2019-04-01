@@ -18,9 +18,9 @@ give finished drawing name and tags and description
  */
 
 $(document).ready(function () {
-    addNonViewerHandlers();
     jacobisGUIstuff();
     initiallizeCanvas();
+    addNonViewerHandlers();
 });
 
 function initiallizeCanvas() {
