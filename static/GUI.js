@@ -366,7 +366,7 @@ function XMLtoDrawing(xml) {
         var name = "";
         var points = [];
         var tags = [];
-        var vertices = $(region).find("Vertex");
+        var vertices = $(region).find("vertex");
 
         vertices.each(function (vertex) {
             var x = $(vertex).attr("X");
