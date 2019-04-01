@@ -73,7 +73,7 @@ def GetTile(dummy, dummy2, level, tile):
 @login_required
 def PostXML(foldername, filename):
     try:
-        file = foldername+"/"+filename+".xml"
+        file = filename+".xml"
         xml = request.data.decode("utf-8")
         xmlThing = ET.fromstring(xml)
         xmlTree = ET.ElementTree(xmlThing)
