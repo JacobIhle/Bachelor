@@ -321,8 +321,12 @@ function jacobisGUIstuff() {
     });
 
     $("#DownloadXML").click(function () {
-        var xml = generateXML();
-        download("file.xml", xml);
+        if(currentImage) {
+            var xml = generateXML();
+            download(currentImage, xml);
+        }else{
+            alert("No image selected");
+        }
     });
     
     $("#UploadXML").click(function () {
