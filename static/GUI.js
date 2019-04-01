@@ -309,6 +309,8 @@ function jacobisGUIstuff() {
             if(drawingEnabled){toggleDrawing();}
             $("#Drawing").html("New Drawing");
             $("#DrawingTools").toggle();
+            $("#Dragging").attr("title", "Enable Dragging");
+            $("#Dragging").css("background-color", "");
         }
     });
 
