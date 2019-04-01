@@ -88,8 +88,8 @@ def PostXML(foldername, filename):
 @login_required
 def GetXML(foldername, filename):
     folder = "//home/prosjekt/Histology/thomaso/"+filename
-    if os.path.isfile(folder+filename):
-        foo = filename.replace("%20", " ")
+    foo = filename.replace("%20", " ")
+    if os.path.isfile(folder+foo):
         return send_from_directory(folder, foo)
     return "", 500
 
