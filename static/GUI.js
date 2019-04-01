@@ -359,17 +359,18 @@ function sendXMLtoServer(xml) {
 
 
 function XMLtoDrawing(xml) {
-    var regions = xml.find("Region");
+    var regions = $(xml).find("Region");
+
     regions.each(function (region) {
         //TODO add name and tags to xml
         var name = "";
         var points = [];
         var tags = [];
-        var vertices = regions.find("Vertex");
+        var vertices = $(region).find("Vertex");
 
         vertices.each(function (vertex) {
-            var x = vertex.find("X");
-            var Y = vertex.find("Y");
+            var x = $(vertex).find("X");
+            var y = $(vertex).find("Y");
             points.push({x: x, y: y});
         });
         drawings.push(new Drawing(name, points, tags));
