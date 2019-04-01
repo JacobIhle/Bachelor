@@ -369,10 +369,12 @@ function XMLtoDrawing(xml) {
         var vertices = $(region).find("Vertex");
 
         vertices.each(function (vertex) {
-            var x = $(vertex).find("X");
-            var y = $(vertex).find("Y");
+            var x = $(vertex).attr("X");
+            var y = $(vertex).attr("Y");
+            console.log({x: x, y: y});
             points.push({x: x, y: y});
         });
+        console.log(points);
         drawings.push(new Drawing(name, points, tags));
     })
 }
