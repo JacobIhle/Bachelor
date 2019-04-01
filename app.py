@@ -11,6 +11,7 @@ import imageList
 import binascii
 import sys
 import os
+import xml.etree.ElementTree as ET
 from QueueDictClass import OurDataStructure
 
 nestedImageList = {}
@@ -70,6 +71,14 @@ def GetTile(dummy, dummy2, level, tile):
 @app.route('/postxml/<foldername>/<filename>', methods=["POST"])
 @login_required
 def PostXML(foldername, filename):
+    try:
+        file = foldername+"/"+filename+".xml"
+        xml = request.data.decode("utf-8")
+        xmlThing = ET.fromstring(xml)
+        xmlTree = ET.ElementTree(xmlThing)
+        xmlTree.write("//home/prosjekt/Histology/thomaso/"+file)
+    except:
+        return "", 500
     return "", 200
 
   

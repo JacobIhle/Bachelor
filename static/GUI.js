@@ -323,7 +323,7 @@ function jacobisGUIstuff() {
     $("#DownloadXML").click(function () {
         if(currentImage) {
             var xml = generateXML();
-            download(currentImage, xml);
+            download(currentImage.substring(0, currentImage.length - 4)+".xml", xml);
         }else{
             alert("No image selected");
         }
@@ -335,7 +335,8 @@ function jacobisGUIstuff() {
     
     $("#FileInput").on("change", function (e) {
         var file = e.target.files[0];
-
+        console.log(file.name);
+        console.log(file);
         var reader = new FileReader();
         reader.readAsText(file, "UTF-8");
 
