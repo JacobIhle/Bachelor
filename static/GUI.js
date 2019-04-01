@@ -48,6 +48,9 @@ function initiallizeCanvas() {
 function addNonViewerHandlers() {
 
     $(".imageLinks").on("click", function () {
+        if(drawingEnabled){
+            $("#CancelDrawing").trigger("click");
+        }
         var id = this.id;
         currentImage = id.replace(new RegExp("{space}", "g"), " ");
         imageUrl = "https://histology.ux.uis.no/app/" + currentImage;
@@ -235,10 +238,6 @@ function jacobisGUIstuff() {
         }
     });
 
-    $("#H281").click(function () {
-        $("#filename").text("H281-03");
-    });
-
     $("#imageList").click(function () {
         $("#imageExplorer").toggle();
     });
@@ -307,7 +306,7 @@ function jacobisGUIstuff() {
         if(confirm("Confirm Cancellation")){
             canvasObjects = [];
             overlay._updateCanvas();
-            toggleDrawing();
+            if(drawingEnabled){toggleDrawing();}
             $("#Drawing").html("New Drawing");
             $("#DrawingTools").toggle();
         }
