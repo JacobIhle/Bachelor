@@ -122,9 +122,7 @@ function addOverlays() {
 function addNonViewerHandlers() {
 
     $(".imageLinks").on("click", function () {
-        if(drawingEnabled){
-            $("#CancelDrawing").trigger("click");
-        }
+        cancelDrawing();
         var id = this.id;
         currentImage = id.replace(new RegExp("{space}", "g"), " ");
         imageUrl = "https://histology.ux.uis.no/app/" + currentImage;
@@ -259,8 +257,9 @@ function jacobisGUIstuff() {
 
 
     $("#Drawing").click(function () {
-        $("#DrawingTools").toggle();
+
         if ($(this).text() === "New Drawing"){
+            $("#DrawingTools").show();
             toggleDrawing();
             $("#Drawing").html("Save Drawing");
             console.log("new");
@@ -269,6 +268,7 @@ function jacobisGUIstuff() {
         }else if($(this).text() === "Save Drawing"){
             //TODO
             //prompt user for name and tags
+            $("#DrawingTools").hide();
             var name = "";
             var tags = [];
             if(canvasObjects.length > 1) {
@@ -305,13 +305,7 @@ function jacobisGUIstuff() {
 
     $("#CancelDrawing").click(function () {
         if(confirm("Confirm Cancellation")){
-            canvasObjects = [];
-            overlay._updateCanvas();
-            if(drawingEnabled){toggleDrawing();}
-            $("#Drawing").html("New Drawing");
-            $("#DrawingTools").toggle();
-            $("#Dragging").attr("title", "Enable Dragging");
-            $("#Dragging").css("background-color", "");
+            cancelDrawing();
         }
     });
 
@@ -343,6 +337,15 @@ function jacobisGUIstuff() {
     })
 }
 
+function cancelDrawing() {
+    canvasObjects = [];
+    overlay._updateCanvas();
+    if(drawingEnabled){toggleDrawing();}
+    $("#Drawing").html("New Drawing");
+    $("#DrawingTools").hide();
+    $("#Dragging").attr("title", "Enable Dragging");
+    $("#Dragging").css("background-color", "");
+}
 
 function sendXMLtoServer(xml, action) {
     var xmlHttp = new XMLHttpRequest();
