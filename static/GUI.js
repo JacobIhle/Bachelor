@@ -65,50 +65,51 @@ function addOverlays() {
         onRedraw:function(){
             //TODO REFACTOR
             //this + draw saved drawing objects
-            console.log("redraw");
-            overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
-            overlay.context2d().fillStyle = "rgba(255,0,0,1)";
-            overlay.context2d().lineWidth = 200/viewer.viewport.getZoom(true);
+            if(currentImage) {
+                console.log("redraw");
+                overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
+                overlay.context2d().fillStyle = "rgba(255,0,0,1)";
+                overlay.context2d().lineWidth = 200 / viewer.viewport.getZoom(true);
 
-            if(canvasObjects.length > 0) {
-                if(canvasObjects.length === 1){
-                    overlay.context2d().beginPath();
-                    overlay.context2d().arc(canvasObjects[0].x, canvasObjects[0].y,
-                        350/viewer.viewport.getZoom(true), 0, 2*Math.PI);
-                    overlay.context2d().fill();
-                    overlay.context2d().closePath();
-                }else {
-                    overlay.context2d().beginPath();
-                    for (var i = 0; i < canvasObjects.length; i++) {
-                        if (i === 0) {
-                            overlay.context2d().moveTo(canvasObjects[i].x, canvasObjects[i].y);
-                        } else if (i === canvasObjects.length - 1) {
-                            overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
-                            overlay.context2d().stroke();
-                            overlay.context2d().closePath();
-                        } else {
-                            overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
+                if (canvasObjects.length > 0) {
+                    if (canvasObjects.length === 1) {
+                        overlay.context2d().beginPath();
+                        overlay.context2d().arc(canvasObjects[0].x, canvasObjects[0].y,
+                            350 / viewer.viewport.getZoom(true), 0, 2 * Math.PI);
+                        overlay.context2d().fill();
+                        overlay.context2d().closePath();
+                    } else {
+                        overlay.context2d().beginPath();
+                        for (var i = 0; i < canvasObjects.length; i++) {
+                            if (i === 0) {
+                                overlay.context2d().moveTo(canvasObjects[i].x, canvasObjects[i].y);
+                            } else if (i === canvasObjects.length - 1) {
+                                overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
+                                overlay.context2d().stroke();
+                                overlay.context2d().closePath();
+                            } else {
+                                overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
+                            }
                         }
                     }
                 }
-            }
 
-            drawings.forEach(function (element) {
-                var points = element.points;
-                overlay.context2d().beginPath();
-                for(var i=0; i<points.length; i++){
-                    if(i === 0){
-                        overlay.context2d().moveTo(points[i].x, points[i].y);
-                    }else if(i === points.length-1){
-                        overlay.context2d().lineTo(points[i].x, points[i].y);
-                        overlay.context2d().stroke();
-                        overlay.context2d().closePath();
-                    }else{
-                        overlay.context2d().lineTo(points[i].x, points[i].y);
+                drawings.forEach(function (element) {
+                    var points = element.points;
+                    overlay.context2d().beginPath();
+                    for (var i = 0; i < points.length; i++) {
+                        if (i === 0) {
+                            overlay.context2d().moveTo(points[i].x, points[i].y);
+                        } else if (i === points.length - 1) {
+                            overlay.context2d().lineTo(points[i].x, points[i].y);
+                            overlay.context2d().stroke();
+                            overlay.context2d().closePath();
+                        } else {
+                            overlay.context2d().lineTo(points[i].x, points[i].y);
+                        }
                     }
-                }
-            });
-
+                });
+            }
         },
         clearBeforeRedraw:true
     });
@@ -353,20 +354,21 @@ function cancelDrawing() {
 }
 
 function sendXMLtoServer(xml, action) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
-        if(this.readyState == 4 && this.status == 200){
-            if(action === 1) {
-                XMLtoDrawing(xml)
+    if(currentImage) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                if (action === 1) {
+                    XMLtoDrawing(xml)
+                }
+            } else if (this.readyState == 4) {
+                alert("Something went wrong, please try again.")
             }
-        }
-        else if(this.readyState == 4){
-            alert("Something went wrong, please try again.")
-        }
-    };
+        };
 
-    xmlHttp.open("POST", "postxml/"+currentImage.substring(0, currentImage.length - 4));
-    xmlHttp.send(jQuery.parseXML(xml));
+        xmlHttp.open("POST", "postxml/" + currentImage.substring(0, currentImage.length - 4));
+        xmlHttp.send(jQuery.parseXML(xml));
+    }
 }
 
 
