@@ -335,7 +335,27 @@ function jacobisGUIstuff() {
 
             sendXMLtoServer(content, 1)
         }
-    })
+    });
+    
+    $("#searchField").click(function () {
+        $(".folder").show();
+        $(".imageLinks").show();
+    });
+
+
+    $("#searchField").on("keyup", function () {
+        var value = $(".imageLinks").toArray();
+        var searchValue = $(this).val();
+
+        value.forEach(function (element) {
+            if (!element.innerHTML.includes(searchValue)) {
+                $(element).hide();
+            }
+            if (element.innerHTML.includes(searchValue)) {
+                $(element).show();
+            }
+        });
+    });
 }
 
 function cancelDrawing() {
