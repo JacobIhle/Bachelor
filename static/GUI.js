@@ -395,7 +395,6 @@ function sendXMLtoServer(xml, action) {
                 alert("Something went wrong, please try again.")
             }
         };
-
         xmlHttp.open("POST", "postxml/" + currentImage.substring(0, currentImage.length - 4));
         xmlHttp.send(jQuery.parseXML(xml));
     }
@@ -427,23 +426,15 @@ function XMLtoDrawing(xml) {
         vertices.each(function (i, vertex) {
             var x = $(vertex).attr("X");
             var y = $(vertex).attr("Y");
-            console.log({x: x, y: y});
             points.push({x: x, y: y});
         });
-        console.log(vertices);
-        console.log(regions);
-        console.log(region);
         drawings.push(new Drawing(name, points, tags));
     })
 }
 
 
 function toggleDrawing() {
-    if(drawingEnabled){
-        drawingEnabled = false;
-    }else{
-        drawingEnabled = true;
-    }
+    (drawingEnabled) ? drawingEnabled = false : drawingEnabled = true;
 }
 
 function generateXML(listOfDrawings) {

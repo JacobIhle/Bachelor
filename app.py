@@ -76,6 +76,7 @@ def PostXML(foldername, filename):
         file = filename+".xml"
         xml = request.data.decode("utf-8")
         xmlThing = ET.fromstring(xml)
+        current_user
         xmlTree = ET.ElementTree(xmlThing)
         xmlTree.write("//home/prosjekt/Histology/thomaso/"+file)
     except:
