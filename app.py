@@ -73,12 +73,29 @@ def GetTile(dummy, dummy2, level, tile):
 @login_required
 def PostXML(foldername, filename):
     try:
-        file = filename+".xml"
+        folder = "//home/prosjekt/Histology/thomaso/"
+        file = filename + ".xml"
+        if not os.path.isfile(folder+file):
+            Annotations = ET.Element("Annotations")
+            Annotation = ET.SubElement(Annotations, "Annotation")
+            ET.SubElement(Annotation, "Regions")
+            tree = ET.ElementTree(Annotations)
+            tree.write(folder+file)
+
+        tree = ET.parse(folder+file)
+        regions = tree.getroot()[0][0]
+
         xml = request.data.decode("utf-8")
         xmlThing = ET.fromstring(xml)
-        current_user
-        xmlTree = ET.ElementTree(xmlThing)
-        xmlTree.write("//home/prosjekt/Histology/thomaso/"+file)
+
+        newRegions = xmlThing.getroot()[0][0]
+        moreRegions = newRegions.findall("Region")
+
+        for region in moreRegions:
+            regions.append(region)
+        
+        #xmlTree = ET.ElementTree(xmlThing)
+        tree.write(folder+file)
     except:
         traceback.print_exc()
         return "", 500
