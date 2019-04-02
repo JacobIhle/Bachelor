@@ -87,14 +87,14 @@ def PostXML(foldername, filename):
 
         xml = request.data.decode("utf-8")
         xmlThing = ET.fromstring(xml)
+        xmlTree = ET.ElementTree(xmlThing)
 
-        newRegions = xmlThing.getroot()[0][0]
+        newRegions = xmlTree.getroot()[0][0]
         moreRegions = newRegions.findall("Region")
 
         for region in moreRegions:
             regions.append(region)
-        
-        #xmlTree = ET.ElementTree(xmlThing)
+
         tree.write(folder+file)
     except:
         traceback.print_exc()
