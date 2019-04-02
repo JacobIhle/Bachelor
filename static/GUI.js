@@ -286,6 +286,7 @@ function jacobisGUIstuff() {
                 canvasObjects.push(canvasObjects[0]);
                 var drawing = new Drawing(name, canvasObjects, tags);
                 drawings.push(drawing);
+                overlay._updateCanvas();
                 sendXMLtoServer(generateXML([drawing]), 0)
             }
             canvasObjects = [];
