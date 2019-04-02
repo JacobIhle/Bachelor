@@ -119,14 +119,22 @@ function addOverlays() {
 function addNonViewerHandlers() {
 
     $(".imageLinks").on("click", function () {
-        cancelDrawing();
-        var id = this.id;
-        currentImage = id.replace(new RegExp("{space}", "g"), " ");
-        imageUrl = "https://histology.ux.uis.no/app/" + currentImage;
-
-        open_slide(imageUrl);
-        getXMLfromServer();
+        if(canvasObjects.length === 0) {
+            changeImage();
+        }else if(confirm("Changing image will cancel drawing, continue?")){
+            changeImage();
+        }
     })
+}
+
+function changeImage() {
+    cancelDrawing();
+    var id = this.id;
+    currentImage = id.replace(new RegExp("{space}", "g"), " ");
+    imageUrl = "https://histology.ux.uis.no/app/" + currentImage;
+
+    open_slide(imageUrl);
+    getXMLfromServer();
 }
 
 function open_slide(url) {
