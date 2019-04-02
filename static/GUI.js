@@ -283,6 +283,7 @@ function jacobisGUIstuff() {
             if(canvasObjects.length > 1) {
                 //add to database
                 //save data to xml file
+                canvasObjects.push(canvasObjects[0]);
                 var drawing = new Drawing(name, canvasObjects, tags);
                 drawings.push(drawing);
                 sendXMLtoServer(generateXML([drawing]), 0)
