@@ -466,7 +466,7 @@ function generateXML(listOfDrawings) {
     var newline = xml.createElement("br");
     newline.textContent = "\n";
     regions.appendChild(newline);
-    
+
     listOfDrawings.forEach(function (drawing) {
         var points = drawing.points;
         var region = xml.createElement("Region");
@@ -478,7 +478,6 @@ function generateXML(listOfDrawings) {
         
         points.forEach(function (point) {
             var vertex = xml.createElement("Vertex");
-            vertex.textContent = "\n";
             vertex.setAttribute("X", ""+point.x);
             vertex.setAttribute("Y", ""+point.y);
             vertex.setAttribute("Z", "0");
