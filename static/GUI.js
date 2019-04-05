@@ -464,15 +464,25 @@ function generateXML(listOfDrawings) {
     var regions = xml.createElement("Regions");
     regions.textContent = "\n";
 
-
     listOfDrawings.forEach(function (drawing) {
         var points = drawing.points;
+        var tags = drawing.tags;
+        var tagsAsString = "";
+
+        for(let i = 0; i < tags.length; i++){
+            if(i === 0){
+                tagsAsString += tags[i];
+            }else{
+                tagsAsString += "|"+tags[i];
+            }
+        }
+
         var region = xml.createElement("Region");
+        region.setAttribute("tags", tagsAsString);
+        region.textContent = "\n";
         var vertices = xml.createElement("Vertices");
         vertices.textContent = "\n";
 
-
-        
         points.forEach(function (point) {
             var vertex = xml.createElement("Vertex");
             vertex.setAttribute("X", ""+point.x);
