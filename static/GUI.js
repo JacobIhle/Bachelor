@@ -462,29 +462,24 @@ function generateXML(listOfDrawings) {
     var annotations = xml.createElement("Annotations");
     var annotation = xml.createElement("Annotation");
     var regions = xml.createElement("Regions");
+    regions.textContent = "\n";
 
-    var newline = xml.createElement("br");
-    newline.textContent = "\n";
-    regions.appendChild(newline);
 
     listOfDrawings.forEach(function (drawing) {
         var points = drawing.points;
         var region = xml.createElement("Region");
         var vertices = xml.createElement("Vertices");
+        vertices.textContent = "\n";
 
-        var newline = xml.createElement("br");
-        newline.textContent = "\n";
-        vertices.appendChild(newline);
+
         
         points.forEach(function (point) {
             var vertex = xml.createElement("Vertex");
             vertex.setAttribute("X", ""+point.x);
             vertex.setAttribute("Y", ""+point.y);
             vertex.setAttribute("Z", "0");
+            vertex.textContent = "\n";
             vertices.appendChild(vertex);
-            var newline = xml.createElement("br");
-            newline.textContent = "\n";
-            vertices.appendChild(newline);
         });
 
         region.appendChild(vertices);
