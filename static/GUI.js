@@ -460,25 +460,21 @@ function generateXML(listOfDrawings) {
     var xml = document.implementation.createDocument("", "", null);
 
     var annotations = xml.createElement("Annotations");
-    annotations.textContent = "\n";
     var annotation = xml.createElement("Annotation");
-    annotation.textContent = "\n";
     var regions = xml.createElement("Regions");
-    regions.textContent = "\n";
 
+    var newline = xml.createElement("br");
+    newline.textContent = "\n";
+    regions.appendChild(newline);
+    
     listOfDrawings.forEach(function (drawing) {
         var points = drawing.points;
         var region = xml.createElement("Region");
-        region.textContent = "\n";
         var vertices = xml.createElement("Vertices");
-        vertices.textContent = "\n";
 
-        var hidden = xml.createElement("hidden");
-        hidden.setAttribute("position", "attributes");
-        var attrib = xml.createElement("attribute");
-        attrib.setAttribute("invisible", "1");
-        attrib.textContent = "\n";
-        hidden.appendChild(attrib);
+        var newline = xml.createElement("br");
+        newline.textContent = "\n";
+        vertices.appendChild(newline);
         
         points.forEach(function (point) {
             var vertex = xml.createElement("Vertex");
@@ -486,8 +482,10 @@ function generateXML(listOfDrawings) {
             vertex.setAttribute("X", ""+point.x);
             vertex.setAttribute("Y", ""+point.y);
             vertex.setAttribute("Z", "0");
-            vertices.appendChild(hidden);
             vertices.appendChild(vertex);
+            var newline = xml.createElement("br");
+            newline.textContent = "\n";
+            vertices.appendChild(newline);
         });
 
         region.appendChild(vertices);
