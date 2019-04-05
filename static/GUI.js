@@ -474,7 +474,7 @@ function generateXML(listOfDrawings) {
             vertex.setAttribute("Y", ""+point.y);
             vertex.setAttribute("Z", "0");
             vertices.appendChild(vertex);
-            vertices.createElement("\n");
+            vertices.appendChild(xml.createElement("\n"));
         });
 
         region.appendChild(vertices);
