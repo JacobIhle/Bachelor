@@ -460,17 +460,21 @@ function generateXML(listOfDrawings) {
     var xml = document.implementation.createDocument("", "", null);
 
     var annotations = xml.createElement("Annotations");
+    annotations.textContent = "\n";
     var annotation = xml.createElement("Annotation");
+    annotation.textContent = "\n";
     var regions = xml.createElement("Regions");
+    regions.textContent = "\n";
 
     listOfDrawings.forEach(function (drawing) {
         var points = drawing.points;
         var region = xml.createElement("Region");
+        region.textContent = "\n";
         var vertices = xml.createElement("Vertices");
+        vertices.textContent = "\n";
         
         points.forEach(function (point) {
             var vertex = xml.createElement("Vertex");
-            vertex.insertAdjacentText("beforebegin", "\n");
             vertex.textContent = "\n";
             vertex.setAttribute("X", ""+point.x);
             vertex.setAttribute("Y", ""+point.y);
