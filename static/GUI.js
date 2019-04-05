@@ -470,7 +470,7 @@ function generateXML(listOfDrawings) {
         
         points.forEach(function (point) {
             var vertex = xml.createElement("Vertex");
-            vertex.insertAdjacentText("afterend", "\n");
+            vertex.insertAdjacentText("beforebegin", "\n");
             vertex.setAttribute("X", ""+point.x);
             vertex.setAttribute("Y", ""+point.y);
             vertex.setAttribute("Z", "0");
