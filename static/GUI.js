@@ -366,6 +366,25 @@ function jacobisGUIstuff() {
             }
         });
     });
+
+    $("#tagsForm").click(function () {
+        //fetch array of tags from database
+        var tags = [];
+        var selectorHtml = "<div><select>";
+
+        tags.forEach(function (tag) {
+            selectorHtml += "<option>"+tag+"</option>";
+        });
+        selectorHtml += "</select><button class='selectButtons'></button></div>";
+        $("#tagSelector").append(selectorHtml);
+
+        $(".selectButtons").click(function () {
+            $(this).parent().remove();
+        });
+
+    });
+
+
 }
 
 function cancelDrawing() {
@@ -455,6 +474,7 @@ function generateXML(listOfDrawings) {
             vertex.setAttribute("Y", ""+point.y);
             vertex.setAttribute("Z", "0");
             vertices.appendChild(vertex);
+            vertices.createElement("\n");
         });
 
         region.appendChild(vertices);
