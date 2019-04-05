@@ -476,8 +476,8 @@ function generateXML(listOfDrawings) {
         var hidden = xml.createElement("hidden");
         hidden.setAttribute("position", "attributes");
         var attrib = xml.createElement("attribute");
-        attrib.setAttribute("name", "invisible");
-        attrib.textContent = 1;
+        attrib.setAttribute("invisible", "1");
+        attrib.textContent = "\n";
         hidden.appendChild(attrib);
         
         points.forEach(function (point) {
