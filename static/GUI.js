@@ -472,6 +472,13 @@ function generateXML(listOfDrawings) {
         region.textContent = "\n";
         var vertices = xml.createElement("Vertices");
         vertices.textContent = "\n";
+
+        var hidden = xml.createElement("hidden");
+        hidden.setAttribute("position", "attributes");
+        var attrib = xml.createElement("attribute");
+        attrib.setAttribute("name", "invisible");
+        attrib.textContent = 1;
+        hidden.appendChild(attrib);
         
         points.forEach(function (point) {
             var vertex = xml.createElement("Vertex");
@@ -479,6 +486,7 @@ function generateXML(listOfDrawings) {
             vertex.setAttribute("X", ""+point.x);
             vertex.setAttribute("Y", ""+point.y);
             vertex.setAttribute("Z", "0");
+            vertices.appendChild(hidden);
             vertices.appendChild(vertex);
         });
 
