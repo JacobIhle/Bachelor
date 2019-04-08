@@ -1,19 +1,22 @@
 # LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask import Flask, send_file, render_template, redirect, request, abort, session, send_from_directory
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from openslide.deepzoom import DeepZoomGenerator
-from flask_sqlalchemy import SQLAlchemy
-import customLogger
-import openslide
-import HelperClass
-import imageList
-import binascii
-import sys
-import os
-import xml.etree.ElementTree as ET
-import traceback
 from QueueDictClass import OurDataStructure
+from flask_sqlalchemy import SQLAlchemy
+import xml.etree.ElementTree as ET
+import customLogger
+import HelperClass
+import openslide
+import imageList
+import traceback
+import binascii
+import json
+import os
+
+
+
 
 nestedImageList = {}
 imagePathLookupTable = {}
@@ -129,6 +132,16 @@ def favicon():
     return send_file("static/images/favicon.ico", mimetype="image/jpeg")
 
 
+@app.route("/updateTags", methods=["GET", "POST"])
+def submitTags():
+    tuppletags = Tags.query.with_entities(Tags.Name)
+    tags = {"tags": []}
+    for tag in tuppletags:
+        tags["tags"].append(tag[0])
+
+    return json.dumps(tags), 200
+
+
 @app.route('/authenticated')
 def isAuthenticated():
     if not current_user.is_authenticated:
@@ -235,6 +248,13 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+
+class Tags(db.Model):
+    Name = db.Column("Name", db.String, primary_key=True)
+
+    def __init__(self, Name):
+        self.Name = Name
 
 
 if __name__ == '__main__':

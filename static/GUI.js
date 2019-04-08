@@ -6,7 +6,9 @@ var i = 0;
 var aborts = 0;
 var canvasObjects = [];
 var drawings = [];
+var allTags = [];
 var drawingEnabled = false;
+var finishingDrawing = false;
 
 //TODO
 /*
@@ -266,34 +268,59 @@ function jacobisGUIstuff() {
 
 
     $("#Drawing").click(function () {
+        if(!finishingDrawing) {
+            if ($(this).text() === "New Drawing") {
+                $("#DrawingTools").show();
+                toggleDrawing();
+                $("#Drawing").html("Save Drawing");
+                console.log("new");
 
-        if ($(this).text() === "New Drawing"){
-            $("#DrawingTools").show();
-            toggleDrawing();
-            $("#Drawing").html("Save Drawing");
-            console.log("new");
 
+            } else if ($(this).text() === "Save Drawing") {
+                finishingDrawing = true;
+                $(this).removeClass("drawingHover");
+                //TODO
+                //updateTags() create this
+                //generateTagSelectorWindow()
+                //new save drawing structure:
 
-        }else if($(this).text() === "Save Drawing"){
-            //TODO
-            //prompt user for name and tags
-            $("#DrawingTools").hide();
-            var name = "";
-            var tags = [];
-            if(canvasObjects.length > 1) {
-                //add to database
-                //save data to xml file
-                canvasObjects.push(canvasObjects[0]);
-                var drawing = new Drawing(name, canvasObjects, tags);
-                drawings.push(drawing);
-                overlay._updateCanvas();
-                sendXMLtoServer(generateXML([drawing]), 0)
+                $("#DrawingTools").hide();
+                if (canvasObjects.length > 1) {
+                    canvasObjects.push(canvasObjects[0]); //snap to start
+                }
+                toggleDrawing();
             }
-            canvasObjects = [];
-            toggleDrawing();
-            $("#Drawing").html("New Drawing");
-            console.log("save");
         }
+    });
+
+    $("#tagSaveSubmit").on("click", function () {
+        var name = $("#tagName").val();
+
+        var tags = [];
+        $("#tagsForm select").each(function () {
+            tags.push($(this).val())
+        });
+
+        if(canvasObjects.length > 1) {
+            canvasObjects.push(canvasObjects[0]);
+            var drawing = new Drawing(name, canvasObjects, tags);
+            drawings.push(drawing);
+            overlay._updateCanvas();
+            sendXMLtoServer(generateXML([drawing]), 0)
+        }
+        canvasObjects = [];
+        $("#Drawing").html("New Drawing");
+
+        finishingDrawing = false;
+        $("#Drawing").addClass("drawingHover");
+    });
+
+    $("#tagSaveCancel").on("click", function () {
+        //hide the name, tag display thingie
+        $("#DrawingTools").show();
+        finishingDrawing = false;
+        $("#Drawing").addClass("drawingHover");
+        toggleDrawing();
     });
 
     $("#Dragging").click(function () {
@@ -366,25 +393,30 @@ function jacobisGUIstuff() {
             }
         });
     });
+}
 
-    $("#tagsForm").click(function () {
-        //fetch array of tags from database
-        var tags = [];
-        var selectorHtml = "<div><select>";
-
-        tags.forEach(function (tag) {
-            selectorHtml += "<option>"+tag+"</option>";
+function updateAllTags() {
+    fetch("http://127.0.0.1:5000/updateTags")
+        .then(function (respons) {
+            return respons.json();
+        })
+        .then(function (data) {
+            allTags = data["tags"];
         });
-        selectorHtml += "</select><button class='selectButtons'></button></div>";
-        $("#tagSelector").append(selectorHtml);
+}
 
-        $(".selectButtons").click(function () {
-            $(this).parent().remove();
-        });
+function generateTagSelector() {
+    var selectorHtml = "<div><select>";
 
+    allTags.forEach(function (tag) {
+        selectorHtml += "<option>"+tag+"</option>";
     });
+    selectorHtml += "</select><button class='deleteSelect'></button></div>";
+    $("#tagSelector").append(selectorHtml);
 
-
+    $(".deleteSelect").click(function () {
+        $(this).parent().remove();
+    });
 }
 
 function cancelDrawing() {
@@ -467,6 +499,7 @@ function generateXML(listOfDrawings) {
     listOfDrawings.forEach(function (drawing) {
         var points = drawing.points;
         var tags = drawing.tags;
+        var name = drawing.name;
         var tagsAsString = "";
 
         for(let i = 0; i < tags.length; i++){
@@ -479,6 +512,7 @@ function generateXML(listOfDrawings) {
 
         var region = xml.createElement("Region");
         region.setAttribute("tags", tagsAsString);
+        region.setAttribute("name", name);
         region.textContent = "\n";
         var vertices = xml.createElement("Vertices");
         vertices.textContent = "\n";
