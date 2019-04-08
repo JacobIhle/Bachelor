@@ -280,9 +280,8 @@ function jacobisGUIstuff() {
                 finishingDrawing = true;
                 $(this).removeClass("drawingHover");
                 //TODO
-                //updateTags() create this
-                //generateTagSelectorWindow()
-                //new save drawing structure:
+                updateAllTags();
+                generateTagSelectorWindow();
 
                 $("#DrawingTools").hide();
                 if (canvasObjects.length > 1) {
