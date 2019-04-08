@@ -269,7 +269,7 @@ function jacobisGUIstuff() {
 
 
     $("#Drawing").click(function () {
-        if(!finishingDrawing) {
+        if(!finishingDrawing && currentImage) {
             if ($(this).text() === "New Drawing") {
                 $("#DrawingTools").show();
                 toggleDrawing();
@@ -288,6 +288,7 @@ function jacobisGUIstuff() {
                 $("#DrawingTools").hide();
                 if (canvasObjects.length > 1) {
                     canvasObjects.push(canvasObjects[0]); //snap to start
+                    overlay._updateCanvas();
                 }
                 toggleDrawing();
             }
