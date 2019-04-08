@@ -466,9 +466,13 @@ function generateTagSelectorWindow() {
 }
 
 async function getCurrentUser() {
+    let result;
+
     await fetch("https://histology.ux.uis.no/getCurrentUser")
         .then(data => data.text())
-        .then(text => {return text});
+        .then(text => result = text);
+
+    return result;
 }
 
 function removeTagSelector(){
