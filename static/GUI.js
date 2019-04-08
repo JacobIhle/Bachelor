@@ -69,7 +69,6 @@ function addOverlays() {
             //TODO REFACTOR
             //this + draw saved drawing objects
             if(currentImage) {
-                console.log("redraw");
                 overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
                 overlay.context2d().fillStyle = "rgba(255,0,0,1)";
                 overlay.context2d().lineWidth = 200 / viewer.viewport.getZoom(true);
@@ -471,13 +470,11 @@ function generateTagSelectorWindow() {
 }
 
 async function getCurrentUser() {
-    let response = await fetch("https://histology.ux.uis.no/getCurrentUser");
-    let data = await response.json();
-    return data;
+    return await fetch("https://histology.ux.uis.no/getCurrentUser");
 }
 
 function removeTagSelector(){
-    $("#tagSelector").css("display", "none")
+    $("#tagSelector").css("display", "none");
     $("#tagSelector").empty();
 }
 
