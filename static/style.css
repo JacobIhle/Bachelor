@@ -31,6 +31,10 @@ ul {
 header li {
     display: inline;
     float: left;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
 }
 
 #footer #ZoomLevels li {
@@ -61,20 +65,22 @@ li #searchicon:active {
     background-color: #424242;
 }
 
+
 li #Drawing {
     color: white;
     font-size: 1.4em;
     line-height: 40px;
     margin-right: 5px;
     padding: 0 5px 0 5px;
+
 }
 
-li #Drawing:hover {
+li .drawingHover:hover {
     background-color: #212121;
     border-radius: 5px;
 }
 
-li #Drawing:active {
+li .drawingHover:active {
     background-color: #424242;
 }
 
@@ -117,6 +123,31 @@ li form {
 
 #info:active {
     background-color: #424242;
+}
+
+#splitter {
+    position: relative;
+    float: right;
+    height: 40px;
+    border-right: 1px solid #212121;
+    margin: 0 3px 0 3px;
+}
+
+#Annotations {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    float: right;
+    color: white;
+    font-size: 1.6em;
+    line-height: 40px;
+    padding: 0 6px 0 6px;
+}
+
+#Annotations:hover {
+    border-radius: 5px;
+    background-color: #212121;
 }
 
 li #filename {
@@ -200,15 +231,15 @@ dd {
     height: 30px;
 }
 
+#DrawingTools {
+    display: none;
+}
+
 #DrawingTools li {
     position: relative;
     display: inline-block;
-    padding: 5px 5px 0 5px;
-    text-align: center;
-    font-size: 10px;
     float: right;
-    right: 2%;
-    height: 30px;
+    margin: 0 5px 0 5px;
 }
 
 #DrawingTools li:hover {
@@ -219,9 +250,31 @@ dd {
     background-color: #BDBDBD;
 }
 
-#Dragging{
-
+#Dragging {
+    position: relative;
+    display: inline-block;
+    padding: 0 7px 0 7px;
+    right: 2%;
+    height: 35px;
 }
+
+
+#CancelDrawing {
+    position: relative;
+    display: inline-block;
+    padding: 0 7px 0 7px;
+    right: 2%;
+    height: 35px;
+}
+
+#UndoButton {
+    position: relative;
+    display: inline-block;
+    padding: 0 7px 0 7px;
+    right: 2%;
+    height: 35px;
+}
+
 
 .expandable {
     background: #414141;
@@ -294,12 +347,111 @@ dd {
 /* Image list stuff*/
 #imageExplorer {
     position: absolute;
-    width: 30%;
+    width: 23%;
     height: calc(100% - 85px);
     z-index: 9;
     background-color: white;
     display: block;
     overflow-y: scroll;
+}
+
+#tagSelector {
+    padding: 10px;
+    position: absolute;
+    display: block;
+    width: 300px;
+    border-right: 1px solid #212121;
+    z-index: 9;
+    height: calc(100% - 105px);
+    min-width: 200px;
+    background-color: white;
+}
+
+#addSelector {
+    position: absolute;
+    top: 58px;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #212121;
+    border-radius: 2px;
+    padding: 2px;
+}
+
+#addSelector:hover {
+    border: 2px solid #212121;
+    padding: 1px;
+}
+
+.deleteButtons {
+    position: relative;
+    right: -30px;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #212121;
+    border-radius: 2px;
+    padding: 2px;
+    top: 8px;
+}
+
+.deleteButtons:hover {
+    border: 2px solid #212121;
+    padding: 1px;
+}
+
+#tagSelector #addTag {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    padding: 10px 0 10px 0;
+    left: 0;
+    border-top: 1px solid #212121;
+    height: 80px;
+}
+
+#addTagButton {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    border: 1px solid #212121;
+    padding: 2px 3px 2px 3px;
+}
+
+#addTagButton:hover {
+    border: 2px solid #212121;
+    padding: 1px 2px 1px 2px;
+}
+
+#addTagButton:active {
+    border: 1px solid #212121;
+    padding: 2px 3px 2px 3px;
+}
+
+#tagsForm {
+    width: 80%;
+}
+
+#tagsForm select {
+    position: relative;
+    display: inline-block;
+    left: 30px;
+    padding: 5px;
+    margin: 5px;
+}
+
+#saveTags {
+    position: absolute;
+    left: 35px;
+    padding: 10px;
+}
+
+#addTagForm {
+    position: absolute;
+    line-height: 30px;
+    left: 10px;
 }
 
 .folderButtons {
@@ -381,7 +533,6 @@ dd {
 .form-group input {
     margin-bottom: 5px;
 }
-
 
 .warning {
     color: red;
