@@ -75,12 +75,12 @@ li #Drawing {
 
 }
 
-li #Drawing:hover {
+li .drawingHover:hover {
     background-color: #212121;
     border-radius: 5px;
 }
 
-li #Drawing:active {
+li .drawingHover:active {
     background-color: #424242;
 }
 
