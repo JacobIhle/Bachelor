@@ -291,7 +291,8 @@ function jacobisGUIstuff() {
             }
         }
     });
-
+    // I belive this can be removed, as they dont do anything?
+    // Created in generateTagSelectorWindow now
     $("#tagSaveSubmit").on("click", function () {
         var name = $("#tagName").val();
 
@@ -313,7 +314,9 @@ function jacobisGUIstuff() {
         finishingDrawing = false;
         $("#Drawing").addClass("drawingHover");
     });
-
+    
+    // I believe this can be removed
+    // Created in generateTagSelectorWindow now
     $("#tagSaveCancel").on("click", function () {
         //hide the name, tag display thingie
         $("#DrawingTools").show();
