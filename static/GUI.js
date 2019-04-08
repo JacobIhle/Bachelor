@@ -411,9 +411,7 @@ function generateTagSelectorWindow() {
             tags.push($(this).val())
         });
 
-        var creator;
-        getCurrentUser()
-            .then(data => creator = data);
+        var creator = getCurrentUser();
 
         if(canvasObjects.length > 1) {
             canvasObjects.push(canvasObjects[0]);
@@ -468,8 +466,9 @@ function generateTagSelectorWindow() {
 }
 
 async function getCurrentUser() {
-    let response = await fetch("https://histology.ux.uis.no/getCurrentUser");
-    return response;
+    await fetch("https://histology.ux.uis.no/getCurrentUser")
+        .then(data => data.text())
+        .then(text => {return text});
 }
 
 function removeTagSelector(){
