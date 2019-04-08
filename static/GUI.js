@@ -469,7 +469,7 @@ function generateTagSelectorWindow() {
 
 async function getCurrentUser() {
     let response = await fetch("https://histology.ux.uis.no/getCurrentUser");
-    return response.json();
+    return response;
 }
 
 function removeTagSelector(){
