@@ -470,7 +470,8 @@ function getCurrentUser() {
 
     fetch("https://histology.ux.uis.no/getCurrentUser")
         .then(data => data.text())
-        .then(text => result = text.data);
+        .then(text => result = text)
+        .then(() => console.log(result));
 
     return result;
 }
