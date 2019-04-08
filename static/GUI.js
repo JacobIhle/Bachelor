@@ -431,7 +431,7 @@ function generateTagSelectorWindow() {
     
     $("#tagSaveCancel").on("click", function () {
         //hide the name, tag display thingie
-        $("#tagSelector").css("display", "none")
+        $("#tagSelector").css("display", "none");
         $("#DrawingTools").show();
         finishingDrawing = false;
         $("#Drawing").addClass("drawingHover");
@@ -466,7 +466,8 @@ function generateTagSelectorWindow() {
 }
 
 async function getCurrentUser() {
-    let data = await fetch("https://histology.ux.uis.no/getCurrentUser");
+    let response = await fetch("https://histology.ux.uis.no/getCurrentUser");
+    let data = response.json();
     return data.text();
 }
 
