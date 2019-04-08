@@ -31,6 +31,10 @@ ul {
 header li {
     display: inline;
     float: left;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
 }
 
 #footer #ZoomLevels li {
@@ -61,12 +65,14 @@ li #searchicon:active {
     background-color: #424242;
 }
 
+
 li #Drawing {
     color: white;
     font-size: 1.4em;
     line-height: 40px;
     margin-right: 5px;
     padding: 0 5px 0 5px;
+
 }
 
 li #Drawing:hover {
@@ -117,6 +123,31 @@ li form {
 
 #info:active {
     background-color: #424242;
+}
+
+#splitter{
+    position: relative;
+    float: right;
+    height: 40px;
+    border-right: 1px solid #212121;
+    margin: 0 3px 0 3px;
+}
+
+#Annotations{
+     -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    float: right;
+    color: white;
+    font-size: 1.6em;
+    line-height: 40px;
+    padding: 0 6px 0 6px;
+}
+
+#Annotations:hover {
+    border-radius: 5px;
+    background-color: #212121;
 }
 
 li #filename {
@@ -198,6 +229,50 @@ dd {
 #footer #ZoomLevels li:hover {
     background-color: #9E9E9E9E;
     height: 30px;
+}
+
+#DrawingTools{
+    display: none;
+}
+
+#DrawingTools li {
+    position: relative;
+    display: inline-block;
+    float: right;
+    margin: 0 5px 0 5px;
+}
+
+#DrawingTools li:hover {
+    background-color: #9E9E9E9E;
+}
+
+#DrawingTools li:active {
+    background-color: #BDBDBD;
+}
+
+#Dragging{
+    position: relative;
+    display: inline-block;
+    padding: 0 7px 0 7px;
+    right: 2%;
+    height: 35px;
+}
+
+
+#CancelDrawing {
+    position: relative;
+    display: inline-block;
+    padding: 0 7px 0 7px;
+    right: 2%;
+    height: 35px;
+}
+
+#UndoButton {
+    position: relative;
+    display: inline-block;
+    padding: 0 7px 0 7px;
+    right: 2%;
+    height: 35px;
 }
 
 #DrawingTools li {
@@ -294,7 +369,7 @@ dd {
 /* Image list stuff*/
 #imageExplorer {
     position: absolute;
-    width: 30%;
+    width: 23%;
     height: calc(100% - 85px);
     z-index: 9;
     background-color: white;

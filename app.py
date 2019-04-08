@@ -1,17 +1,22 @@
 # LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
+from flask import Flask, send_file, render_template, redirect, request, abort, session, send_from_directory
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from flask import Flask, send_file, render_template, redirect, request, abort, session, url_for, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from openslide.deepzoom import DeepZoomGenerator
-from flask_sqlalchemy import SQLAlchemy
-import customLogger
-import openslide
-import HelperClass
-import imageList
-import binascii
-import sys
-import os
 from QueueDictClass import OurDataStructure
+from flask_sqlalchemy import SQLAlchemy
+import xml.etree.ElementTree as ET
+import customLogger
+import HelperClass
+import openslide
+import imageList
+import traceback
+import binascii
+import json
+import os
+
+
+
 
 nestedImageList = {}
 imagePathLookupTable = {}
@@ -66,7 +71,50 @@ def GetTile(dummy, dummy2, level, tile):
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
     return HelperClass.serve_pil_image(img)
 
-  
+
+@app.route('/postxml/<foldername>/<filename>', methods=["POST"])
+@login_required
+def PostXML(foldername, filename):
+    try:
+        folder = "//home/prosjekt/Histology/thomaso/"
+        file = filename + ".xml"
+        if not os.path.isfile(folder+file):
+            Annotations = ET.Element("Annotations")
+            Annotation = ET.SubElement(Annotations, "Annotation")
+            ET.SubElement(Annotation, "Regions")
+            tree = ET.ElementTree(Annotations)
+            tree.write(folder+file)
+
+        tree = ET.parse(folder+file)
+        regions = tree.getroot()[0][0]
+
+        xml = request.data.decode("utf-8")
+        xmlThing = ET.fromstring(xml)
+        xmlTree = ET.ElementTree(xmlThing)
+
+        newRegions = xmlTree.getroot()[0][0]
+        moreRegions = newRegions.findall("Region")
+
+        for region in moreRegions:
+            regions.append(region)
+
+        tree.write(folder+file)
+    except:
+        traceback.print_exc()
+        return "", 500
+    return "", 200
+
+
+@app.route('/getxml/<foldername>/<filename>')
+@login_required
+def GetXML(foldername, filename):
+    folder = "//home/prosjekt/Histology/thomaso/"
+    foo = filename.replace("%20", " ")
+    if os.path.isfile(folder+foo):
+        return send_from_directory(folder, foo)
+    return "", 500
+
+
 #TODO
 #FOR RUNNING ON UNIX SERVER
 def GetAvailableImages():
@@ -84,10 +132,21 @@ def favicon():
     return send_file("static/images/favicon.ico", mimetype="image/jpeg")
 
 
+@app.route("/updateTags", methods=["GET", "POST"])
+def submitTags():
+    tuppletags = Tags.query.with_entities(Tags.Name)
+    tags = {"tags": []}
+    for tag in tuppletags:
+        tags["tags"].append(tag[0])
+
+    return json.dumps(tags), 200
+
+
 @app.route('/authenticated')
 def isAuthenticated():
     if not current_user.is_authenticated:
         return "", 401
+    return "", 200
 
 
 def GetNumericTileCoordinatesFromString(tile):
@@ -189,6 +248,13 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+
+class Tags(db.Model):
+    Name = db.Column("Name", db.String, primary_key=True)
+
+    def __init__(self, Name):
+        self.Name = Name
 
 
 if __name__ == '__main__':
