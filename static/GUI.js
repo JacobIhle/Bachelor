@@ -292,40 +292,7 @@ function jacobisGUIstuff() {
             }
         }
     });
-    // I belive this can be removed, as they dont do anything?
-    // Created in generateTagSelectorWindow now
-    $("#tagSaveSubmit").on("click", function () {
-        var name = $("#tagName").val();
-
-        var tags = [];
-        $("#tagsForm select").each(function () {
-            tags.push($(this).val())
-        });
-
-        if(canvasObjects.length > 1) {
-            canvasObjects.push(canvasObjects[0]);
-            var drawing = new Drawing(name, canvasObjects, tags);
-            drawings.push(drawing);
-            overlay._updateCanvas();
-            sendXMLtoServer(generateXML([drawing]), 0)
-        }
-        canvasObjects = [];
-        $("#Drawing").html("New Drawing");
-
-        finishingDrawing = false;
-        $("#Drawing").addClass("drawingHover");
-    });
     
-    // I believe this can be removed
-    // Created in generateTagSelectorWindow now
-    $("#tagSaveCancel").on("click", function () {
-        //hide the name, tag display thingie
-        $("#DrawingTools").show();
-        finishingDrawing = false;
-        $("#Drawing").addClass("drawingHover");
-        toggleDrawing();
-    });
-
     $("#Dragging").click(function () {
         if ($("#Dragging").attr("title") === "Enable Dragging") {
             $("#Dragging").attr("title", "Disable Dragging");
@@ -393,27 +360,6 @@ function jacobisGUIstuff() {
             }
         });
     });
-    $("#addTagButton").on("click", function () {
-        var newTag = $("#addTagForm input").val();
-
-        if (newTag !== "") {
-            allTags.push(newTag);
-            var selects = $("div select");
-            selects.each(function () {
-                $(this).append("<option>" + newTag + "</option>");
-            });
-
-            return fetch("https://histology.ux.uis.no/addTag", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({"tag": newTag})
-            });
-            updateAllTags();
-        }
-
-    })
 }
 
 function updateAllTags() {
@@ -457,13 +403,60 @@ function generateTagSelectorWindow() {
     });
 
     $("#tagSaveSubmit").on("click", function () {
-        $("#tagSelector").empty();
-        $("#tagSelector").css("display", "none")
-    });
+        var name = $("#tagName").val();
 
-    $("#tagSaveCancel").on("click", function () {
-        // Do whatever cancel is supposed to do
+        var tags = [];
+        $("#tagsForm select").each(function () {
+            tags.push($(this).val())
+        });
+
+        if(canvasObjects.length > 1) {
+            canvasObjects.push(canvasObjects[0]);
+            var drawing = new Drawing(name, canvasObjects, tags);
+            drawings.push(drawing);
+            overlay._updateCanvas();
+            sendXMLtoServer(generateXML([drawing]), 0)
+        }
+        canvasObjects = [];
+        $("#Drawing").html("New Drawing");
+
+        finishingDrawing = false;
+        $("#Drawing").addClass("drawingHover");
+        
         $("#tagSelector").css("display", "none")
+        $("#tagSelector").empty();
+    });
+    
+    $("#tagSaveCancel").on("click", function () {
+        //hide the name, tag display thingie
+        $("#tagSelector").css("display", "none")
+        $("#DrawingTools").show();
+        finishingDrawing = false;
+        $("#Drawing").addClass("drawingHover");
+        toggleDrawing();
+    });
+    
+    
+    $("#addTagButton").on("click", function () {
+        var newTag = $("#addTagForm input").val();
+
+        if (newTag !== "") {
+            allTags.push(newTag);
+            var selects = $("div select");
+            selects.each(function () {
+                $(this).append("<option>" + newTag + "</option>");
+            });
+
+            return fetch("https://histology.ux.uis.no/addTag", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"tag": newTag})
+            });
+            updateAllTags();
+        }
+
     })
 }
 
