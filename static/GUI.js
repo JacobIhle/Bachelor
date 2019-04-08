@@ -444,11 +444,7 @@ function generateTagSelectorWindow() {
 
         if (newTag !== "") {
             var selects = $("div select");
-            selects.each(function () {
-                $(this).append("<option>" + newTag + "</option>");
-            });
-
-            return fetch("https://histology.ux.uis.no/addTag", {
+            fetch("https://histology.ux.uis.no/addTag", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -457,6 +453,9 @@ function generateTagSelectorWindow() {
             }).then(function (response) {
                 if(response.status === 200){
                     allTags.push(newTag);
+                    selects.each(function () {
+                        $(this).append("<option>" + newTag + "</option>");
+                    });
                 }
             });
             updateAllTags();
