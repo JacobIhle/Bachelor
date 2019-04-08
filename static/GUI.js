@@ -443,7 +443,6 @@ function generateTagSelectorWindow() {
         var newTag = $("#addTagForm input").val();
 
         if (newTag !== "") {
-            allTags.push(newTag);
             var selects = $("div select");
             selects.each(function () {
                 $(this).append("<option>" + newTag + "</option>");
@@ -455,6 +454,10 @@ function generateTagSelectorWindow() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({"tag": newTag})
+            }).then(function (response) {
+                if(response.status === 200){
+                    allTags.push(newTag);
+                }
             });
             updateAllTags();
         }
