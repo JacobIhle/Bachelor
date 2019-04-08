@@ -404,29 +404,11 @@ function generateTagSelectorWindow() {
     });
 
     $("#tagSaveSubmit").on("click", function () {
-        var name = $("#tagName").val();
-
-        var tags = [];
-        $("#tagsForm select").each(function () {
-            tags.push($(this).val())
-        });
-
-        var creator = getCurrentUser();
-
-        if(canvasObjects.length > 1) {
-            canvasObjects.push(canvasObjects[0]);
-            var drawing = new Drawing(name, canvasObjects, tags, creator);
-            drawings.push(drawing);
-            overlay._updateCanvas();
-            sendXMLtoServer(generateXML([drawing]), 0)
-        }
-        canvasObjects = [];
-        $("#Drawing").html("New Drawing");
-
-        finishingDrawing = false;
-        $("#Drawing").addClass("drawingHover");
-        
-        removeTagSelector();
+        let result;
+        fetch("https://histology.ux.uis.no/getCurrentUser")
+        .then(data => data.text())
+        .then(text => result = text)
+        .then(() => tagSaveSubmit(result));
     });
     
     $("#tagSaveCancel").on("click", function () {
@@ -465,15 +447,29 @@ function generateTagSelectorWindow() {
     })
 }
 
-function getCurrentUser() {
-    let result;
 
-    fetch("https://histology.ux.uis.no/getCurrentUser")
-        .then(data => data.text())
-        .then(text => result = text)
-        .then(() => console.log(result));
+function tagSaveSubmit(creator) {
+    var name = $("#tagName").val();
 
-    return result;
+        var tags = [];
+        $("#tagsForm select").each(function () {
+            tags.push($(this).val())
+        });
+
+        if(canvasObjects.length > 1) {
+            canvasObjects.push(canvasObjects[0]);
+            var drawing = new Drawing(name, canvasObjects, tags, creator);
+            drawings.push(drawing);
+            overlay._updateCanvas();
+            sendXMLtoServer(generateXML([drawing]), 0)
+        }
+        canvasObjects = [];
+        $("#Drawing").html("New Drawing");
+
+        finishingDrawing = false;
+        $("#Drawing").addClass("drawingHover");
+
+        removeTagSelector();
 }
 
 function removeTagSelector(){
