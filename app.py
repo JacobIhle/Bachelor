@@ -151,6 +151,11 @@ def submitTags():
     return json.dumps(tags), 200
 
 
+@app.route("/getCurrentUser")
+@login_required
+def getCurrentUser:
+    return current_user
+
 @app.route('/authenticated')
 def isAuthenticated():
     if not current_user.is_authenticated:
