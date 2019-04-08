@@ -361,8 +361,6 @@ function jacobisGUIstuff() {
     
     $("#FileInput").on("change", function (e) {
         var file = e.target.files[0];
-        console.log(file.name);
-        console.log(file);
         var reader = new FileReader();
         reader.readAsText(file, "UTF-8");
 
@@ -378,7 +376,6 @@ function jacobisGUIstuff() {
         $(".imageLinks").show();
     });
 
-
     $("#searchField").on("keyup", function () {
         var value = $(".imageLinks").toArray();
         var searchValue = $(this).val();
@@ -392,28 +389,95 @@ function jacobisGUIstuff() {
             }
         });
     });
+    $("#addTagButton").on("click", function () {
+        var newTag = $("#addTagForm input").val();
+
+        if (newTag !== "") {
+            allTags.push(newTag);
+            var selects = $("div select");
+            selects.each(function () {
+                $(this).append("<option>" + newTag + "</option>");
+            });
+
+            return fetch("https://histology.ux.uis.no/addTag", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"tag": newTag})
+            });
+            updateAllTags();
+        }
+
+    })
 }
 
 function updateAllTags() {
-    fetch("http://127.0.0.1:5000/updateTags")
-        .then(function (respons) {
-            return respons.json();
+    fetch("https://histology.ux.uis.no/updateTags")
+        .then(function (response) {
+            return response.json();
         })
         .then(function (data) {
             allTags = data["tags"];
         });
 }
 
-function generateTagSelector() {
-    var selectorHtml = "<div><select>";
+function generateTagSelectorWindow() {
+    var formName = "<form> Name: <input type='text' id='tagName' name='tagName'><br></form>";
+    var plus = "<img src=\"../static/images/plus.svg\" id=\"addSelector\"> <br>";
+    var tagsForm = "<form id=\"tagsForm\" method=\"POST\" action=\"/Tags\"><div></div></form>";
 
-    allTags.forEach(function (tag) {
-        selectorHtml += "<option>"+tag+"</option>";
+    var saveTags = "<div id=\"saveTags\">\n" +
+        "<input type=\"submit\" id=\"tagSaveSubmit\">\n" +
+        "<input type=\"button\" id=\"tagSaveCancel\" value=\"Cancel\">\n" +
+        "</div>";
+
+    var addTag = "<div id=\"addTag\">\n" +
+        "<form id=\"addTagForm\">\n" +
+        "Create new tag: <br> <input type=\"text\" name=\"addTag\" maxlength=\"32\">\n" +
+        "</form>\n" +
+        "<div id=\"addTagButton\">Add Tag</div>\n" +
+        "</div>";
+
+    var tagSelector = $("#tagSelector");
+
+    tagSelector.append(formName);
+    tagSelector.append(plus);
+    tagSelector.append(tagsForm);
+    tagSelector.append(saveTags);
+    tagSelector.append(addTag);
+    generateTagSelector();
+
+    $("#addSelector").click(function () {
+        generateTagSelector()
     });
-    selectorHtml += "</select><button class='deleteSelect'></button></div>";
-    $("#tagSelector").append(selectorHtml);
 
-    $(".deleteSelect").click(function () {
+    $("#tagSaveSubmit").on("click", function () {
+        $("#tagSelector").empty();
+        $("#tagSelector").css("display", "none")
+    });
+
+    $("#tagSaveCancel").on("click", function () {
+        // Do whatever cancel is supposed to do
+        $("#tagSelector").css("display", "none")
+    })
+}
+
+function generateTagSelector() {
+    //fetch array of tags from database
+    var selectorHtml = "<div><select name='option'>";
+
+    selectorHtml += "<option></option>";
+    allTags.forEach(function (tag) {
+        selectorHtml += "<option>" + tag + "</option>";
+    });
+    selectorHtml += "</select><img src=\"../static/images/trash.png\" class='deleteButtons'></div>";
+    var selectElements = $("#tagsForm select");
+    if (selectElements.length < 7) {
+        $("#tagsForm").append(selectorHtml);
+    }
+
+    $(".deleteButtons").click(function () {
         $(this).parent().remove();
     });
 }
