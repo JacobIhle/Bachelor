@@ -275,6 +275,28 @@ dd {
     height: 35px;
 }
 
+#DrawingTools li {
+    position: relative;
+    display: inline-block;
+    padding: 5px 5px 0 5px;
+    text-align: center;
+    font-size: 10px;
+    float: right;
+    right: 2%;
+    height: 30px;
+}
+
+#DrawingTools li:hover {
+    background-color: #9E9E9E9E;
+}
+
+#DrawingTools li:active {
+    background-color: #BDBDBD;
+}
+
+#Dragging{
+
+}
 
 .expandable {
     background: #414141;
