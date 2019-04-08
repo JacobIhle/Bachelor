@@ -391,7 +391,7 @@ function cancelDrawing() {
         overlay._updateCanvas();
     }
     catch (e) {
-        console.log("oops");
+        console.log(e.message);
     }
     if(drawingEnabled){toggleDrawing();}
     $("#Drawing").html("New Drawing");
