@@ -31,20 +31,22 @@ ul {
 header li {
     display: inline;
     float: left;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
 }
 
-#footer li {
+#footer #ZoomLevels li {
     display: inline;
     float: left;
 }
-
 
 #menuicon {
     color: white;
     font-size: 2em;
     line-height: 40px;
 }
-
 
 li #searchicon {
     color: white;
@@ -53,16 +55,36 @@ li #searchicon {
     margin-right: 5px;
 }
 
-li #searchicon:hover{
+
+li #searchicon:hover {
     background-color: #212121;
     border-radius: 5px;
 }
 
-li #searchicon:active{
+li #searchicon:active {
     background-color: #424242;
 }
 
-li form{
+
+li #Drawing {
+    color: white;
+    font-size: 1.4em;
+    line-height: 40px;
+    margin-right: 5px;
+    padding: 0 5px 0 5px;
+
+}
+
+li #Drawing:hover {
+    background-color: #212121;
+    border-radius: 5px;
+}
+
+li #Drawing:active {
+    background-color: #424242;
+}
+
+li form {
     line-height: 40px;
     width: 200px;
 }
@@ -74,7 +96,7 @@ li form{
     transition: width 1s;
     background-color: #EEEEEE;
     padding: 2px;
-    border: 0px;
+    border: 0;
 }
 
 #searchField:hover {
@@ -83,7 +105,7 @@ li form{
 
 #infoButton {
     /* Makes the text non selectable */
-    -webkit-user-select: none; /* Safari */        
+    -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
@@ -91,7 +113,7 @@ li form{
     color: white;
     font-size: 1.6em;
     line-height: 40px;
-    padding: 0px 6px 0px 6px;
+    padding: 0 6px 0 6px;
     border-radius: 5px;
 }
 
@@ -99,8 +121,33 @@ li form{
     background-color: #212121;
 }
 
-#info:active{
+#info:active {
     background-color: #424242;
+}
+
+#splitter{
+    position: relative;
+    float: right;
+    height: 40px;
+    border-right: 1px solid #212121;
+    margin: 0 3px 0 3px;
+}
+
+#Annotations{
+     -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    float: right;
+    color: white;
+    font-size: 1.6em;
+    line-height: 40px;
+    padding: 0 6px 0 6px;
+}
+
+#Annotations:hover {
+    border-radius: 5px;
+    background-color: #212121;
 }
 
 li #filename {
@@ -110,13 +157,13 @@ li #filename {
     left: 45%
 }
 
-#display{
+#display {
     position: relative;
     width: 100%;
     height: calc(100% - 80px);
 }
 
-#infoField{
+#infoField {
     display: none;
     position: absolute;
     top: 50px;
@@ -128,7 +175,7 @@ li #filename {
     border-left: 2px solid #424242;
 }
 
-dt{
+dt {
     position: relative;
     height: 20px;
     border-top: 1px solid black;
@@ -138,7 +185,7 @@ dt{
     padding: 2px;
 }
 
-dd{
+dd {
     position: relative;
     background-color: white;
     margin-left: 1px;
@@ -146,19 +193,19 @@ dd{
     padding: 2px;
 }
 
-#footer{
-    -webkit-user-select: none; /* Safari */        
+#footer {
+    -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 30px;
+    height: 35px;
     background-color: #BDBDBD;
 }
 
-#footer li{
+#footer #ZoomLevels li {
     position: relative;
     font-size: 20px;
     width: 35px;
@@ -166,22 +213,66 @@ dd{
     padding: 2px;
 }
 
-#footer li:first-child{
-    height: 26px;
+#footer #ZoomLevels li:first-child {
+    height: 30px;
     width: 60px;
     border-right: 1px solid black;
     padding-right: 5px;
 }
 
 /* Needed for it to look nice with 4x, since it's length is different from 10,20 and 40px */
-#footer li:nth-child(2){
+#footer #ZoomLevels li:nth-child(2) {
     padding-left: 0;
     left: 5px;
 }
 
-#footer li:hover{
+#footer #ZoomLevels li:hover {
     background-color: #9E9E9E9E;
-    height: 26px;
+    height: 30px;
+}
+
+#DrawingTools{
+    display: none;
+}
+
+#DrawingTools li {
+    position: relative;
+    display: inline-block;
+    float: right;
+    margin: 0 5px 0 5px;
+}
+
+#DrawingTools li:hover {
+    background-color: #9E9E9E9E;
+}
+
+#DrawingTools li:active {
+    background-color: #BDBDBD;
+}
+
+#Dragging{
+    position: relative;
+    display: inline-block;
+    padding: 0 7px 0 7px;
+    right: 2%;
+    height: 35px;
+}
+
+
+#CancelDrawing {
+    position: relative;
+    display: inline-block;
+    padding: 0 7px 0 7px;
+    right: 2%;
+    height: 35px;
+}
+
+#UndoButton {
+    position: relative;
+    display: inline-block;
+    padding: 0 7px 0 7px;
+    right: 2%;
+    height: 35px;
 }
 
 
@@ -206,6 +297,7 @@ dd{
     border: none;
     cursor: pointer;
 }
+
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
@@ -246,24 +338,24 @@ dd{
     background-color: #3e8e41;
 }
 
-#overlay{
+#overlay {
     background-color: red;
     width: 100px;
     height: 100px;
 }
 
 /* Image list stuff*/
-#imageExplorer{
+#imageExplorer {
     position: absolute;
-    width: 30%;
-    height: calc(100% - 80px);
+    width: 23%;
+    height: calc(100% - 85px);
     z-index: 9;
     background-color: white;
     display: block;
     overflow-y: scroll;
 }
 
-.folderButtons{
+.folderButtons {
     position: relative;
     width: 100%;
     color: black;
@@ -274,11 +366,11 @@ dd{
     margin: 0;
 }
 
-.folder{
+.folder {
     display: none;
 }
 
-.imageLinks{
+.imageLinks {
     position: relative;
     height: 35px;
     border-bottom: 1px solid black;
@@ -296,42 +388,50 @@ dd{
     width: 330px;
     margin: 30px auto;
 }
+
 .login-form h2 {
     font-size: 19px;
     margin-bottom: 15px;
     text-align: center;
 }
+
 .login-form form {
     background: #f7f7f7;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
     margin-bottom: 10px;
     padding: 30px;
 }
+
 .login-form .avatar {
     width: 90px;
     margin-bottom: 20px;
 }
+
 .login-form .form-control, .login-form .btn {
     min-height: 38px;
 }
+
 .login-form input[type="email"] {
     border-radius: 2px 2px 0 0;
 }
+
 .login-form input[type="password"] {
     border-radius: 0 0 2px 2px;
     margin-top: -1px;
 }
+
 .login-form input.form-control:focus {
     position: relative;
     z-index: 2;
 }
+
 .login-form .btn {
     font-size: 15px;
     font-weight: bold;
     border-radius: 2px;
 }
 
-.form-group input{
+.form-group input {
     margin-bottom: 5px;
 }
 
