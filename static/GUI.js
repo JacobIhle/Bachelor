@@ -413,7 +413,7 @@ function generateTagSelectorWindow() {
         });
 
         var creator = "";
-        fetch("https://histology.ux.uis.no/getCurrentUser")
+        getCurrentUser()
             .then(data => data.text())
             .then(text => creator = text)
             .then(() => console.log(creator));
@@ -468,6 +468,12 @@ function generateTagSelectorWindow() {
         }
 
     })
+}
+
+async function getCurrentUser() {
+    let response = await fetch("https://histology.ux.uis.no/getCurrentUser");
+    let data = await response.json();
+    return data;
 }
 
 function removeTagSelector(){
