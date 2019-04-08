@@ -415,7 +415,8 @@ function generateTagSelectorWindow() {
         var creator = "";
         fetch("https://histology.ux.uis.no/getCurrentUser")
             .then(data => data.text())
-            .then(text => creator = text);
+            .then(text => creator = text)
+            .then(() => console.log(creator));
 
         if(canvasObjects.length > 1) {
             canvasObjects.push(canvasObjects[0]);
