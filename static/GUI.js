@@ -23,6 +23,7 @@ $(document).ready(function () {
     addNonViewerHandlers();
     jacobisGUIstuff();
     initiallizeCanvas();
+    updateAllTags();
 });
 
 function initiallizeCanvas() {
