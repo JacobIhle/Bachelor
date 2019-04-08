@@ -132,6 +132,15 @@ def favicon():
     return send_file("static/images/favicon.ico", mimetype="image/jpeg")
 
 
+@app.route("/addTag", methods=["POST"])
+def addTags():
+    tag = json.loads(request.data)["tag"]
+    newTag = Tags(tag)
+    db.session.add(newTag)
+    db.session.commit()
+    return "", 200
+
+
 @app.route("/updateTags", methods=["GET", "POST"])
 def submitTags():
     tuppletags = Tags.query.with_entities(Tags.Name)
