@@ -154,7 +154,7 @@ def submitTags():
 @app.route("/getCurrentUser")
 @login_required
 def getCurrentUser:
-    return current_user
+    return current_user, 200
 
 @app.route('/authenticated')
 def isAuthenticated():
