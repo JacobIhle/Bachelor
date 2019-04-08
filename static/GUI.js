@@ -278,7 +278,6 @@ function jacobisGUIstuff() {
 
             } else if ($(this).text() === "Save Drawing") {
                 $("#tagSelector").css("display", "");
-                generateTagSelectorWindow();
                 finishingDrawing = true;
                 $(this).removeClass("drawingHover");
                 //TODO
