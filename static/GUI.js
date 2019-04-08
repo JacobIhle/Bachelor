@@ -335,8 +335,6 @@ function jacobisGUIstuff() {
     
     $("#FileInput").on("change", function (e) {
         var file = e.target.files[0];
-        console.log(file.name);
-        console.log(file);
         var reader = new FileReader();
         reader.readAsText(file, "UTF-8");
 
