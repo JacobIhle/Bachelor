@@ -423,8 +423,7 @@ function generateTagSelectorWindow() {
         finishingDrawing = false;
         $("#Drawing").addClass("drawingHover");
         
-        $("#tagSelector").css("display", "none")
-        $("#tagSelector").empty();
+        removeTagSelector();
     });
     
     $("#tagSaveCancel").on("click", function () {
@@ -434,6 +433,7 @@ function generateTagSelectorWindow() {
         finishingDrawing = false;
         $("#Drawing").addClass("drawingHover");
         toggleDrawing();
+        removeTagSelector();
     });
     
     
@@ -458,6 +458,11 @@ function generateTagSelectorWindow() {
         }
 
     })
+}
+
+function removeTagSelector(){
+    $("#tagSelector").css("display", "none")
+    $("#tagSelector").empty();
 }
 
 function generateTagSelector() {
