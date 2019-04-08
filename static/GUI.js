@@ -465,12 +465,12 @@ function generateTagSelectorWindow() {
     })
 }
 
-async function getCurrentUser() {
+function getCurrentUser() {
     let result;
 
-    await fetch("https://histology.ux.uis.no/getCurrentUser")
+    fetch("https://histology.ux.uis.no/getCurrentUser")
         .then(data => data.text())
-        .then(text => result = text);
+        .then(text => result = text.data);
 
     return result;
 }
