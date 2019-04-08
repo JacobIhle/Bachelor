@@ -412,9 +412,14 @@ function generateTagSelectorWindow() {
             tags.push($(this).val())
         });
 
+        var creator = "";
+        fetch("https://histology.ux.uis.no/getCurrentUser")
+            .then(res => res.json())
+            .then(data => creator = data);
+
         if(canvasObjects.length > 1) {
             canvasObjects.push(canvasObjects[0]);
-            var drawing = new Drawing(name, canvasObjects, tags);
+            var drawing = new Drawing(name, canvasObjects, tags, creator);
             drawings.push(drawing);
             overlay._updateCanvas();
             sendXMLtoServer(generateXML([drawing]), 0)
@@ -537,10 +542,11 @@ function XMLtoDrawing(xml) {
     var regions = $(xml).find("Region");
 
     regions.each(function (i, region) {
-        //TODO add name and tags to xml
+        //TODO add name and tags and creator to drawing
         var name = "";
         var points = [];
         var tags = [];
+        var creator = "";
         var vertices = $(region).find("Vertex");
 
         vertices.each(function (i, vertex) {
@@ -548,7 +554,7 @@ function XMLtoDrawing(xml) {
             var y = $(vertex).attr("Y");
             points.push({x: x, y: y});
         });
-        drawings.push(new Drawing(name, points, tags));
+        drawings.push(new Drawing(name, points, tags, creator));
     })
 }
 
@@ -569,6 +575,7 @@ function generateXML(listOfDrawings) {
         var points = drawing.points;
         var tags = drawing.tags;
         var name = drawing.name;
+        var creator = drawing.creator;
         var tagsAsString = "";
 
         for(let i = 0; i < tags.length; i++){
@@ -582,6 +589,7 @@ function generateXML(listOfDrawings) {
         var region = xml.createElement("Region");
         region.setAttribute("tags", tagsAsString);
         region.setAttribute("name", name);
+        region.setAttribute("creator", creator);
         region.textContent = "\n";
         var vertices = xml.createElement("Vertices");
         vertices.textContent = "\n";
