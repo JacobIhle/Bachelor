@@ -369,7 +369,7 @@ function updateAllTags(modifier) {
 
 function generateTagSelectorWindow() {
     var formName = "<form> Name: <input type='text' id='tagName' name='tagName'><br>" +
-        "Grade: <select>\n" +
+        "Grade: <select id = "tagGrade">\n" +
         "<option>1</option>\n" +
         "<option>2</option>\n" +
         "<option>3</option>\n" +
