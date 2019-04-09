@@ -543,21 +543,19 @@ function getXMLfromServer() {
 
 function XMLtoDrawing(xml) {
     var regions = $(xml).find("Region");
-
     regions.each(function (i, region) {
-        //TODO add name and tags and creator to drawing
-        var name = "";
+        var name = $(region).attr("name");
         var points = [];
-        var tags = [];
-        var creator = "";
-        var vertices = $(region).find("Vertex");
+        var tags = $(region).attr("tags");
+        var creator = $(region).attr("creator");
 
+        var vertices = $(region).find("Vertex");
         vertices.each(function (i, vertex) {
             var x = $(vertex).attr("X");
             var y = $(vertex).attr("Y");
             points.push({x: x, y: y});
         });
-        drawings.push(new Drawing(name, points, tags, creator));
+        drawings.push(new Drawing(name, points, tags.split("|"), creator));
     })
 }
 
