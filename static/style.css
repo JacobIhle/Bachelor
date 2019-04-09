@@ -125,7 +125,7 @@ li form {
     background-color: #424242;
 }
 
-#splitter{
+#splitter {
     position: relative;
     float: right;
     height: 40px;
@@ -133,8 +133,8 @@ li form {
     margin: 0 3px 0 3px;
 }
 
-#Annotations{
-     -webkit-user-select: none; /* Safari */
+#Annotations {
+    -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
@@ -250,7 +250,7 @@ dd {
     background-color: #BDBDBD;
 }
 
-#Dragging{
+#Dragging {
     position: relative;
     display: inline-block;
     padding: 0 7px 0 7px;
@@ -274,6 +274,7 @@ dd {
     right: 2%;
     height: 35px;
 }
+
 
 .expandable {
     background: #414141;
@@ -353,104 +354,6 @@ dd {
     display: block;
     overflow-y: scroll;
 }
-#tagSelector {
-    padding: 10px;
-    position: absolute;
-    display: block;
-    width: 300px;
-    border-right: 1px solid #212121;
-    z-index: 9;
-    height: calc(100% - 105px);
-    min-width: 200px;
-    background-color: white;
-}
-
-#addSelector {
-    position: absolute;
-    top: 58px;
-    width: 18px;
-    height: 18px;
-    border: 1px solid #212121;
-    border-radius: 2px;
-    padding: 2px;
-}
-
-#addSelector:hover {
-    border: 2px solid #212121;
-    padding: 1px;
-}
-
-.deleteButtons {
-    position: relative;
-    right: -30px;
-    width: 18px;
-    height: 18px;
-    border: 1px solid #212121;
-    border-radius: 2px;
-    padding: 2px;
-    top: 8px;
-}
-
-.deleteButtons:hover {
-    border: 2px solid #212121;
-    padding: 1px;
-}
-
-#tagSelector #addTag {
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-    padding: 10px 0 10px 0;
-    left: 0;
-    border-top: 1px solid #212121;
-    height: 80px;
-}
-
-#addTagButton {
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-    position: absolute;
-    bottom: 0;
-    left: 10px;
-    border: 1px solid #212121;
-    padding: 2px 3px 2px 3px;
-}
-
-#addTagButton:hover {
-    border: 2px solid #212121;
-    padding: 1px 2px 1px 2px;
-}
-
-#addTagButton:active {
-    border: 1px solid #212121;
-    padding: 2px 3px 2px 3px;
-}
-
-#tagsForm {
-    width: 80%;
-}
-
-#tagsForm select {
-    position: relative;
-    display: inline-block;
-    left: 30px;
-    padding: 5px;
-    margin: 5px;
-}
-
-#saveTags {
-    position: absolute;
-    left: 35px;
-    padding: 10px;
-}
-
-#addTagForm {
-    position: absolute;
-    line-height: 30px;
-    left: 10px;
-}
 
 .folderButtons {
     position: relative;
@@ -479,6 +382,119 @@ dd {
 .imageLinks:hover {
     background-color: #BDBDBD;
 }
+
+/* Tag selector */
+
+#tagSelector {
+    padding: 10px;
+    position: absolute;
+    display: block;
+    width: 300px;
+    border-right: 1px solid #212121;
+    z-index: 9;
+    height: calc(100% - 105px);
+    min-width: 200px;
+    background-color: white;
+}
+
+#tagSelector form input {
+    margin-left: 1px;
+    margin-bottom: 5px;
+}
+
+#addSelector {
+    position: absolute;
+    border: 1px solid #212121;
+    border-radius: 2px;
+    height: 18px;
+    padding: 2px;
+    width: 18px;
+    z-index: 12;
+    top: 70px;
+}
+
+#addSelector:hover {
+    border: 2px solid #212121;
+    padding: 1px;
+}
+
+.deleteButtons {
+    position: relative;
+    right: -30px;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #212121;
+    border-radius: 2px;
+    padding: 2px;
+    top: 8px;
+}
+
+.deleteButtons:hover {
+    border: 2px solid #212121;
+    padding: 1px;
+}
+
+
+#tagSelector #addTag {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    padding: 10px 0 10px 0;
+    left: 0;
+    border-top: 1px solid #212121;
+    height: 80px;
+}
+
+#addTagButton {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    border: 1px solid #212121;
+    padding: 2px 3px 2px 3px;
+}
+
+
+#addTagButton:hover {
+    border: 2px solid #212121;
+    padding: 1px 2px 1px 2px;
+}
+
+#addTagButton:active {
+    border: 1px solid #212121;
+    padding: 2px 3px 2px 3px;
+}
+
+#tagsForm {
+    position: relative;
+    top: -29px;
+    width: 80%;
+}
+
+#tagsForm select {
+    position: relative;
+    display: inline-block;
+    left: 30px;
+    padding: 5px;
+    margin: 5px;
+}
+
+#saveTags {
+    position: relative;
+    left: 25px;
+    padding: 10px;
+    top: -34px;
+}
+
+#addTagForm {
+    position: absolute;
+    line-height: 30px;
+    left: 10px;
+}
+
 
 /* Login/register stuff */
 .login-form {
@@ -531,7 +547,6 @@ dd {
 .form-group input {
     margin-bottom: 5px;
 }
-
 
 .warning {
     color: red;
