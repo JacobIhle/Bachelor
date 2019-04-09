@@ -23,7 +23,6 @@ $(document).ready(function () {
     addNonViewerHandlers();
     jacobisGUIstuff();
     initiallizeCanvas();
-    updateAllTags();
 });
 
 function initiallizeCanvas() {
@@ -281,7 +280,7 @@ function jacobisGUIstuff() {
                 finishingDrawing = true;
                 $(this).removeClass("drawingHover");
                 //TODO
-                updateAllTags();
+                fetchAllTags();
                 generateTagSelectorWindow();
 
                 $("#DrawingTools").hide();
@@ -363,14 +362,14 @@ function jacobisGUIstuff() {
     });
 }
 
-function updateAllTags() {
+function fetchAllTags() {
     fetch("https://histology.ux.uis.no/updateTags")
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            allTags = data["tags"];
-        });
+        .then(res => res.json())
+        .then(data => updateAllTagsss(data));
+}
+
+function updateAllTags(data) {
+    allTags = data["tags"];
 }
 
 function generateTagSelectorWindow() {
@@ -441,7 +440,7 @@ function generateTagSelectorWindow() {
                     });
                 }
             });
-            updateAllTags();
+            fetchAllTags();
         }
 
     })
