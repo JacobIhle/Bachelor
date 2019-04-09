@@ -365,7 +365,7 @@ function jacobisGUIstuff() {
 function fetchAllTags() {
     fetch("https://histology.ux.uis.no/updateTags")
         .then(res => res.json())
-        .then(data => updateAllTagsss(data));
+        .then(data => updateAllTags(data));
 }
 
 function updateAllTags(data) {
