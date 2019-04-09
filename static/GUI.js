@@ -6,7 +6,9 @@ var i = 0;
 var aborts = 0;
 var canvasObjects = [];
 var drawings = [];
+var allTags = [];
 var drawingEnabled = false;
+var finishingDrawing = false;
 
 //TODO
 /*
@@ -66,7 +68,6 @@ function addOverlays() {
             //TODO REFACTOR
             //this + draw saved drawing objects
             if(currentImage) {
-                console.log("redraw");
                 overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
                 overlay.context2d().fillStyle = "rgba(255,0,0,1)";
                 overlay.context2d().lineWidth = 200 / viewer.viewport.getZoom(true);
@@ -266,36 +267,30 @@ function jacobisGUIstuff() {
 
 
     $("#Drawing").click(function () {
+        if(!finishingDrawing && currentImage) {
+            if ($(this).text() === "New Drawing") {
+                $("#DrawingTools").show();
+                toggleDrawing();
+                $("#Drawing").html("Save Drawing");
 
-        if ($(this).text() === "New Drawing"){
-            $("#DrawingTools").show();
-            toggleDrawing();
-            $("#Drawing").html("Save Drawing");
-            console.log("new");
 
+            } else if ($(this).text() === "Save Drawing") {
+                $("#tagSelector").css("display", "");
+                finishingDrawing = true;
+                $(this).removeClass("drawingHover");
+                //TODO
+                updateAllTags(1);
 
-        }else if($(this).text() === "Save Drawing"){
-            //TODO
-            //prompt user for name and tags
-            $("#DrawingTools").hide();
-            var name = "";
-            var tags = [];
-            if(canvasObjects.length > 1) {
-                //add to database
-                //save data to xml file
-                canvasObjects.push(canvasObjects[0]);
-                var drawing = new Drawing(name, canvasObjects, tags);
-                drawings.push(drawing);
-                overlay._updateCanvas();
-                sendXMLtoServer(generateXML([drawing]), 0)
+                $("#DrawingTools").hide();
+                if (canvasObjects.length > 1) {
+                    canvasObjects.push(canvasObjects[0]); //snap to start
+                    overlay._updateCanvas();
+                }
+                toggleDrawing();
             }
-            canvasObjects = [];
-            toggleDrawing();
-            $("#Drawing").html("New Drawing");
-            console.log("save");
         }
     });
-
+    
     $("#Dragging").click(function () {
         if ($("#Dragging").attr("title") === "Enable Dragging") {
             $("#Dragging").attr("title", "Disable Dragging");
@@ -335,8 +330,6 @@ function jacobisGUIstuff() {
     
     $("#FileInput").on("change", function (e) {
         var file = e.target.files[0];
-        console.log(file.name);
-        console.log(file);
         var reader = new FileReader();
         reader.readAsText(file, "UTF-8");
 
@@ -352,7 +345,6 @@ function jacobisGUIstuff() {
         $(".imageLinks").show();
     });
 
-
     $("#searchField").on("keyup", function () {
         var value = $(".imageLinks").toArray();
         var searchValue = $(this).val();
@@ -366,25 +358,144 @@ function jacobisGUIstuff() {
             }
         });
     });
+}
 
-    $("#tagsForm").click(function () {
-        //fetch array of tags from database
-        var tags = [];
-        var selectorHtml = "<div><select>";
+function updateAllTags(modifier) {
+    if(modifier === 1) {
+        fetch("https://histology.ux.uis.no/updateTags")
+            .then(res => res.json())
+            .then(data => allTags = data["tags"])
+            .then(() => generateTagSelectorWindow());
+    }else{
+        fetch("https://histology.ux.uis.no/updateTags")
+            .then(res => res.json())
+            .then(data => allTags = data["tags"])
+    }
+}
 
-        tags.forEach(function (tag) {
-            selectorHtml += "<option>"+tag+"</option>";
-        });
-        selectorHtml += "</select><button class='selectButtons'></button></div>";
-        $("#tagSelector").append(selectorHtml);
 
-        $(".selectButtons").click(function () {
-            $(this).parent().remove();
-        });
 
+function generateTagSelectorWindow() {
+    var formName = "<form> Name: <input type='text' id='tagName' name='tagName'><br></form>";
+    var plus = "<img src=\"../static/images/plus.svg\" id=\"addSelector\"> <br>";
+    var tagsForm = "<form id=\"tagsForm\" method=\"POST\" action=\"/Tags\"><div></div></form>";
+
+    var saveTags = "<div id=\"saveTags\">\n" +
+        "<input type=\"submit\" id=\"tagSaveSubmit\">\n" +
+        "<input type=\"button\" id=\"tagSaveCancel\" value=\"Cancel\">\n" +
+        "</div>";
+
+    var addTag = "<div id=\"addTag\">\n" +
+        "<form id=\"addTagForm\">\n" +
+        "Create new tag: <br> <input type=\"text\" name=\"addTag\" maxlength=\"32\">\n" +
+        "</form>\n" +
+        "<div id=\"addTagButton\">Add Tag</div>\n" +
+        "</div>";
+
+    var tagSelector = $("#tagSelector");
+
+    tagSelector.append(formName);
+    tagSelector.append(plus);
+    tagSelector.append(tagsForm);
+    tagSelector.append(saveTags);
+    tagSelector.append(addTag);
+    generateTagSelector();
+
+    $("#addSelector").click(function () {
+        generateTagSelector()
     });
 
+    $("#tagSaveSubmit").on("click", function () {
+        let result;
+        fetch("https://histology.ux.uis.no/getCurrentUser")
+        .then(data => data.text())
+        .then(text => result = text)
+        .then(() => tagSaveSubmit(result));
+    });
+    
+    $("#tagSaveCancel").on("click", function () {
+        //hide the name, tag display thingie
+        $("#tagSelector").css("display", "none");
+        $("#DrawingTools").show();
+        finishingDrawing = false;
+        $("#Drawing").addClass("drawingHover");
+        toggleDrawing();
+        removeTagSelector();
+    });
+    
+    
+    $("#addTagButton").on("click", function () {
+        var newTag = $("#addTagForm input").val();
 
+        if (newTag !== "") {
+            var selects = $("div select");
+            fetch("https://histology.ux.uis.no/addTag", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"tag": newTag})
+            }).then(function (response) {
+                if(response.status === 200){
+                    allTags.push(newTag);
+                    selects.each(function () {
+                        $(this).append("<option>" + newTag + "</option>");
+                    });
+                }
+            });
+            updateAllTags(0);
+        }
+
+    })
+}
+
+
+function tagSaveSubmit(creator) {
+    var name = $("#tagName").val();
+
+        var tags = [];
+        $("#tagsForm select").each(function () {
+            tags.push($(this).val())
+        });
+
+        if(canvasObjects.length > 1) {
+            canvasObjects.push(canvasObjects[0]);
+            var drawing = new Drawing(name, canvasObjects, tags, creator);
+            drawings.push(drawing);
+            overlay._updateCanvas();
+            sendXMLtoServer(generateXML([drawing]), 0)
+        }
+        canvasObjects = [];
+        $("#Drawing").html("New Drawing");
+
+        finishingDrawing = false;
+        $("#Drawing").addClass("drawingHover");
+
+        removeTagSelector();
+}
+
+function removeTagSelector(){
+    $("#tagSelector").css("display", "none");
+    $("#tagSelector").empty();
+}
+
+function generateTagSelector() {
+    //fetch array of tags from database
+    var selectorHtml = "<div><select name='option'>";
+
+    selectorHtml += "<option></option>";
+    allTags.forEach(function (tag) {
+        selectorHtml += "<option>" + tag + "</option>";
+    });
+    selectorHtml += "</select><img src=\"../static/images/trash.png\" class='deleteButtons'></div>";
+    var selectElements = $("#tagsForm select");
+    if (selectElements.length < 7) {
+        $("#tagsForm").append(selectorHtml);
+    }
+
+    $(".deleteButtons").click(function () {
+        $(this).parent().remove();
+    });
 }
 
 function cancelDrawing() {
@@ -434,20 +545,19 @@ function getXMLfromServer() {
 
 function XMLtoDrawing(xml) {
     var regions = $(xml).find("Region");
-
     regions.each(function (i, region) {
-        //TODO add name and tags to xml
-        var name = "";
+        var name = $(region).attr("name");
         var points = [];
-        var tags = [];
-        var vertices = $(region).find("Vertex");
+        var tags = String($(region).attr("tags"));
+        var creator = $(region).attr("creator");
 
+        var vertices = $(region).find("Vertex");
         vertices.each(function (i, vertex) {
             var x = $(vertex).attr("X");
             var y = $(vertex).attr("Y");
             points.push({x: x, y: y});
         });
-        drawings.push(new Drawing(name, points, tags));
+        drawings.push(new Drawing(name, points, tags.split("|"), creator));
     })
 }
 
@@ -467,6 +577,8 @@ function generateXML(listOfDrawings) {
     listOfDrawings.forEach(function (drawing) {
         var points = drawing.points;
         var tags = drawing.tags;
+        var name = drawing.name;
+        var creator = drawing.creator;
         var tagsAsString = "";
 
         for(let i = 0; i < tags.length; i++){
@@ -479,6 +591,8 @@ function generateXML(listOfDrawings) {
 
         var region = xml.createElement("Region");
         region.setAttribute("tags", tagsAsString);
+        region.setAttribute("name", name);
+        region.setAttribute("creator", creator);
         region.textContent = "\n";
         var vertices = xml.createElement("Vertices");
         vertices.textContent = "\n";
