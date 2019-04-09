@@ -140,7 +140,7 @@ def addTags():
 
 
 @app.route("/updateTags", methods=["GET", "POST"])
-def submitTags():
+def updateTags():
     tuppletags = Tags.query.with_entities(Tags.Name)
     tags = {"tags": []}
     for tag in tuppletags:
