@@ -10,14 +10,6 @@ var allTags = [];
 var drawingEnabled = false;
 var finishingDrawing = false;
 
-//TODO
-/*
-frontend buttons(JACOB): new drawing, finish drawing, toggle dragging/drawing stuff, undo button
-migrate drawings to their own objectstructure thingie
-import drawings
-export drawings
-give finished drawing name and tags and description
- */
 
 $(document).ready(function () {
     addNonViewerHandlers();
@@ -279,7 +271,7 @@ function jacobisGUIstuff() {
                 $("#tagSelector").css("display", "");
                 finishingDrawing = true;
                 $(this).removeClass("drawingHover");
-                //TODO
+
                 updateAllTags(1);
 
                 $("#DrawingTools").hide();
@@ -454,25 +446,25 @@ function generateTagSelectorWindow() {
 function tagSaveSubmit(creator) {
     var name = $("#tagName").val();
 
-        var tags = [];
-        $("#tagsForm select").each(function () {
-            tags.push($(this).val())
-        });
+    var tags = [];
+    $("#tagsForm select").each(function () {
+        tags.push($(this).val())
+    });
 
-        if(canvasObjects.length > 1) {
-            canvasObjects.push(canvasObjects[0]);
-            var drawing = new Drawing(name, canvasObjects, tags, creator);
-            drawings.push(drawing);
-            overlay._updateCanvas();
-            sendXMLtoServer(generateXML([drawing]), 0)
-        }
-        canvasObjects = [];
-        $("#Drawing").html("New Drawing");
+    if(canvasObjects.length > 1) {
+        canvasObjects.push(canvasObjects[0]);
+        var drawing = new Drawing(name, canvasObjects, tags, creator);
+        drawings.push(drawing);
+        overlay._updateCanvas();
+        sendXMLtoServer(generateXML([drawing]), 0)
+    }
+    canvasObjects = [];
+    $("#Drawing").html("New Drawing");
 
-        finishingDrawing = false;
-        $("#Drawing").addClass("drawingHover");
+    finishingDrawing = false;
+    $("#Drawing").addClass("drawingHover");
 
-        removeTagSelector();
+    removeTagSelector();
 }
 
 function removeTagSelector(){
