@@ -280,8 +280,7 @@ function jacobisGUIstuff() {
                 finishingDrawing = true;
                 $(this).removeClass("drawingHover");
                 //TODO
-                fetchAllTags();
-                generateTagSelectorWindow();
+                updateAllTags(1);
 
                 $("#DrawingTools").hide();
                 if (canvasObjects.length > 1) {
@@ -362,15 +361,20 @@ function jacobisGUIstuff() {
     });
 }
 
-function fetchAllTags() {
-    fetch("https://histology.ux.uis.no/updateTags")
-        .then(res => res.json())
-        .then(data => updateAllTags(data));
+function updateAllTags(modifier) {
+    if(modifier === 1) {
+        fetch("https://histology.ux.uis.no/updateTags")
+            .then(res => res.json())
+            .then(data => allTags = data["tags"])
+            .then(() => generateTagSelectorWindow());
+    }else{
+        fetch("https://histology.ux.uis.no/updateTags")
+            .then(res => res.json())
+            .then(data => allTags = data["tags"])
+    }
 }
 
-function updateAllTags(data) {
-    allTags = data["tags"];
-}
+
 
 function generateTagSelectorWindow() {
     var formName = "<form> Name: <input type='text' id='tagName' name='tagName'><br></form>";
@@ -440,7 +444,7 @@ function generateTagSelectorWindow() {
                     });
                 }
             });
-            fetchAllTags();
+            updateAllTags(0);
         }
 
     })
