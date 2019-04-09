@@ -376,7 +376,15 @@ function updateAllTags(modifier) {
 
 
 function generateTagSelectorWindow() {
-    var formName = "<form> Name: <input type='text' id='tagName' name='tagName'><br></form>";
+    var formName = "<form> Name: <input type='text' id='tagName' name='tagName'><br>" +
+        "Grade: <select>\n" +
+        "<option>1</option>\n" +
+        "<option>2</option>\n" +
+        "<option>3</option>\n" +
+        "<option>4</option>\n" +
+        "<option>5</option>\n" +
+        "<option>6</option>\n" +
+        "</select></form><br>";
     var plus = "<img src=\"../static/images/plus.svg\" id=\"addSelector\"> <br>";
     var tagsForm = "<form id=\"tagsForm\" method=\"POST\" action=\"/Tags\"><div></div></form>";
 
