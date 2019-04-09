@@ -75,7 +75,7 @@ def GetTile(dummy, dummy2, level, tile):
 def PostXML(foldername, filename):
     try:
         folder = "//home/prosjekt/Histology/thomaso/"
-        file = filename + ".xml"
+        file = foldername+"[slash]"+filename + ".xml"
         if not os.path.isfile(folder+file):
             Annotations = ET.Element("Annotations")
             Annotation = ET.SubElement(Annotations, "Annotation")
@@ -107,7 +107,8 @@ def PostXML(foldername, filename):
 @login_required
 def GetXML(foldername, filename):
     folder = "//home/prosjekt/Histology/thomaso/"
-    foo = filename.replace("%20", " ")
+    file = foldername+"[slash]"+filename
+    foo = file.replace("%20", " ")
     if os.path.isfile(folder+foo):
         return send_from_directory(folder, foo)
     return "", 500
