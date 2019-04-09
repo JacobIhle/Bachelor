@@ -2,7 +2,6 @@ var viewer;
 var imageUrl;
 var currentImage;
 var overlay;
-var i = 0;
 var aborts = 0;
 var canvasObjects = [];
 var drawings = [];
