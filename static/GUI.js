@@ -272,7 +272,6 @@ function jacobisGUIstuff() {
                 $("#DrawingTools").show();
                 toggleDrawing();
                 $("#Drawing").html("Save Drawing");
-                console.log("new");
 
 
             } else if ($(this).text() === "Save Drawing") {
