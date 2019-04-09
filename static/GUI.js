@@ -452,6 +452,7 @@ function generateTagSelectorWindow() {
 
 function tagSaveSubmit(creator) {
     var name = $("#tagName").val();
+    var grade = $("#tagGrade").val();
 
     var tags = [];
     $("#tagsForm select").each(function () {
@@ -460,7 +461,7 @@ function tagSaveSubmit(creator) {
 
     if(canvasObjects.length > 1) {
         canvasObjects.push(canvasObjects[0]);
-        var drawing = new Drawing(name, canvasObjects, tags, creator);
+        var drawing = new Drawing(name, canvasObjects, tags, creator, grade);
         drawings.push(drawing);
         overlay._updateCanvas();
         sendXMLtoServer(generateXML([drawing]), 0)
@@ -550,6 +551,7 @@ function XMLtoDrawing(xml) {
         var points = [];
         var tags = String($(region).attr("tags"));
         var creator = $(region).attr("creator");
+        var grade = $(region).attr("grade");
 
         var vertices = $(region).find("Vertex");
         vertices.each(function (i, vertex) {
@@ -557,7 +559,7 @@ function XMLtoDrawing(xml) {
             var y = $(vertex).attr("Y");
             points.push({x: x, y: y});
         });
-        drawings.push(new Drawing(name, points, tags.split("|"), creator));
+        drawings.push(new Drawing(name, points, tags.split("|"), creator, grade));
     })
 }
 
@@ -579,6 +581,7 @@ function generateXML(listOfDrawings) {
         var tags = drawing.tags;
         var name = drawing.name;
         var creator = drawing.creator;
+        var grade = drawing.grade;
         var tagsAsString = "";
 
         for(let i = 0; i < tags.length; i++){
@@ -593,6 +596,7 @@ function generateXML(listOfDrawings) {
         region.setAttribute("tags", tagsAsString);
         region.setAttribute("name", name);
         region.setAttribute("creator", creator);
+        region.setAttribute("grade", grade);
         region.textContent = "\n";
         var vertices = xml.createElement("Vertices");
         vertices.textContent = "\n";
