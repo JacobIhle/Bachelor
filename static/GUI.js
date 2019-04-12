@@ -10,6 +10,21 @@ var drawingEnabled = false;
 var finishingDrawing = false;
 
 
+/*
+TODO
+merge jacobs shit in.
+python get/post xml, change these to support our new database tag search stuff.
+add logging here and there, get/post xml maybe?
+remove "show log" from html dropdown menu
+shouldnt be necessary to do anything on existing javascript for tagsearch thingie, make more thorough check to confirm this.
+create unit tests -forked off to next years bachelor group.
+
+fix searchfield height and tag button thingie height.
+footer is not perfect, FIX IT U MONGRELS.
+
+maybe maybe if time show full list of available tags to user
+*/
+
 $(document).ready(function () {
     addNonViewerHandlers();
     jacobisGUIstuff();
