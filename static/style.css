@@ -37,15 +37,12 @@ header li {
     user-select: none; /* Standard */
 }
 
-#footer #ZoomLevels li {
-    display: inline;
-    float: left;
-}
+
 
 #menuicon {
     color: white;
     font-size: 2em;
-    line-height: 40px;
+    line-height: 38px;
 }
 
 li #searchicon {
@@ -65,14 +62,40 @@ li #searchicon:active {
     background-color: #424242;
 }
 
+#searchTags {
+    position: relative;
+    display: inline;
+    color: white;
+    left: 5px;
+    padding: 5px;
+}
+
+#searchTags:hover{
+    background-color: #212121;
+    padding: 10px 5px 10px 5px;
+    border-radius: 5px;
+}
+
+#searchTags:active {
+    background-color: #424242;
+}
+
+.searchTagsClicked {
+    background-color: #212121;
+    position: relative;
+    display: inline;
+    color: white;
+    left: 5px;
+    padding: 10px 5px 10px 5px;
+    border-radius: 5px;
+}
 
 li #Drawing {
     color: white;
     font-size: 1.4em;
-    line-height: 40px;
+    line-height: 38px;
     margin-right: 5px;
     padding: 0 5px 0 5px;
-
 }
 
 li .drawingHover:hover {
@@ -87,6 +110,11 @@ li .drawingHover:active {
 li form {
     line-height: 40px;
     width: 200px;
+}
+
+#searchDiv {
+    position: relative;
+    top: 5px;
 }
 
 #searchField {
@@ -208,6 +236,8 @@ dd {
 #footer #ZoomLevels li {
     position: relative;
     font-size: 20px;
+    display: inline;
+    float: left;
     width: 35px;
     text-align: center;
     padding: 2px;
@@ -220,11 +250,12 @@ dd {
     padding-right: 5px;
 }
 
-/* Needed for it to look nice with 4x, since it's length is different from 10,20 and 40px */
+/* Needed for it to look nice with 4x, since it's length is different from 10,20 and 40x */
 #footer #ZoomLevels li:nth-child(2) {
     padding-left: 0;
     left: 5px;
 }
+
 
 #footer #ZoomLevels li:hover {
     background-color: #9E9E9E9E;
