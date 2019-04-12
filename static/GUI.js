@@ -418,7 +418,6 @@ function fetchSearchTags() {
 
 function imageFilter(dbResult) {
     var imageLinks = $(".imageLinks").toArray();
-    console.log(dbResult);
 
     imageLinks.forEach(function (imageLinksElement) {
         var match = false;
