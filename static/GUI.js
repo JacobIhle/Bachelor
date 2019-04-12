@@ -349,6 +349,20 @@ function jacobisGUIstuff() {
     $("#searchField").click(function () {
         $(".folder").show();
         $(".imageLinks").show();
+
+        var searchDropdown = $(".dropdown-search-content");
+
+        if($(".dropdown-search-content a").length === 0) {
+            allTags = ["Blood", "Tissue Damage", "More stuff"];
+            allTags.forEach(function (tag) {
+                searchDropdown.append("<a class='classTags'>" + tag + "</a>");
+            });
+        }
+        $(".dropdown-search-content a").on("click", function () {
+            $("#searchField").val($(this).html());
+            $(".dropdown-search-content").empty();
+            fetchSearchTags();
+        });
     });
 
     $("#searchField").on("keyup", function (e) {
@@ -365,15 +379,7 @@ function jacobisGUIstuff() {
                 }
             });
         } else if (e.key === "Enter") {
-            fetch("https://histology.ux.uis.no/searchTags", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({"tag": searchValue})
-            })
-                .then(res => res.json())
-                .then(data => imageFilter(data["images"]));
+            fetchSearchTags();
         }
     });
 
@@ -389,6 +395,19 @@ function jacobisGUIstuff() {
             searchTags = false;
         }
     });
+}
+
+
+function fetchSearchTags() {
+    var searchValue = $(this).val();
+    fetch("https://histology.ux.uis.no/searchTags", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({"tag": searchValue})
+    }).then(res => res.json())
+        .then(data => imageFilter(data["images"]));
 }
 
 function imageFilter(dbResult) {
