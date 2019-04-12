@@ -385,6 +385,10 @@ function jacobisGUIstuff() {
     });
 
     $("#searchTags").on("click", function () {
+        if(searchTags){
+            $("#searchField").val("");
+            $(".dropdown-search-content").empty();
+        }
         var className = $(this).attr("class");
         if (className === "") {
             $(this).addClass("searchTagsClicked");
