@@ -116,7 +116,7 @@ def InsertImageToDB(imagePath):
     print(result)
 
     if not result:
-        db.engine.execute("insert into images(ImagePath) values({});".format(imagePath))
+        db.engine.execute("insert into images(ImagePath) values('{}');".format(imagePath))
 
 
 def InsertDrawingsToDB(imagePath, tags, grade):
