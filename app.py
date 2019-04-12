@@ -150,6 +150,21 @@ def updateTags():
     return json.dumps(tags), 200
 
 
+@app.route("/searchTags", methods=["POST"])
+def searchTags():
+    tag = json.loads(request.data)["tag"]
+    queryString = "select i.ImagePath from images as i inner join annotations a on (i.ImagePath = a.ImagePath) where a.tag = '{}';".format(tag)
+    query = db.engine.execute(queryString)
+    images = []
+
+    for image in query:
+        images.append(image[0])
+
+    jsonImages = {"images": images}
+
+    return json.dumps(jsonImages), 200
+
+
 @app.route("/getCurrentUser")
 @login_required
 def getCurrentUser():
@@ -268,6 +283,27 @@ class Tags(db.Model):
 
     def __init__(self, Name):
         self.Name = Name
+
+
+class Images(db.Model):
+    ImageID = db.Column("ImageID", db.Integer, primary_key=True)
+    ImagePath = db.Column("ImagePath", db.String)
+
+    def __init__(self, ImageID, ImagePath):
+        self.ImageID = ImageID
+        self.ImagePath = ImagePath
+
+
+class Annotations(db.Model):
+    ID = db.Column("ID", db.Integer, primary_key=True)
+    ImagePath = db.Column("ImagePath", db.String, db.ForeignKey("Images.ImagePath"))
+    Tag = db.Column("Tag", db.String)
+    Grade = db.Column("Grade", db.Integer)
+
+    def __init__(self, ImagePath, Tag, Grade):
+        self.ImagePath = ImagePath
+        self.Tag = Tag
+        self.Grade = Grade
 
 
 if __name__ == '__main__':
