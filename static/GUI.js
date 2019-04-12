@@ -8,7 +8,7 @@ var drawings = [];
 var allTags = [];
 var drawingEnabled = false;
 var finishingDrawing = false;
-
+var searchTags = false;
 
 /*
 TODO
