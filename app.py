@@ -110,7 +110,7 @@ def PostXML(foldername, filename):
 
 
 def InsertImageToDB(imagePath):
-    query = "select ImagePath from images where ImagePath = {};".format(imagePath)
+    query = "select ImagePath from images where ImagePath = '{}';".format(imagePath)
     queryResult = db.engine.execute(query)
 
     if not queryResult:
