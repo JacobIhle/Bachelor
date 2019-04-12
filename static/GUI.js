@@ -393,11 +393,13 @@ function jacobisGUIstuff() {
 
 function imageFilter(dbResult) {
     var imageLinks = $(".imageLinks").toArray();
+    console.log(dbResult);
 
     imageLinks.forEach(function (imageLinksElement) {
         var match = false;
         dbResult.forEach(function (dbElement) {
-            var element = dbElement.replace(new RegExp(" ", "g"), "{space}");
+            var foo = dbElement.replace(new RegExp(" ", "g"), "{space}");
+            var element = foo.replace("[slash]", "/");
             if(imageLinksElement.id === element){
                 match = true;
             }

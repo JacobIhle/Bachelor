@@ -121,12 +121,7 @@ def InsertImageToDB(imagePath):
 
 def InsertDrawingsToDB(imagePath, tags, grade):
     for tag in tags:
-        queryResult = db.engine.execute("select ImagePath from annotations where tag = '{}' and ImagePath = '{}'"
-                                        .format(tag, imagePath))
-        result = [row[0] for row in queryResult]
-
-        if not result:
-            db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
+        db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
                           .format(imagePath, tag, grade))
 
 
