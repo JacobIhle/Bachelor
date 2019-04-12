@@ -26,6 +26,7 @@ maybe maybe if time show full list of available tags to user
 */
 
 $(document).ready(function () {
+    updateAllTags(0);
     addNonViewerHandlers();
     jacobisGUIstuff();
     initiallizeCanvas();
@@ -349,19 +350,20 @@ function jacobisGUIstuff() {
     $("#searchField").click(function () {
         $(".folder").show();
         $(".imageLinks").show();
+        if(searchTags) {
+            var searchDropdown = $(".dropdown-search-content");
 
-        var searchDropdown = $(".dropdown-search-content");
-
-        if($(".dropdown-search-content a").length === 0) {
-            allTags.forEach(function (tag) {
-                searchDropdown.append("<a class='classTags'>" + tag + "</a>");
+            if ($(".dropdown-search-content a").length === 0) {
+                allTags.forEach(function (tag) {
+                    searchDropdown.append("<a class='classTags'>" + tag + "</a>");
+                });
+            }
+            $(".dropdown-search-content a").on("click", function () {
+                $("#searchField").val($(this).html());
+                $(".dropdown-search-content").empty();
+                fetchSearchTags();
             });
         }
-        $(".dropdown-search-content a").on("click", function () {
-            $("#searchField").val($(this).html());
-            $(".dropdown-search-content").empty();
-            fetchSearchTags();
-        });
     });
 
     $("#searchField").on("keyup", function (e) {
