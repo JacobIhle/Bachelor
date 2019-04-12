@@ -119,7 +119,7 @@ def InsertImageToDB(imagePath):
 
 def InsertDrawingsToDB(imagePath, tags, grade):
     for tag in tags:
-        db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values({}, {}, {});"
+        db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
                           .format(imagePath, tag, grade))
 
 
