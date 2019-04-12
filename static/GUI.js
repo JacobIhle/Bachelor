@@ -353,7 +353,6 @@ function jacobisGUIstuff() {
         var searchDropdown = $(".dropdown-search-content");
 
         if($(".dropdown-search-content a").length === 0) {
-            allTags = ["Blood", "Tissue Damage", "More stuff"];
             allTags.forEach(function (tag) {
                 searchDropdown.append("<a class='classTags'>" + tag + "</a>");
             });
