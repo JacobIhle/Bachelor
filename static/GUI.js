@@ -398,14 +398,15 @@ function jacobisGUIstuff() {
 
 
 function fetchSearchTags() {
-    var searchValue = $("#searchTags").val();
+    var searchValue = $("#searchField").val();
     fetch("https://histology.ux.uis.no/searchTags", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({"tag": searchValue})
-    }).then(res => res.json())
+    })
+        .then(res => res.json())
         .then(data => imageFilter(data["images"]));
 }
 
