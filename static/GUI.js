@@ -398,7 +398,7 @@ function jacobisGUIstuff() {
 
 
 function fetchSearchTags() {
-    var searchValue = $(this).val();
+    var searchValue = $("#searchTags").val();
     fetch("https://histology.ux.uis.no/searchTags", {
         method: "POST",
         headers: {
