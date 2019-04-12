@@ -83,6 +83,8 @@ def PostXML(foldername, filename):
             tree = ET.ElementTree(Annotations)
             tree.write(folder+file)
 
+        InsertImageToDB(file.replace(".xml", ""))
+
         tree = ET.parse(folder+file)
         regions = tree.getroot()[0][0]
 
@@ -95,12 +97,30 @@ def PostXML(foldername, filename):
 
         for region in moreRegions:
             regions.append(region)
+            formatedTags = region.attrib["tags"]
+            tags = formatedTags.split("|")
+            grade = region.attrib["grade"]
+            InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
 
         tree.write(folder+file)
     except:
         traceback.print_exc()
         return "", 500
     return "", 200
+
+
+def InsertImageToDB(imagePath):
+    query = "select ImagePath from images where ImagePath = {};".format(imagePath)
+    queryResult = db.engine.execute(query)
+
+    if not queryResult:
+        db.engine.execute("insert into images(ImagePath) values({});".format(imagePath))
+
+
+def InsertDrawingsToDB(imagePath, tags, grade):
+    for tag in tags:
+        db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values({}, {}, {});"
+                          .format(imagePath, tag, grade))
 
 
 @app.route('/getxml/<foldername>/<filename>')
@@ -114,8 +134,6 @@ def GetXML(foldername, filename):
     return "", 500
 
 
-#TODO
-#FOR RUNNING ON UNIX SERVER
 def GetAvailableImages():
     global nestedImageList
     global imagePathLookupTable
