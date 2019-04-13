@@ -1,20 +1,52 @@
+/*
+Copyright (C) 2009 CodePlex Foundation
+Copyright (C) 2010-2013 OpenSeadragon contributors
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+- Redistributions of source code must retain the above copyright notice,
+  this list of conditions and the following disclaimer.
+
+- Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+- Neither the name of CodePlex Foundation nor the names of its contributors
+  may be used to endorse or promote products derived from this software
+  without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+*/
+
 var viewer;
-var imageUrl;
-var currentImage;
 var overlay;
+var imageUrl;
 var aborts = 0;
-var canvasObjects = [];
-var drawings = [];
+var currentImage;
 var allTags = [];
+var drawings = [];
+var canvasObjects = [];
+var searchTags = false;
 var drawingEnabled = false;
 var finishingDrawing = false;
-var searchTags = false;
 
 $(document).ready(function () {
     updateAllTags(0);
     addNonViewerHandlers();
     jacobisGUIstuff();
     initiallizeCanvas();
+    addDrawingHandlers()
 });
 
 function initiallizeCanvas() {
@@ -56,54 +88,7 @@ function addOverlays() {
 
 
     overlay = viewer.canvasOverlay({
-        onRedraw: function () {
-            //TODO REFACTOR
-            //this + draw saved drawing objects
-            if (currentImage) {
-                overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
-                overlay.context2d().fillStyle = "rgba(255,0,0,1)";
-                overlay.context2d().lineWidth = 200 / viewer.viewport.getZoom(true);
-
-                if (canvasObjects.length > 0) {
-                    if (canvasObjects.length === 1) {
-                        overlay.context2d().beginPath();
-                        overlay.context2d().arc(canvasObjects[0].x, canvasObjects[0].y,
-                            350 / viewer.viewport.getZoom(true), 0, 2 * Math.PI);
-                        overlay.context2d().fill();
-                        overlay.context2d().closePath();
-                    } else {
-                        overlay.context2d().beginPath();
-                        for (var i = 0; i < canvasObjects.length; i++) {
-                            if (i === 0) {
-                                overlay.context2d().moveTo(canvasObjects[i].x, canvasObjects[i].y);
-                            } else if (i === canvasObjects.length - 1) {
-                                overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
-                                overlay.context2d().stroke();
-                                overlay.context2d().closePath();
-                            } else {
-                                overlay.context2d().lineTo(canvasObjects[i].x, canvasObjects[i].y);
-                            }
-                        }
-                    }
-                }
-
-                drawings.forEach(function (element) {
-                    var points = element.points;
-                    overlay.context2d().beginPath();
-                    for (var i = 0; i < points.length; i++) {
-                        if (i === 0) {
-                            overlay.context2d().moveTo(points[i].x, points[i].y);
-                        } else if (i === points.length - 1) {
-                            overlay.context2d().lineTo(points[i].x, points[i].y);
-                            overlay.context2d().stroke();
-                            overlay.context2d().closePath();
-                        } else {
-                            overlay.context2d().lineTo(points[i].x, points[i].y);
-                        }
-                    }
-                });
-            }
-        },
+        onRedraw: updateDrawings(),
         clearBeforeRedraw: true
     });
 
@@ -255,56 +240,6 @@ function jacobisGUIstuff() {
         }
 
         $(this).siblings(".imageLinks").toggle();
-    });
-
-
-    $("#Drawing").click(function () {
-        if (!finishingDrawing && currentImage) {
-            if ($(this).text() === "New Drawing") {
-                $("#DrawingTools").show();
-                toggleDrawing();
-                $("#Drawing").html("Save Drawing");
-
-
-            } else if ($(this).text() === "Save Drawing") {
-                $("#tagSelector").css("display", "");
-                finishingDrawing = true;
-                $(this).removeClass("drawingHover");
-
-                updateAllTags(1);
-
-                $("#DrawingTools").hide();
-                if (canvasObjects.length > 1) {
-                    canvasObjects.push(canvasObjects[0]); //snap to start
-                    overlay._updateCanvas();
-                }
-                toggleDrawing();
-            }
-        }
-    });
-
-    $("#Dragging").click(function () {
-        if ($("#Dragging").attr("title") === "Enable Dragging") {
-            $("#Dragging").attr("title", "Disable Dragging");
-            $("#Dragging").css("background-color", "#757575");
-        } else if ($("#Dragging").attr("Title") === "Disable Dragging") {
-            $("#Dragging").attr("title", "Enable Dragging");
-            $("#Dragging").css("background-color", "");
-        }
-        toggleDrawing();
-    });
-
-    $("#UndoButton").click(function () {
-        if (canvasObjects.length > 0) {
-            canvasObjects.pop();
-        }
-        overlay._updateCanvas();
-    });
-
-    $("#CancelDrawing").click(function () {
-        if (confirm("Confirm Cancellation")) {
-            cancelDrawing();
-        }
     });
 
     $("#DownloadXML").click(function () {
@@ -569,23 +504,6 @@ function generateTagSelector() {
     });
 }
 
-function cancelDrawing() {
-    canvasObjects = [];
-    try {
-        overlay._updateCanvas();
-    }
-    catch (e) {
-        console.log(e.message);
-    }
-    if (drawingEnabled) {
-        toggleDrawing();
-    }
-    $("#Drawing").html("New Drawing");
-    $("#DrawingTools").hide();
-    $("#Dragging").attr("title", "Enable Dragging");
-    $("#Dragging").css("background-color", "");
-}
-
 function sendXMLtoServer(xml, action) {
     if (currentImage) {
         var xmlHttp = new XMLHttpRequest();
@@ -603,7 +521,6 @@ function sendXMLtoServer(xml, action) {
     }
 }
 
-
 function getXMLfromServer() {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
@@ -614,7 +531,6 @@ function getXMLfromServer() {
     xmlHttp.open("GET", "getxml/" + currentImage.substring(0, currentImage.length - 4) + ".xml");
     xmlHttp.send();
 }
-
 
 function XMLtoDrawing(xml) {
     var regions = $(xml).find("Region");
@@ -633,11 +549,6 @@ function XMLtoDrawing(xml) {
         });
         drawings.push(new Drawing(name, points, tags.split("|"), creator, grade));
     })
-}
-
-
-function toggleDrawing() {
-    (drawingEnabled) ? drawingEnabled = false : drawingEnabled = true;
 }
 
 function generateXML(listOfDrawings) {
