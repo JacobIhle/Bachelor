@@ -128,7 +128,7 @@ def InsertDrawingsToDB(imagePath, tags, grade):
                 db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
                               .format(imagePath, tag, grade))
             else:
-                dbResult = db.execute("select ImagePath, Tags, Grade from annotations where ImagePath = '{}'"
+                dbResult = db.engine.execute("select ImagePath, Tags, Grade from annotations where ImagePath = '{}'"
                                       "and Tag = {} and Grade = '{}';".format(imagePath, tag, grade))
 
                 resultDb = [res[0] for res in dbResult]
