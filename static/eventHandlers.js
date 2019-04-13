@@ -206,7 +206,7 @@ function addGuiHandlers() {
             $(".dropdown-search-content a").on("click", function () {
                 $("#searchField").val($(this).html());
                 $(".dropdown-search-content").empty();
-                fetchSearchTags();
+                fetchSearchTags($(this).html());
             });
         }
     });
