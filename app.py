@@ -103,6 +103,8 @@ def PostXML(foldername, filename):
                 formatedTags = region.attrib["tags"]
                 tags = formatedTags.split("|")
                 grade = region.attrib["grade"]
+            except:
+                traceback.print_exc()
             finally:
                 InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
 
