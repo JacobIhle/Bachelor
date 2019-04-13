@@ -1,5 +1,5 @@
 function fetchSearchTags(searchValue) {
-    fetch("https://histology.ux.uis.no/searchTagEnabled", {
+    fetch("https://histology.ux.uis.no/searchTags", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
