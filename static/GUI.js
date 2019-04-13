@@ -88,7 +88,7 @@ function addOverlays() {
 
 
     overlay = viewer.canvasOverlay({
-        onRedraw: updateDrawings(),
+        onRedraw: function () {updateDrawings();},
         clearBeforeRedraw: true
     });
 
