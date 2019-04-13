@@ -17,7 +17,7 @@ function addDrawingHandlers() {
                     tempDrawingPoints.push(tempDrawingPoints[0]); //snap to start
                     canvasOverlay._updateCanvas();
                     toggleDrawing();
-                    
+
                 } else {
                     cancelDrawing();
                 }
@@ -233,7 +233,7 @@ function addGuiHandlers() {
             searchTagEnabled = true;
         } else {
             $(this).removeClass("searchTagsClicked");
-            $(this).attr("id", "searchTagEnabled");
+            $(this).attr("id", "searchTags");
             searchTagEnabled = false;
         }
     });
