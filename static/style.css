@@ -37,15 +37,11 @@ header li {
     user-select: none; /* Standard */
 }
 
-#footer #ZoomLevels li {
-    display: inline;
-    float: left;
-}
+
 
 #menuicon {
     color: white;
-    font-size: 2em;
-    line-height: 40px;
+    line-height: 38px;
 }
 
 li #searchicon {
@@ -65,28 +61,59 @@ li #searchicon:active {
     background-color: #424242;
 }
 
+#searchTags {
+    position: relative;
+    display: inline;
+    color: white;
+    left: 5px;
+    padding: 5px;
+}
+
+#searchTags:hover{
+    background-color: #212121;
+    padding: 10px 5px 10px 5px;
+    border-radius: 5px;
+}
+
+#searchTags:active {
+    background-color: #424242;
+}
+
+.searchTagsClicked {
+    background-color: #212121;
+    position: relative;
+    display: inline;
+    color: white;
+    left: 5px;
+    padding: 10px 5px 10px 5px;
+    border-radius: 5px;
+}
 
 li #Drawing {
     color: white;
     font-size: 1.4em;
-    line-height: 40px;
+    line-height: 38px;
     margin-right: 5px;
     padding: 0 5px 0 5px;
-
 }
 
-li #Drawing:hover {
+li .drawingHover:hover {
     background-color: #212121;
     border-radius: 5px;
 }
 
-li #Drawing:active {
+li .drawingHover:active {
     background-color: #424242;
 }
 
 li form {
     line-height: 40px;
     width: 200px;
+}
+
+#searchDiv {
+    position: relative;
+    top: 5px;
 }
 
 #searchField {
@@ -125,29 +152,12 @@ li form {
     background-color: #424242;
 }
 
-#splitter{
+#splitter {
     position: relative;
     float: right;
     height: 40px;
     border-right: 1px solid #212121;
     margin: 0 3px 0 3px;
-}
-
-#Annotations{
-     -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-    float: right;
-    color: white;
-    font-size: 1.6em;
-    line-height: 40px;
-    padding: 0 6px 0 6px;
-}
-
-#Annotations:hover {
-    border-radius: 5px;
-    background-color: #212121;
 }
 
 li #filename {
@@ -208,6 +218,8 @@ dd {
 #footer #ZoomLevels li {
     position: relative;
     font-size: 20px;
+    display: inline;
+    float: left;
     width: 35px;
     text-align: center;
     padding: 2px;
@@ -220,18 +232,19 @@ dd {
     padding-right: 5px;
 }
 
-/* Needed for it to look nice with 4x, since it's length is different from 10,20 and 40px */
+/* Needed for it to look nice with 4x, since it's length is different from 10,20 and 40x */
 #footer #ZoomLevels li:nth-child(2) {
     padding-left: 0;
     left: 5px;
 }
+
 
 #footer #ZoomLevels li:hover {
     background-color: #9E9E9E9E;
     height: 30px;
 }
 
-#DrawingTools{
+#DrawingTools {
     display: none;
 }
 
@@ -250,7 +263,7 @@ dd {
     background-color: #BDBDBD;
 }
 
-#Dragging{
+#Dragging {
     position: relative;
     display: inline-block;
     padding: 0 7px 0 7px;
@@ -289,16 +302,6 @@ dd {
     height: 50px;
 }
 
-.dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-
-
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
     position: relative;
@@ -330,6 +333,36 @@ dd {
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-search-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 154px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    border-radius: 5px;
+}
+
+/* Links inside the dropdown */
+.dropdown-search-content a {
+    color: black;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-search-content a:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-search-content {
     display: block;
 }
 
@@ -383,6 +416,119 @@ dd {
     background-color: #BDBDBD;
 }
 
+/* Tag selector */
+
+#tagSelector {
+    padding: 10px;
+    position: absolute;
+    display: block;
+    width: 300px;
+    border-right: 1px solid #212121;
+    z-index: 9;
+    height: calc(100% - 105px);
+    min-width: 200px;
+    background-color: white;
+}
+
+#tagSelector form input {
+    margin-left: 1px;
+    margin-bottom: 5px;
+}
+
+#addSelector {
+    position: absolute;
+    border: 1px solid #212121;
+    border-radius: 2px;
+    height: 18px;
+    padding: 2px;
+    width: 18px;
+    z-index: 12;
+    top: 70px;
+}
+
+#addSelector:hover {
+    border: 2px solid #212121;
+    padding: 1px;
+}
+
+.deleteButtons {
+    position: relative;
+    right: -30px;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #212121;
+    border-radius: 2px;
+    padding: 2px;
+    top: 8px;
+}
+
+.deleteButtons:hover {
+    border: 2px solid #212121;
+    padding: 1px;
+}
+
+
+#tagSelector #addTag {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    padding: 10px 0 10px 0;
+    left: 0;
+    border-top: 1px solid #212121;
+    height: 80px;
+}
+
+#addTagButton {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    border: 1px solid #212121;
+    padding: 2px 3px 2px 3px;
+}
+
+
+#addTagButton:hover {
+    border: 2px solid #212121;
+    padding: 1px 2px 1px 2px;
+}
+
+#addTagButton:active {
+    border: 1px solid #212121;
+    padding: 2px 3px 2px 3px;
+}
+
+#tagsForm {
+    position: relative;
+    top: -29px;
+    width: 80%;
+}
+
+#tagsForm select {
+    position: relative;
+    display: inline-block;
+    left: 30px;
+    padding: 5px;
+    margin: 5px;
+}
+
+#saveTags {
+    position: relative;
+    left: 25px;
+    padding: 10px;
+    top: -34px;
+}
+
+#addTagForm {
+    position: absolute;
+    line-height: 30px;
+    left: 10px;
+}
+
+
 /* Login/register stuff */
 .login-form {
     width: 330px;
@@ -434,7 +580,6 @@ dd {
 .form-group input {
     margin-bottom: 5px;
 }
-
 
 .warning {
     color: red;

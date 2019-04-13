@@ -2,22 +2,16 @@ var viewer;
 var imageUrl;
 var currentImage;
 var overlay;
-var i = 0;
 var aborts = 0;
 var canvasObjects = [];
 var drawings = [];
+var allTags = [];
 var drawingEnabled = false;
-
-//TODO
-/*
-frontend buttons(JACOB): new drawing, finish drawing, toggle dragging/drawing stuff, undo button
-migrate drawings to their own objectstructure thingie
-import drawings
-export drawings
-give finished drawing name and tags and description
- */
+var finishingDrawing = false;
+var searchTags = false;
 
 $(document).ready(function () {
+    updateAllTags(0);
     addNonViewerHandlers();
     jacobisGUIstuff();
     initiallizeCanvas();
@@ -62,11 +56,10 @@ function addOverlays() {
 
 
     overlay = viewer.canvasOverlay({
-        onRedraw:function(){
+        onRedraw: function () {
             //TODO REFACTOR
             //this + draw saved drawing objects
-            if(currentImage) {
-                console.log("redraw");
+            if (currentImage) {
                 overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
                 overlay.context2d().fillStyle = "rgba(255,0,0,1)";
                 overlay.context2d().lineWidth = 200 / viewer.viewport.getZoom(true);
@@ -111,7 +104,7 @@ function addOverlays() {
                 });
             }
         },
-        clearBeforeRedraw:true
+        clearBeforeRedraw: true
     });
 
 }
@@ -119,9 +112,9 @@ function addOverlays() {
 function addNonViewerHandlers() {
 
     $(".imageLinks").on("click", function () {
-        if(canvasObjects.length === 0) {
+        if (canvasObjects.length === 0) {
             changeImage(this);
-        }else if(confirm("Changing image will cancel drawing, continue?")){
+        } else if (confirm("Changing image will cancel drawing, continue?")) {
             changeImage(this);
         }
     })
@@ -141,7 +134,7 @@ function open_slide(url) {
     drawings = [];
     viewer.open(url);
 
-    $(window).resize(function() {
+    $(window).resize(function () {
         overlay.resize();
     });
 }
@@ -177,7 +170,7 @@ function addViewerHandlers() {
             .then(function (response) {
                 if (response.status === 401) {
                     window.location.reload(true);
-                    if(aborts === 0){
+                    if (aborts === 0) {
                         alert("You have been logged out for inactivity");
                         aborts++;
                     }
@@ -191,7 +184,7 @@ function addViewerHandlers() {
             .then(function (response) {
                 if (response.status === 401) {
                     window.location.reload(true);
-                    if(aborts === 0){
+                    if (aborts === 0) {
                         alert("You have been logged out for inactivity");
                         aborts++;
                     }
@@ -199,8 +192,8 @@ function addViewerHandlers() {
             });
     });
 
-    viewer.addHandler('canvas-click', function(e) {
-        if(drawingEnabled) {
+    viewer.addHandler('canvas-click', function (e) {
+        if (drawingEnabled) {
             e.preventDefaultAction = true;
             var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
 
@@ -209,15 +202,15 @@ function addViewerHandlers() {
             if (canvasObjects.length > 0) {
                 overlay._updateCanvas();
             }
-        }else{
+        } else {
             e.preventDefaultAction = false;
         }
     });
 
     viewer.addHandler('canvas-drag', function (e) {
-        if(drawingEnabled){
+        if (drawingEnabled) {
             e.preventDefaultAction = true;
-        }else{
+        } else {
             e.preventDefaultAction = false;
         }
     })
@@ -266,33 +259,27 @@ function jacobisGUIstuff() {
 
 
     $("#Drawing").click(function () {
+        if (!finishingDrawing && currentImage) {
+            if ($(this).text() === "New Drawing") {
+                $("#DrawingTools").show();
+                toggleDrawing();
+                $("#Drawing").html("Save Drawing");
 
-        if ($(this).text() === "New Drawing"){
-            $("#DrawingTools").show();
-            toggleDrawing();
-            $("#Drawing").html("Save Drawing");
-            console.log("new");
 
+            } else if ($(this).text() === "Save Drawing") {
+                $("#tagSelector").css("display", "");
+                finishingDrawing = true;
+                $(this).removeClass("drawingHover");
 
-        }else if($(this).text() === "Save Drawing"){
-            //TODO
-            //prompt user for name and tags
-            $("#DrawingTools").hide();
-            var name = "";
-            var tags = [];
-            if(canvasObjects.length > 1) {
-                //add to database
-                //save data to xml file
-                canvasObjects.push(canvasObjects[0]);
-                var drawing = new Drawing(name, canvasObjects, tags);
-                drawings.push(drawing);
-                overlay._updateCanvas();
-                sendXMLtoServer(generateXML([drawing]), 0)
+                updateAllTags(1);
+
+                $("#DrawingTools").hide();
+                if (canvasObjects.length > 1) {
+                    canvasObjects.push(canvasObjects[0]); //snap to start
+                    overlay._updateCanvas();
+                }
+                toggleDrawing();
             }
-            canvasObjects = [];
-            toggleDrawing();
-            $("#Drawing").html("New Drawing");
-            console.log("save");
         }
     });
 
@@ -308,31 +295,31 @@ function jacobisGUIstuff() {
     });
 
     $("#UndoButton").click(function () {
-        if(canvasObjects.length > 0) {
+        if (canvasObjects.length > 0) {
             canvasObjects.pop();
         }
         overlay._updateCanvas();
     });
 
     $("#CancelDrawing").click(function () {
-        if(confirm("Confirm Cancellation")){
+        if (confirm("Confirm Cancellation")) {
             cancelDrawing();
         }
     });
 
     $("#DownloadXML").click(function () {
-        if(currentImage) {
+        if (currentImage) {
             var xml = generateXML(drawings);
-            download(currentImage.substring(0, currentImage.length - 4)+".xml", xml);
-        }else{
+            download(currentImage.substring(0, currentImage.length - 4) + ".xml", xml);
+        } else {
             alert("No image selected");
         }
     });
-    
+
     $("#UploadXML").click(function () {
         $("#FileInput").trigger("click");
     });
-    
+
     $("#FileInput").on("change", function (e) {
         var file = e.target.files[0];
         var reader = new FileReader();
@@ -344,45 +331,242 @@ function jacobisGUIstuff() {
             sendXMLtoServer(content, 1)
         }
     });
-    
+
     $("#searchField").click(function () {
         $(".folder").show();
         $(".imageLinks").show();
+        if(searchTags) {
+            var searchDropdown = $(".dropdown-search-content");
+
+            if ($(".dropdown-search-content a").length === 0) {
+                allTags.forEach(function (tag) {
+                    searchDropdown.append("<a class='classTags'>" + tag + "</a>");
+                });
+            }
+            $(".dropdown-search-content a").on("click", function () {
+                $("#searchField").val($(this).html());
+                $(".dropdown-search-content").empty();
+                fetchSearchTags();
+            });
+        }
     });
 
-
-    $("#searchField").on("keyup", function () {
+    $("#searchField").on("keyup", function (e) {
         var value = $(".imageLinks").toArray();
         var searchValue = $(this).val();
-
-        value.forEach(function (element) {
-            if (!element.innerHTML.includes(searchValue)) {
-                $(element).hide();
-            }
-            if (element.innerHTML.includes(searchValue)) {
-                $(element).show();
-            }
-        });
+        //TODO: Refactor
+        if (!searchTags) {
+            value.forEach(function (element) {
+                if (!element.innerHTML.includes(searchValue)) {
+                    $(element).hide();
+                }
+                if (element.innerHTML.includes(searchValue)) {
+                    $(element).show();
+                }
+            });
+        } else if (e.key === "Enter") {
+            fetchSearchTags();
+        }
     });
 
-    $("#tagsForm").click(function () {
-        //fetch array of tags from database
-        var tags = [];
-        var selectorHtml = "<div><select>";
+    $("#searchTags").on("click", function () {
+        if(searchTags){
+            $("#searchField").val("");
+            $(".dropdown-search-content").empty();
+        }
+        var className = $(this).attr("class");
+        if (className === "") {
+            $(this).addClass("searchTagsClicked");
+            $(this).attr("id", " ");
+            searchTags = true;
+        } else {
+            $(this).removeClass("searchTagsClicked");
+            $(this).attr("id", "searchTags");
+            searchTags = false;
+        }
+    });
+}
 
-        tags.forEach(function (tag) {
-            selectorHtml += "<option>"+tag+"</option>";
+
+function fetchSearchTags() {
+    var searchValue = $("#searchField").val();
+    fetch("https://histology.ux.uis.no/searchTags", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({"tag": searchValue})
+    })
+        .then(res => res.json())
+        .then(data => imageFilter(data["images"]));
+}
+
+function imageFilter(dbResult) {
+    var imageLinks = $(".imageLinks").toArray();
+
+    imageLinks.forEach(function (imageLinksElement) {
+        var match = false;
+        dbResult.forEach(function (dbElement) {
+            var foo = dbElement.replace(new RegExp(" ", "g"), "{space}");
+            var element = foo.replace("[slash]", "/");
+            if(imageLinksElement.id === element + ".scn"){
+                match = true;
+            }
         });
-        selectorHtml += "</select><button class='selectButtons'></button></div>";
-        $("#tagSelector").append(selectorHtml);
 
-        $(".selectButtons").click(function () {
-            $(this).parent().remove();
-        });
+        if(match){
+            $(imageLinksElement).show();
+        }else{
+            $(imageLinksElement).hide();
+        }
+        match = false;
+    })
+}
 
+function updateAllTags(modifier) {
+    if (modifier === 1) {
+        fetch("https://histology.ux.uis.no/updateTags")
+            .then(res => res.json())
+            .then(data => allTags = data["tags"])
+            .then(() => generateTagSelectorWindow());
+    } else {
+        fetch("https://histology.ux.uis.no/updateTags")
+            .then(res => res.json())
+            .then(data => allTags = data["tags"])
+    }
+}
+
+
+function generateTagSelectorWindow() {
+    var formName = "<form> Name: <input type='text' id='tagName' name='tagName'><br>" +
+        "Grade: <select id = 'tagGrade'>\n" +
+        "<option>1</option>\n" +
+        "<option>2</option>\n" +
+        "<option>3</option>\n" +
+        "<option>4</option>\n" +
+        "<option>5</option>\n" +
+        "<option>6</option>\n" +
+        "</select></form><br>";
+    var plus = "<img src=\"../static/images/plus.svg\" id=\"addSelector\"> <br>";
+    var tagsForm = "<form id=\"tagsForm\" method=\"POST\" action=\"/Tags\"><div></div></form>";
+
+    var saveTags = "<div id=\"saveTags\">\n" +
+        "<input type=\"submit\" id=\"tagSaveSubmit\">\n" +
+        "<input type=\"button\" id=\"tagSaveCancel\" value=\"Cancel\">\n" +
+        "</div>";
+
+    var addTag = "<div id=\"addTag\">\n" +
+        "<form id=\"addTagForm\">\n" +
+        "Create new tag: <br> <input type=\"text\" name=\"addTag\" maxlength=\"32\">\n" +
+        "</form>\n" +
+        "<div id=\"addTagButton\">Add Tag</div>\n" +
+        "</div>";
+
+    var tagSelector = $("#tagSelector");
+
+    tagSelector.append(formName);
+    tagSelector.append(plus);
+    tagSelector.append(tagsForm);
+    tagSelector.append(saveTags);
+    tagSelector.append(addTag);
+    generateTagSelector();
+
+    $("#addSelector").click(function () {
+        generateTagSelector()
+    });
+
+    $("#tagSaveSubmit").on("click", function () {
+        let result;
+        fetch("https://histology.ux.uis.no/getCurrentUser")
+            .then(data => data.text())
+            .then(text => result = text)
+            .then(() => tagSaveSubmit(result));
+    });
+
+    $("#tagSaveCancel").on("click", function () {
+        //hide the name, tag display thingie
+        $("#tagSelector").css("display", "none");
+        $("#DrawingTools").show();
+        finishingDrawing = false;
+        $("#Drawing").addClass("drawingHover");
+        toggleDrawing();
+        removeTagSelector();
     });
 
 
+    $("#addTagButton").on("click", function () {
+        var newTag = $("#addTagForm input").val();
+
+        if (newTag !== "") {
+            var selects = $("div select");
+            fetch("https://histology.ux.uis.no/addTag", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"tag": newTag})
+            }).then(function (response) {
+                if (response.status === 200) {
+                    allTags.push(newTag);
+                    selects.each(function () {
+                        $(this).append("<option>" + newTag + "</option>");
+                    });
+                }
+            });
+            updateAllTags(0);
+        }
+
+    })
+}
+
+
+function tagSaveSubmit(creator) {
+    var name = $("#tagName").val();
+    var grade = $("#tagGrade").val();
+
+    var tags = [];
+    $("#tagsForm select").each(function () {
+        tags.push($(this).val())
+    });
+
+    if (canvasObjects.length > 1) {
+        canvasObjects.push(canvasObjects[0]);
+        var drawing = new Drawing(name, canvasObjects, tags, creator, grade);
+        drawings.push(drawing);
+        overlay._updateCanvas();
+        sendXMLtoServer(generateXML([drawing]), 0)
+    }
+    canvasObjects = [];
+    $("#Drawing").html("New Drawing");
+
+    finishingDrawing = false;
+    $("#Drawing").addClass("drawingHover");
+
+    removeTagSelector();
+}
+
+function removeTagSelector() {
+    $("#tagSelector").css("display", "none");
+    $("#tagSelector").empty();
+}
+
+function generateTagSelector() {
+    //fetch array of tags from database
+    var selectorHtml = "<div><select name='option'>";
+
+    selectorHtml += "<option></option>";
+    allTags.forEach(function (tag) {
+        selectorHtml += "<option>" + tag + "</option>";
+    });
+    selectorHtml += "</select><img src=\"../static/images/trash.png\" class='deleteButtons'></div>";
+    var selectElements = $("#tagsForm select");
+    if (selectElements.length < 7) {
+        $("#tagsForm").append(selectorHtml);
+    }
+
+    $(".deleteButtons").click(function () {
+        $(this).parent().remove();
+    });
 }
 
 function cancelDrawing() {
@@ -393,7 +577,9 @@ function cancelDrawing() {
     catch (e) {
         console.log(e.message);
     }
-    if(drawingEnabled){toggleDrawing();}
+    if (drawingEnabled) {
+        toggleDrawing();
+    }
     $("#Drawing").html("New Drawing");
     $("#DrawingTools").hide();
     $("#Dragging").attr("title", "Enable Dragging");
@@ -401,7 +587,7 @@ function cancelDrawing() {
 }
 
 function sendXMLtoServer(xml, action) {
-    if(currentImage) {
+    if (currentImage) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -421,31 +607,31 @@ function sendXMLtoServer(xml, action) {
 function getXMLfromServer() {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
-        if(this.readyState == 4 && this.status == 200){
+        if (this.readyState == 4 && this.status == 200) {
             XMLtoDrawing(xmlHttp.responseXML)
         }
     };
-    xmlHttp.open("GET", "getxml/"+currentImage.substring(0, currentImage.length - 4)+".xml");
+    xmlHttp.open("GET", "getxml/" + currentImage.substring(0, currentImage.length - 4) + ".xml");
     xmlHttp.send();
 }
 
 
 function XMLtoDrawing(xml) {
     var regions = $(xml).find("Region");
-
     regions.each(function (i, region) {
-        //TODO add name and tags to xml
-        var name = "";
+        var name = $(region).attr("name");
         var points = [];
-        var tags = [];
-        var vertices = $(region).find("Vertex");
+        var tags = String($(region).attr("tags"));
+        var creator = $(region).attr("creator");
+        var grade = $(region).attr("grade");
 
+        var vertices = $(region).find("Vertex");
         vertices.each(function (i, vertex) {
             var x = $(vertex).attr("X");
             var y = $(vertex).attr("Y");
             points.push({x: x, y: y});
         });
-        drawings.push(new Drawing(name, points, tags));
+        drawings.push(new Drawing(name, points, tags.split("|"), creator, grade));
     })
 }
 
@@ -465,26 +651,32 @@ function generateXML(listOfDrawings) {
     listOfDrawings.forEach(function (drawing) {
         var points = drawing.points;
         var tags = drawing.tags;
+        var name = drawing.name;
+        var creator = drawing.creator;
+        var grade = drawing.grade;
         var tagsAsString = "";
 
-        for(let i = 0; i < tags.length; i++){
-            if(i === 0){
+        for (let i = 0; i < tags.length; i++) {
+            if (i === 0) {
                 tagsAsString += tags[i];
-            }else{
-                tagsAsString += "|"+tags[i];
+            } else {
+                tagsAsString += "|" + tags[i];
             }
         }
 
         var region = xml.createElement("Region");
         region.setAttribute("tags", tagsAsString);
+        region.setAttribute("name", name);
+        region.setAttribute("creator", creator);
+        region.setAttribute("grade", grade);
         region.textContent = "\n";
         var vertices = xml.createElement("Vertices");
         vertices.textContent = "\n";
 
         points.forEach(function (point) {
             var vertex = xml.createElement("Vertex");
-            vertex.setAttribute("X", ""+point.x);
-            vertex.setAttribute("Y", ""+point.y);
+            vertex.setAttribute("X", "" + point.x);
+            vertex.setAttribute("Y", "" + point.y);
             vertex.setAttribute("Z", "0");
             vertex.textContent = "\n";
             vertices.appendChild(vertex);
@@ -497,21 +689,21 @@ function generateXML(listOfDrawings) {
     annotation.appendChild(regions);
     annotations.appendChild(annotation);
     xml.appendChild(annotations);
-    
+
     var serializer = new XMLSerializer();
 
     return serializer.serializeToString(xml);
 }
 
 function download(filename, text) {
-  var element = document.createElement('a');
-  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-  element.setAttribute('download', filename);
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
 
-  element.style.display = 'none';
-  document.body.appendChild(element);
+    element.style.display = 'none';
+    document.body.appendChild(element);
 
-  element.click();
+    element.click();
 
-  document.body.removeChild(element);
+    document.body.removeChild(element);
 }
