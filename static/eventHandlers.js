@@ -221,7 +221,7 @@ function addGuiHandlers() {
         }
     });
 
-    $("#searchTagEnabled").on("click", function () {
+    $("#searchTags").on("click", function () {
         if (searchTagEnabled) {
             $("#searchField").val("");
             $(".dropdown-search-content").empty();
