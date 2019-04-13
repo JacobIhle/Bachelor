@@ -22,7 +22,6 @@
                     <a id="DownloadXML">Download xml</a>
                     <a id="UploadXML">Upload xml</a>
                     <a href="register">Register new User</a>
-                    <a id="showLog">Show Log</a>
                     <a href="logout" id="Logout">Log out</a>
                 </div>
             </div>
@@ -30,17 +29,15 @@
             <button id="searchicon" class="material-icons search">search</button>
         </li>
         <li>
-            <form>
-                <input id="searchField" type="text" name="search" placeholder="Search">
-            </form>
+            <div id="searchDiv" class="dropdown">
+                <input id="searchField" class="menuicon" type="text" name="search" placeholder="Search" autocomplete="off">
+                <div class="dropdown-search-content"></div>
+                <div id="searchTags" class="">Tags</div>
+            </div>
         </li>
         <li>
             <button class="drawingHover" id="Drawing">New Drawing</button>
         </li>
-        </li>
-        <!--li id="infoButton">INFO</li>
-        <li id="splitter"> </li-->
-        <li id="Annotations">MARKINGS</li>
     </ul>
 </header>
 
@@ -53,18 +50,6 @@
 </div>
 
 <div id="display"></div>
-<div id="infoField">
-    <dl id="infoFieldList">
-        <dt>InfoHeader</dt>
-        <dd>InfoText</dd>
-        <dt>InfoHeader</dt>
-        <dd>InfoText</dd>
-        <dt>InfoHeader</dt>
-        <dd>InfoText</dd>
-        <dt>InfoHeader</dt>
-        <dd>InfoText</dd>
-    </dl>
-</div>
 
 <div id="footer">
     <ul id="ZoomLevels">

@@ -2,24 +2,31 @@ var viewer;
 var imageUrl;
 var currentImage;
 var overlay;
-var i = 0;
 var aborts = 0;
 var canvasObjects = [];
 var drawings = [];
 var allTags = [];
 var drawingEnabled = false;
 var finishingDrawing = false;
+var searchTags = false;
 
-//TODO
 /*
-frontend buttons(JACOB): new drawing, finish drawing, toggle dragging/drawing stuff, undo button
-migrate drawings to their own objectstructure thingie
-import drawings
-export drawings
-give finished drawing name and tags and description
- */
+TODO
+merge jacobs shit in.
+python get/post xml, change these to support our new database tag search stuff.
+add logging here and there, get/post xml maybe?
+remove "show log" from html dropdown menu
+shouldnt be necessary to do anything on existing javascript for tagsearch thingie, make more thorough check to confirm this.
+create unit tests -forked off to next years bachelor group.
+
+fix searchfield height and tag button thingie height.
+footer is not perfect, FIX IT U MONGRELS.
+
+maybe maybe if time show full list of available tags to user
+*/
 
 $(document).ready(function () {
+    updateAllTags(0);
     addNonViewerHandlers();
     jacobisGUIstuff();
     initiallizeCanvas();
@@ -64,10 +71,10 @@ function addOverlays() {
 
 
     overlay = viewer.canvasOverlay({
-        onRedraw:function(){
+        onRedraw: function () {
             //TODO REFACTOR
             //this + draw saved drawing objects
-            if(currentImage) {
+            if (currentImage) {
                 overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
                 overlay.context2d().fillStyle = "rgba(255,0,0,1)";
                 overlay.context2d().lineWidth = 200 / viewer.viewport.getZoom(true);
@@ -112,7 +119,7 @@ function addOverlays() {
                 });
             }
         },
-        clearBeforeRedraw:true
+        clearBeforeRedraw: true
     });
 
 }
@@ -120,9 +127,9 @@ function addOverlays() {
 function addNonViewerHandlers() {
 
     $(".imageLinks").on("click", function () {
-        if(canvasObjects.length === 0) {
+        if (canvasObjects.length === 0) {
             changeImage(this);
-        }else if(confirm("Changing image will cancel drawing, continue?")){
+        } else if (confirm("Changing image will cancel drawing, continue?")) {
             changeImage(this);
         }
     })
@@ -142,7 +149,7 @@ function open_slide(url) {
     drawings = [];
     viewer.open(url);
 
-    $(window).resize(function() {
+    $(window).resize(function () {
         overlay.resize();
     });
 }
@@ -178,7 +185,7 @@ function addViewerHandlers() {
             .then(function (response) {
                 if (response.status === 401) {
                     window.location.reload(true);
-                    if(aborts === 0){
+                    if (aborts === 0) {
                         alert("You have been logged out for inactivity");
                         aborts++;
                     }
@@ -192,7 +199,7 @@ function addViewerHandlers() {
             .then(function (response) {
                 if (response.status === 401) {
                     window.location.reload(true);
-                    if(aborts === 0){
+                    if (aborts === 0) {
                         alert("You have been logged out for inactivity");
                         aborts++;
                     }
@@ -200,8 +207,8 @@ function addViewerHandlers() {
             });
     });
 
-    viewer.addHandler('canvas-click', function(e) {
-        if(drawingEnabled) {
+    viewer.addHandler('canvas-click', function (e) {
+        if (drawingEnabled) {
             e.preventDefaultAction = true;
             var pos = viewer.viewport.viewerElementToImageCoordinates(e.position);
 
@@ -210,15 +217,15 @@ function addViewerHandlers() {
             if (canvasObjects.length > 0) {
                 overlay._updateCanvas();
             }
-        }else{
+        } else {
             e.preventDefaultAction = false;
         }
     });
 
     viewer.addHandler('canvas-drag', function (e) {
-        if(drawingEnabled){
+        if (drawingEnabled) {
             e.preventDefaultAction = true;
-        }else{
+        } else {
             e.preventDefaultAction = false;
         }
     })
@@ -267,7 +274,7 @@ function jacobisGUIstuff() {
 
 
     $("#Drawing").click(function () {
-        if(!finishingDrawing && currentImage) {
+        if (!finishingDrawing && currentImage) {
             if ($(this).text() === "New Drawing") {
                 $("#DrawingTools").show();
                 toggleDrawing();
@@ -278,7 +285,7 @@ function jacobisGUIstuff() {
                 $("#tagSelector").css("display", "");
                 finishingDrawing = true;
                 $(this).removeClass("drawingHover");
-                //TODO
+
                 updateAllTags(1);
 
                 $("#DrawingTools").hide();
@@ -290,7 +297,7 @@ function jacobisGUIstuff() {
             }
         }
     });
-    
+
     $("#Dragging").click(function () {
         if ($("#Dragging").attr("title") === "Enable Dragging") {
             $("#Dragging").attr("title", "Disable Dragging");
@@ -303,31 +310,31 @@ function jacobisGUIstuff() {
     });
 
     $("#UndoButton").click(function () {
-        if(canvasObjects.length > 0) {
+        if (canvasObjects.length > 0) {
             canvasObjects.pop();
         }
         overlay._updateCanvas();
     });
 
     $("#CancelDrawing").click(function () {
-        if(confirm("Confirm Cancellation")){
+        if (confirm("Confirm Cancellation")) {
             cancelDrawing();
         }
     });
 
     $("#DownloadXML").click(function () {
-        if(currentImage) {
+        if (currentImage) {
             var xml = generateXML(drawings);
-            download(currentImage.substring(0, currentImage.length - 4)+".xml", xml);
-        }else{
+            download(currentImage.substring(0, currentImage.length - 4) + ".xml", xml);
+        } else {
             alert("No image selected");
         }
     });
-    
+
     $("#UploadXML").click(function () {
         $("#FileInput").trigger("click");
     });
-    
+
     $("#FileInput").on("change", function (e) {
         var file = e.target.files[0];
         var reader = new FileReader();
@@ -339,34 +346,105 @@ function jacobisGUIstuff() {
             sendXMLtoServer(content, 1)
         }
     });
-    
+
     $("#searchField").click(function () {
         $(".folder").show();
         $(".imageLinks").show();
+        if(searchTags) {
+            var searchDropdown = $(".dropdown-search-content");
+
+            if ($(".dropdown-search-content a").length === 0) {
+                allTags.forEach(function (tag) {
+                    searchDropdown.append("<a class='classTags'>" + tag + "</a>");
+                });
+            }
+            $(".dropdown-search-content a").on("click", function () {
+                $("#searchField").val($(this).html());
+                $(".dropdown-search-content").empty();
+                fetchSearchTags();
+            });
+        }
     });
 
-    $("#searchField").on("keyup", function () {
+    $("#searchField").on("keyup", function (e) {
         var value = $(".imageLinks").toArray();
         var searchValue = $(this).val();
+        //TODO: Refactor
+        if (!searchTags) {
+            value.forEach(function (element) {
+                if (!element.innerHTML.includes(searchValue)) {
+                    $(element).hide();
+                }
+                if (element.innerHTML.includes(searchValue)) {
+                    $(element).show();
+                }
+            });
+        } else if (e.key === "Enter") {
+            fetchSearchTags();
+        }
+    });
 
-        value.forEach(function (element) {
-            if (!element.innerHTML.includes(searchValue)) {
-                $(element).hide();
-            }
-            if (element.innerHTML.includes(searchValue)) {
-                $(element).show();
-            }
-        });
+    $("#searchTags").on("click", function () {
+        if(searchTags){
+            $("#searchField").val("");
+            $(".dropdown-search-content").empty();
+        }
+        var className = $(this).attr("class");
+        if (className === "") {
+            $(this).addClass("searchTagsClicked");
+            $(this).attr("id", " ");
+            searchTags = true;
+        } else {
+            $(this).removeClass("searchTagsClicked");
+            $(this).attr("id", "searchTags");
+            searchTags = false;
+        }
     });
 }
 
+
+function fetchSearchTags() {
+    var searchValue = $("#searchField").val();
+    fetch("https://histology.ux.uis.no/searchTags", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({"tag": searchValue})
+    })
+        .then(res => res.json())
+        .then(data => imageFilter(data["images"]));
+}
+
+function imageFilter(dbResult) {
+    var imageLinks = $(".imageLinks").toArray();
+
+    imageLinks.forEach(function (imageLinksElement) {
+        var match = false;
+        dbResult.forEach(function (dbElement) {
+            var foo = dbElement.replace(new RegExp(" ", "g"), "{space}");
+            var element = foo.replace("[slash]", "/");
+            if(imageLinksElement.id === element + ".scn"){
+                match = true;
+            }
+        });
+
+        if(match){
+            $(imageLinksElement).show();
+        }else{
+            $(imageLinksElement).hide();
+        }
+        match = false;
+    })
+}
+
 function updateAllTags(modifier) {
-    if(modifier === 1) {
+    if (modifier === 1) {
         fetch("https://histology.ux.uis.no/updateTags")
             .then(res => res.json())
             .then(data => allTags = data["tags"])
             .then(() => generateTagSelectorWindow());
-    }else{
+    } else {
         fetch("https://histology.ux.uis.no/updateTags")
             .then(res => res.json())
             .then(data => allTags = data["tags"])
@@ -374,9 +452,16 @@ function updateAllTags(modifier) {
 }
 
 
-
 function generateTagSelectorWindow() {
-    var formName = "<form> Name: <input type='text' id='tagName' name='tagName'><br></form>";
+    var formName = "<form> Name: <input type='text' id='tagName' name='tagName'><br>" +
+        "Grade: <select id = 'tagGrade'>\n" +
+        "<option>1</option>\n" +
+        "<option>2</option>\n" +
+        "<option>3</option>\n" +
+        "<option>4</option>\n" +
+        "<option>5</option>\n" +
+        "<option>6</option>\n" +
+        "</select></form><br>";
     var plus = "<img src=\"../static/images/plus.svg\" id=\"addSelector\"> <br>";
     var tagsForm = "<form id=\"tagsForm\" method=\"POST\" action=\"/Tags\"><div></div></form>";
 
@@ -408,11 +493,11 @@ function generateTagSelectorWindow() {
     $("#tagSaveSubmit").on("click", function () {
         let result;
         fetch("https://histology.ux.uis.no/getCurrentUser")
-        .then(data => data.text())
-        .then(text => result = text)
-        .then(() => tagSaveSubmit(result));
+            .then(data => data.text())
+            .then(text => result = text)
+            .then(() => tagSaveSubmit(result));
     });
-    
+
     $("#tagSaveCancel").on("click", function () {
         //hide the name, tag display thingie
         $("#tagSelector").css("display", "none");
@@ -422,8 +507,8 @@ function generateTagSelectorWindow() {
         toggleDrawing();
         removeTagSelector();
     });
-    
-    
+
+
     $("#addTagButton").on("click", function () {
         var newTag = $("#addTagForm input").val();
 
@@ -436,7 +521,7 @@ function generateTagSelectorWindow() {
                 },
                 body: JSON.stringify({"tag": newTag})
             }).then(function (response) {
-                if(response.status === 200){
+                if (response.status === 200) {
                     allTags.push(newTag);
                     selects.each(function () {
                         $(this).append("<option>" + newTag + "</option>");
@@ -452,29 +537,30 @@ function generateTagSelectorWindow() {
 
 function tagSaveSubmit(creator) {
     var name = $("#tagName").val();
+    var grade = $("#tagGrade").val();
 
-        var tags = [];
-        $("#tagsForm select").each(function () {
-            tags.push($(this).val())
-        });
+    var tags = [];
+    $("#tagsForm select").each(function () {
+        tags.push($(this).val())
+    });
 
-        if(canvasObjects.length > 1) {
-            canvasObjects.push(canvasObjects[0]);
-            var drawing = new Drawing(name, canvasObjects, tags, creator);
-            drawings.push(drawing);
-            overlay._updateCanvas();
-            sendXMLtoServer(generateXML([drawing]), 0)
-        }
-        canvasObjects = [];
-        $("#Drawing").html("New Drawing");
+    if (canvasObjects.length > 1) {
+        canvasObjects.push(canvasObjects[0]);
+        var drawing = new Drawing(name, canvasObjects, tags, creator, grade);
+        drawings.push(drawing);
+        overlay._updateCanvas();
+        sendXMLtoServer(generateXML([drawing]), 0)
+    }
+    canvasObjects = [];
+    $("#Drawing").html("New Drawing");
 
-        finishingDrawing = false;
-        $("#Drawing").addClass("drawingHover");
+    finishingDrawing = false;
+    $("#Drawing").addClass("drawingHover");
 
-        removeTagSelector();
+    removeTagSelector();
 }
 
-function removeTagSelector(){
+function removeTagSelector() {
     $("#tagSelector").css("display", "none");
     $("#tagSelector").empty();
 }
@@ -502,11 +588,12 @@ function cancelDrawing() {
     canvasObjects = [];
     try {
         overlay._updateCanvas();
-    }
-    catch (e) {
+    } catch (e) {
         console.log("oops");
     }
-    if(drawingEnabled){toggleDrawing();}
+    if (drawingEnabled) {
+        toggleDrawing();
+    }
     $("#Drawing").html("New Drawing");
     $("#DrawingTools").hide();
     $("#Dragging").attr("title", "Enable Dragging");
@@ -514,7 +601,7 @@ function cancelDrawing() {
 }
 
 function sendXMLtoServer(xml, action) {
-    if(currentImage) {
+    if (currentImage) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -534,11 +621,11 @@ function sendXMLtoServer(xml, action) {
 function getXMLfromServer() {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
-        if(this.readyState == 4 && this.status == 200){
+        if (this.readyState == 4 && this.status == 200) {
             XMLtoDrawing(xmlHttp.responseXML)
         }
     };
-    xmlHttp.open("GET", "getxml/"+currentImage.substring(0, currentImage.length - 4)+".xml");
+    xmlHttp.open("GET", "getxml/" + currentImage.substring(0, currentImage.length - 4) + ".xml");
     xmlHttp.send();
 }
 
@@ -550,6 +637,7 @@ function XMLtoDrawing(xml) {
         var points = [];
         var tags = String($(region).attr("tags"));
         var creator = $(region).attr("creator");
+        var grade = $(region).attr("grade");
 
         var vertices = $(region).find("Vertex");
         vertices.each(function (i, vertex) {
@@ -557,7 +645,7 @@ function XMLtoDrawing(xml) {
             var y = $(vertex).attr("Y");
             points.push({x: x, y: y});
         });
-        drawings.push(new Drawing(name, points, tags.split("|"), creator));
+        drawings.push(new Drawing(name, points, tags.split("|"), creator, grade));
     })
 }
 
@@ -579,13 +667,14 @@ function generateXML(listOfDrawings) {
         var tags = drawing.tags;
         var name = drawing.name;
         var creator = drawing.creator;
+        var grade = drawing.grade;
         var tagsAsString = "";
 
-        for(let i = 0; i < tags.length; i++){
-            if(i === 0){
+        for (let i = 0; i < tags.length; i++) {
+            if (i === 0) {
                 tagsAsString += tags[i];
-            }else{
-                tagsAsString += "|"+tags[i];
+            } else {
+                tagsAsString += "|" + tags[i];
             }
         }
 
@@ -593,14 +682,15 @@ function generateXML(listOfDrawings) {
         region.setAttribute("tags", tagsAsString);
         region.setAttribute("name", name);
         region.setAttribute("creator", creator);
+        region.setAttribute("grade", grade);
         region.textContent = "\n";
         var vertices = xml.createElement("Vertices");
         vertices.textContent = "\n";
 
         points.forEach(function (point) {
             var vertex = xml.createElement("Vertex");
-            vertex.setAttribute("X", ""+point.x);
-            vertex.setAttribute("Y", ""+point.y);
+            vertex.setAttribute("X", "" + point.x);
+            vertex.setAttribute("Y", "" + point.y);
             vertex.setAttribute("Z", "0");
             vertex.textContent = "\n";
             vertices.appendChild(vertex);
@@ -613,21 +703,21 @@ function generateXML(listOfDrawings) {
     annotation.appendChild(regions);
     annotations.appendChild(annotation);
     xml.appendChild(annotations);
-    
+
     var serializer = new XMLSerializer();
 
     return serializer.serializeToString(xml);
 }
 
 function download(filename, text) {
-  var element = document.createElement('a');
-  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-  element.setAttribute('download', filename);
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
 
-  element.style.display = 'none';
-  document.body.appendChild(element);
+    element.style.display = 'none';
+    document.body.appendChild(element);
 
-  element.click();
+    element.click();
 
-  document.body.removeChild(element);
+    document.body.removeChild(element);
 }

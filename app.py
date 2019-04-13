@@ -75,13 +75,15 @@ def GetTile(dummy, dummy2, level, tile):
 def PostXML(foldername, filename):
     try:
         folder = "//home/prosjekt/Histology/thomaso/"
-        file = filename + ".xml"
+        file = foldername+"[slash]"+filename + ".xml"
         if not os.path.isfile(folder+file):
             Annotations = ET.Element("Annotations")
             Annotation = ET.SubElement(Annotations, "Annotation")
             ET.SubElement(Annotation, "Regions")
             tree = ET.ElementTree(Annotations)
             tree.write(folder+file)
+
+        InsertImageToDB(file.replace(".xml", ""))
 
         tree = ET.parse(folder+file)
         regions = tree.getroot()[0][0]
@@ -95,6 +97,10 @@ def PostXML(foldername, filename):
 
         for region in moreRegions:
             regions.append(region)
+            formatedTags = region.attrib["tags"]
+            tags = formatedTags.split("|")
+            grade = region.attrib["grade"]
+            InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
 
         tree.write(folder+file)
     except:
@@ -103,18 +109,44 @@ def PostXML(foldername, filename):
     return "", 200
 
 
+def InsertImageToDB(imagePath):
+    query = "select ImagePath from images where ImagePath = '{}';".format(imagePath)
+    queryResult = db.engine.execute(query)
+    result = [row[0] for row in queryResult]
+
+    if not result:
+        db.engine.execute("insert into images(ImagePath) values('{}');".format(imagePath))
+
+def InsertDrawingsToDB(imagePath, tags, grade):
+    for tag in tags:
+            queryResult = db.engine.execute("select ImagePath from annotations where tag = '{}'"
+                                            " and ImagePath = '{}'".format(tag, imagePath))
+            result = [row[0] for row in queryResult]
+
+            if not result:
+                db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
+                              .format(imagePath, tag, grade))
+            else:
+                dbResult = db.engine.execute("select ImagePath, Tag, Grade from annotations where ImagePath = '{}'"
+                                      "and Tag = '{}' and Grade = {};".format(imagePath, tag, grade))
+
+                resultDb = [res[0] for res in dbResult]
+                
+                if not resultDb:
+                    db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
+                                      .format(imagePath, tag, grade))
+
 @app.route('/getxml/<foldername>/<filename>')
 @login_required
 def GetXML(foldername, filename):
     folder = "//home/prosjekt/Histology/thomaso/"
-    foo = filename.replace("%20", " ")
+    file = foldername+"[slash]"+filename
+    foo = file.replace("%20", " ")
     if os.path.isfile(folder+foo):
         return send_from_directory(folder, foo)
     return "", 500
 
 
-#TODO
-#FOR RUNNING ON UNIX SERVER
 def GetAvailableImages():
     global nestedImageList
     global imagePathLookupTable
@@ -147,6 +179,21 @@ def updateTags():
         tags["tags"].append(tag[0])
 
     return json.dumps(tags), 200
+
+
+@app.route("/searchTags", methods=["POST"])
+def searchTags():
+    tag = json.loads(request.data)["tag"]
+    queryString = "select i.ImagePath from images as i inner join annotations a on (i.ImagePath = a.ImagePath) where a.tag = '{}';".format(tag)
+    query = db.engine.execute(queryString)
+    images = []
+
+    for image in query:
+        images.append(image[0])
+
+    jsonImages = {"images": images}
+
+    return json.dumps(jsonImages), 200
 
 
 @app.route("/getCurrentUser")
@@ -267,6 +314,27 @@ class Tags(db.Model):
 
     def __init__(self, Name):
         self.Name = Name
+
+
+class Images(db.Model):
+    ImageID = db.Column("ImageID", db.Integer, primary_key=True)
+    ImagePath = db.Column("ImagePath", db.String)
+
+    def __init__(self, ImageID, ImagePath):
+        self.ImageID = ImageID
+        self.ImagePath = ImagePath
+
+
+class Annotations(db.Model):
+    ID = db.Column("ID", db.Integer, primary_key=True)
+    ImagePath = db.Column("ImagePath", db.String, db.ForeignKey("Images.ImagePath"))
+    Tag = db.Column("Tag", db.String)
+    Grade = db.Column("Grade", db.Integer)
+
+    def __init__(self, ImagePath, Tag, Grade):
+        self.ImagePath = ImagePath
+        self.Tag = Tag
+        self.Grade = Grade
 
 
 if __name__ == '__main__':
