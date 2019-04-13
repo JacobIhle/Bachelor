@@ -73,6 +73,8 @@ def GetTile(dummy, dummy2, level, tile):
 @app.route('/postxml/<foldername>/<filename>', methods=["POST"])
 @login_required
 def PostXML(foldername, filename):
+    grade = 0
+    tags = []
     try:
         folder = "//home/prosjekt/Histology/thomaso/"
         file = foldername+"[slash]"+filename + ".xml"
@@ -97,10 +99,12 @@ def PostXML(foldername, filename):
 
         for region in moreRegions:
             regions.append(region)
-            formatedTags = region.attrib["tags"]
-            tags = formatedTags.split("|")
-            grade = region.attrib["grade"]
-            InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
+            try:
+                formatedTags = region.attrib["tags"]
+                tags = formatedTags.split("|")
+                grade = region.attrib["grade"]
+            finally:
+                InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
 
         tree.write(folder+file)
     except:
