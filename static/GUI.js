@@ -106,7 +106,9 @@ function addNonViewerHandlers() {
 }
 
 function changeImage(image) {
-    cancelDrawing();
+    if (currentImage) {
+        cancelDrawing();
+    }
     var id = image.id;
     currentImage = id.replace(new RegExp("{space}", "g"), " ");
     imageUrl = "https://histology.ux.uis.no/app/" + currentImage;
