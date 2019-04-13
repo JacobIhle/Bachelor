@@ -129,7 +129,7 @@ def InsertDrawingsToDB(imagePath, tags, grade):
                               .format(imagePath, tag, grade))
             else:
                 dbResult = db.engine.execute("select ImagePath, Tag, Grade from annotations where ImagePath = '{}'"
-                                      "and Tag = {} and Grade = '{}';".format(imagePath, tag, grade))
+                                      "and Tag = '{}' and Grade = {};".format(imagePath, tag, grade))
 
                 resultDb = [res[0] for res in dbResult]
                 
