@@ -65,9 +65,9 @@ function tagSaveSubmit(creator) {
         tags.push($(this).val())
     });
 
-    if (canvasObjects.length > 1) {
-        canvasObjects.push(canvasObjects[0]);
-        var drawing = new Drawing(name, canvasObjects, tags, creator, grade);
+    if (tempDrawingPoints.length > 1) {
+        tempDrawingPoints.push(tempDrawingPoints[0]);
+        var drawing = new Drawing(name, tempDrawingPoints, tags, creator, grade);
         drawings.push(drawing);
         canvasOverlay._updateCanvas();
         sendXMLtoServer(generateXML([drawing]), 0)
