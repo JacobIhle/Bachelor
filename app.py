@@ -118,12 +118,24 @@ def InsertImageToDB(imagePath):
     if not result:
         db.engine.execute("insert into images(ImagePath) values('{}');".format(imagePath))
 
-
 def InsertDrawingsToDB(imagePath, tags, grade):
     for tag in tags:
-        db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
-                          .format(imagePath, tag, grade))
+            queryResult = db.engine.execute("select ImagePath from annotations where tag = '{}'"
+                                            " and ImagePath = '{}'".format(tag, imagePath))
+            result = [row[0] for row in queryResult]
 
+            if not result:
+                db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
+                              .format(imagePath, tag, grade))
+            else:
+                dbResult = db.execute("select ImagePath, Tags, Grade from annotations where ImagePath = '{}'"
+                                      "and Tag = {} and Grade = '{}';".format(imagePath, tag, grade))
+
+                resultDb = [res[0] for res in dbResult]
+                
+                if not resultDb:
+                    db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
+                                      .format(imagePath, tag, grade))
 
 @app.route('/getxml/<foldername>/<filename>')
 @login_required
