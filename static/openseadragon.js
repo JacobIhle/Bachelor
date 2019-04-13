@@ -133,10 +133,10 @@
   *     Expected properties:
   *     * x, y, (or px, py for pixel coordinates) to define the location.
   *     * width, height in point if using x,y or in pixels if using px,py. If width
-  *       and height are specified, the overlay size is adjusted when zooming,
+  *       and height are specified, the canvasOverlay size is adjusted when zooming,
   *       otherwise the size stays the size of the content (or the size defined by CSS).
-  *     * className to associate a class to the overlay
-  *     * id to set the overlay element. If an element with this id already exists,
+  *     * className to associate a class to the canvasOverlay
+  *     * id to set the canvasOverlay element. If an element with this id already exists,
   *       it is reused, otherwise it is created. If not specified, a new element is
   *       created.
   *     * placement a string to define the relative position to the viewport.
@@ -7164,7 +7164,7 @@ $.Viewer = function( options ) {
          */
         canvas:         null,
 
-        // Overlays list. An overlay allows to add html on top of the viewer.
+        // Overlays list. An canvasOverlay allows to add html on top of the viewer.
         overlays:           [],
         // Container inside the canvas where overlays are drawn.
         overlaysContainer:  null,
@@ -8928,13 +8928,13 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
     },
 
    /**
-     * Adds an html element as an overlay to the current viewport.  Useful for
+     * Adds an html element as an canvasOverlay to the current viewport.  Useful for
      * highlighting words or areas of interest on an image or other zoomable
      * interface. The overlays added via this method are removed when the viewport
      * is closed which include when changing page.
      * @method
      * @param {Element|String|Object} element - A reference to an element or an id for
-     *      the element which will be overlayed. Or an Object specifying the configuration for the overlay.
+     *      the element which will be overlayed. Or an Object specifying the configuration for the canvasOverlay.
      *      If using an object, see {@link OpenSeadragon.Overlay} for a list of
      *      all available options.
      * @param {OpenSeadragon.Point|OpenSeadragon.Rect} location - The point or
@@ -8942,7 +8942,7 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
      * @param {OpenSeadragon.Placement} placement - The position of the
      *      viewport which the location coordinates will be treated as relative
      *      to.
-     * @param {function} onDraw - If supplied the callback is called when the overlay
+     * @param {function} onDraw - If supplied the callback is called when the canvasOverlay
      *      needs to be drawn. It it the responsibility of the callback to do any drawing/positioning.
      *      It is passed position, size and element.
      * @return {OpenSeadragon.Viewer} Chainable.
@@ -8964,7 +8964,7 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
         element = $.getElement( options.element );
 
         if ( getOverlayIndex( this.currentOverlays, element ) >= 0 ) {
-            // they're trying to add a duplicate overlay
+            // they're trying to add a duplicate canvasOverlay
             return this;
         }
 
@@ -8973,18 +8973,18 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
         overlay.drawHTML( this.overlaysContainer, this.viewport );
 
         /**
-         * Raised when an overlay is added to the viewer (see {@link OpenSeadragon.Viewer#addOverlay}).
+         * Raised when an canvasOverlay is added to the viewer (see {@link OpenSeadragon.Viewer#addOverlay}).
          *
          * @event add-overlay
          * @memberof OpenSeadragon.Viewer
          * @type {object}
          * @property {OpenSeadragon.Viewer} eventSource - A reference to the Viewer which raised the event.
-         * @property {Element} element - The overlay element.
+         * @property {Element} element - The canvasOverlay element.
          * @property {OpenSeadragon.Point|OpenSeadragon.Rect} location
          * @property {OpenSeadragon.Placement} placement
          * @property {?Object} userData - Arbitrary subscriber-defined object.
          */
-        this.raiseEvent( 'add-overlay', {
+        this.raiseEvent( 'add-canvasOverlay', {
             element: element,
             location: options.location,
             placement: options.placement
@@ -8993,7 +8993,7 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
     },
 
     /**
-     * Updates the overlay represented by the reference to the element or
+     * Updates the canvasOverlay represented by the reference to the element or
      * element id moving it to the new location, relative to the new placement.
      * @method
      * @param {Element|String} element - A reference to an element or an id for
@@ -9016,7 +9016,7 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
             this.currentOverlays[ i ].update( location, placement );
             THIS[ this.hash ].forceRedraw = true;
             /**
-             * Raised when an overlay's location or placement changes
+             * Raised when an canvasOverlay's location or placement changes
              * (see {@link OpenSeadragon.Viewer#updateOverlay}).
              *
              * @event update-overlay
@@ -9029,7 +9029,7 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
              * @property {OpenSeadragon.Placement} placement
              * @property {?Object} userData - Arbitrary subscriber-defined object.
              */
-            this.raiseEvent( 'update-overlay', {
+            this.raiseEvent( 'update-canvasOverlay', {
                 element: element,
                 location: location,
                 placement: placement
@@ -9039,7 +9039,7 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
     },
 
     /**
-     * Removes an overlay identified by the reference element or element id
+     * Removes an canvasOverlay identified by the reference element or element id
      * and schedules an update.
      * @method
      * @param {Element|String} element - A reference to the element or an
@@ -9058,7 +9058,7 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
             this.currentOverlays.splice( i, 1 );
             THIS[ this.hash ].forceRedraw = true;
             /**
-             * Raised when an overlay is removed from the viewer
+             * Raised when an canvasOverlay is removed from the viewer
              * (see {@link OpenSeadragon.Viewer#removeOverlay}).
              *
              * @event remove-overlay
@@ -9066,10 +9066,10 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
              * @type {object}
              * @property {OpenSeadragon.Viewer} eventSource - A reference to the
              * Viewer which raised the event.
-             * @property {Element} element - The overlay element.
+             * @property {Element} element - The canvasOverlay element.
              * @property {?Object} userData - Arbitrary subscriber-defined object.
              */
-            this.raiseEvent( 'remove-overlay', {
+            this.raiseEvent( 'remove-canvasOverlay', {
                 element: element
             });
         }
@@ -9097,17 +9097,17 @@ $.extend( $.Viewer.prototype, $.EventSource.prototype, $.ControlDock.prototype, 
          * @property {OpenSeadragon.Viewer} eventSource - A reference to the Viewer which raised the event.
          * @property {?Object} userData - Arbitrary subscriber-defined object.
          */
-        this.raiseEvent( 'clear-overlay', {} );
+        this.raiseEvent( 'clear-canvasOverlay', {} );
         return this;
     },
 
      /**
-     * Finds an overlay identified by the reference element or element id
+     * Finds an canvasOverlay identified by the reference element or element id
      * and returns it as an object, return null if not found.
      * @method
      * @param {Element|String} element - A reference to the element or an
-     *      element id which represents the overlay content.
-     * @return {OpenSeadragon.Overlay} the matching overlay or null if none found.
+     *      element id which represents the canvasOverlay content.
+     * @return {OpenSeadragon.Overlay} the matching canvasOverlay or null if none found.
      */
     getOverlayById: function( element ) {
         var i;
@@ -9390,17 +9390,17 @@ function getOverlayObject( viewer, overlay ) {
     } else {
         var id = overlay.id ?
             overlay.id :
-            "openseadragon-overlay-" + Math.floor( Math.random() * 10000000 );
+            "openseadragon-canvasOverlay-" + Math.floor( Math.random() * 10000000 );
 
         element = $.getElement( overlay.id );
         if ( !element ) {
             element         = document.createElement( "a" );
-            element.href    = "#/overlay/" + id;
+            element.href    = "#/canvasOverlay/" + id;
         }
         element.id = id;
         $.addClass( element, overlay.className ?
             overlay.className :
-            "openseadragon-overlay"
+            "openseadragon-canvasOverlay"
         );
     }
 
@@ -9444,7 +9444,7 @@ function getOverlayObject( viewer, overlay ) {
 /**
  * @private
  * @inner
- * Determines the index of the given overlay in the given overlays array.
+ * Determines the index of the given canvasOverlay in the given overlays array.
  */
 function getOverlayIndex( overlays, element ) {
     var i;
@@ -16301,7 +16301,7 @@ function transform( stiffness, x ) {
  * @class ImageJob
  * @classdesc Handles downloading of a single image.
  * @param {Object} options - Options for this ImageJob.
- * @param {String} [options.src] - URL of image to download.
+ * @param {String} [options.src] - URL of image to downloadXML.
  * @param {String} [options.loadWithAjax] - Whether to load this image with AJAX.
  * @param {String} [options.ajaxHeaders] - Headers to add to the image request if using AJAX.
  * @param {String} [options.crossOriginPolicy] - CORS policy to use for downloads
@@ -16454,7 +16454,7 @@ $.ImageLoader.prototype = {
      * Add an unloaded image to the loader queue.
      * @method
      * @param {Object} options - Options for this job.
-     * @param {String} [options.src] - URL of image to download.
+     * @param {String} [options.src] - URL of image to downloadXML.
      * @param {String} [options.loadWithAjax] - Whether to load this image with AJAX.
      * @param {String} [options.ajaxHeaders] - Headers to add to the image request if using AJAX.
      * @param {String|Boolean} [options.crossOriginPolicy] - CORS policy to use for downloads
@@ -17024,7 +17024,7 @@ $.Tile.prototype = {
 (function($) {
 
     /**
-     * An enumeration of positions that an overlay may be assigned relative to
+     * An enumeration of positions that an canvasOverlay may be assigned relative to
      * the viewport.
      * It is identical to OpenSeadragon.Placement but is kept for backward
      * compatibility.
@@ -17052,10 +17052,10 @@ $.Tile.prototype = {
      * @memberOf OpenSeadragon
      * @static
      * @readonly
-     * @property {Number} NO_ROTATION The overlay ignore the viewport rotation.
-     * @property {Number} EXACT The overlay use CSS 3 transforms to rotate with
-     * the viewport. If the overlay contains text, it will get rotated as well.
-     * @property {Number} BOUNDING_BOX The overlay adjusts for rotation by
+     * @property {Number} NO_ROTATION The canvasOverlay ignore the viewport rotation.
+     * @property {Number} EXACT The canvasOverlay use CSS 3 transforms to rotate with
+     * the viewport. If the canvasOverlay contains text, it will get rotated as well.
+     * @property {Number} BOUNDING_BOX The canvasOverlay adjusts for rotation by
      * taking the size of the bounding box of the rotated bounds.
      * Only valid for overlays with Rect location and scalable in both directions.
      */
@@ -17073,23 +17073,23 @@ $.Tile.prototype = {
      * @param {Object} options
      * @param {Element} options.element
      * @param {OpenSeadragon.Point|OpenSeadragon.Rect} options.location - The
-     * location of the overlay on the image. If a {@link OpenSeadragon.Point}
-     * is specified, the overlay will be located at this location with respect
+     * location of the canvasOverlay on the image. If a {@link OpenSeadragon.Point}
+     * is specified, the canvasOverlay will be located at this location with respect
      * to the placement option. If a {@link OpenSeadragon.Rect} is specified,
-     * the overlay will be placed at this location with the corresponding width
+     * the canvasOverlay will be placed at this location with the corresponding width
      * and height and placement TOP_LEFT.
      * @param {OpenSeadragon.Placement} [options.placement=OpenSeadragon.Placement.TOP_LEFT]
-     * Defines what part of the overlay should be at the specified options.location
+     * Defines what part of the canvasOverlay should be at the specified options.location
      * @param {OpenSeadragon.Overlay.OnDrawCallback} [options.onDraw]
      * @param {Boolean} [options.checkResize=true] Set to false to avoid to
-     * check the size of the overlay everytime it is drawn in the directions
+     * check the size of the canvasOverlay everytime it is drawn in the directions
      * which are not scaled. It will improve performances but will cause a
-     * misalignment if the overlay size changes.
-     * @param {Number} [options.width] The width of the overlay in viewport
-     * coordinates. If specified, the width of the overlay will be adjusted when
+     * misalignment if the canvasOverlay size changes.
+     * @param {Number} [options.width] The width of the canvasOverlay in viewport
+     * coordinates. If specified, the width of the canvasOverlay will be adjusted when
      * the zoom changes.
-     * @param {Number} [options.height] The height of the overlay in viewport
-     * coordinates. If specified, the height of the overlay will be adjusted when
+     * @param {Number} [options.height] The height of the canvasOverlay in viewport
+     * coordinates. If specified, the height of the canvasOverlay will be adjusted when
      * the zoom changes.
      * @param {Boolean} [options.rotationMode=OpenSeadragon.OverlayRotationMode.EXACT]
      * How to handle the rotation of the viewport.
@@ -17134,10 +17134,10 @@ $.Tile.prototype = {
             this.checkResize = options.checkResize === undefined ?
                 true : options.checkResize;
 
-            // When this.width is not null, the overlay get scaled horizontally
+            // When this.width is not null, the canvasOverlay get scaled horizontally
             this.width = options.width === undefined ? null : options.width;
 
-            // When this.height is not null, the overlay get scaled vertically
+            // When this.height is not null, the canvasOverlay get scaled vertically
             this.height = options.height === undefined ? null : options.height;
 
             this.rotationMode = options.rotationMode || $.OverlayRotationMode.EXACT;
@@ -17158,7 +17158,7 @@ $.Tile.prototype = {
         },
 
         /**
-         * Internal function to adjust the position of an overlay
+         * Internal function to adjust the position of an canvasOverlay
          * depending on it size and placement.
          * @function
          * @param {OpenSeadragon.Point} position
@@ -17251,7 +17251,7 @@ $.Tile.prototype = {
             var rotate = positionAndSize.rotate;
 
             // call the onDraw callback if it exists to allow one to overwrite
-            // the drawing/positioning/sizing of the overlay
+            // the drawing/positioning/sizing of the canvasOverlay
             if (this.onDraw) {
                 this.onDraw(position, size, this.element);
             } else {
@@ -17386,7 +17386,7 @@ $.Tile.prototype = {
         },
 
         /**
-         * Changes the overlay settings.
+         * Changes the canvasOverlay settings.
          * @function
          * @param {OpenSeadragon.Point|OpenSeadragon.Rect|Object} location
          * If an object is specified, the options are the same than the constructor
@@ -17411,10 +17411,10 @@ $.Tile.prototype = {
         },
 
         /**
-         * Returns the current bounds of the overlay in viewport coordinates
+         * Returns the current bounds of the canvasOverlay in viewport coordinates
          * @function
          * @param {OpenSeadragon.Viewport} viewport the viewport
-         * @returns {OpenSeadragon.Rect} overlay bounds
+         * @returns {OpenSeadragon.Rect} canvasOverlay bounds
          */
         getBounds: function(viewport) {
             $.console.assert(viewport,
@@ -17444,7 +17444,7 @@ $.Tile.prototype = {
                 return bounds;
             }
             if (this.rotationMode === $.OverlayRotationMode.BOUNDING_BOX) {
-                // If overlay not fully scalable, BOUNDING_BOX falls back to EXACT
+                // If canvasOverlay not fully scalable, BOUNDING_BOX falls back to EXACT
                 if (this.width === null || this.height === null) {
                     return bounds;
                 }
@@ -21066,7 +21066,7 @@ function updateTile( tiledImage, haveDrawn, drawLevel, x, y, level, levelOpacity
             tiledImage._needsDraw = true;
         }
     } else if ( tile.loading ) {
-        // the tile is already in the download queue
+        // the tile is already in the downloadXML queue
         tiledImage._tilesLoading++;
     } else if (!loadingCoverage) {
         best = compareTiles( best, tile );

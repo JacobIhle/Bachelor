@@ -8,20 +8,20 @@ function Drawing(name, points, tags, creator, grade){
 
 
 function updateDrawings() {
-    if (currentImage) {
-        overlay.context2d().strokeStyle = "rgba(255,0,0,1)";
-        overlay.context2d().fillStyle = "rgba(255,0,0,1)";
-        overlay.context2d().lineWidth = 200 / viewer.viewport.getZoom(true);
+    if (currentImageLoaded) {
+        canvasOverlay.context2d().strokeStyle = "rgba(255,0,0,1)";
+        canvasOverlay.context2d().fillStyle = "rgba(255,0,0,1)";
+        canvasOverlay.context2d().lineWidth = 200 / viewer.viewport.getZoom(true);
 
-        if (canvasObjects.length > 0) {
-            if (canvasObjects.length === 1) {
-                overlay.context2d().beginPath();
-                overlay.context2d().arc(canvasObjects[0].x, canvasObjects[0].y,
+        if (tempDrawingPoints.length > 0) {
+            if (tempDrawingPoints.length === 1) {
+                canvasOverlay.context2d().beginPath();
+                canvasOverlay.context2d().arc(tempDrawingPoints[0].x, tempDrawingPoints[0].y,
                     350 / viewer.viewport.getZoom(true), 0, 2 * Math.PI);
-                overlay.context2d().fill();
-                overlay.context2d().closePath();
+                canvasOverlay.context2d().fill();
+                canvasOverlay.context2d().closePath();
             } else {
-                drawDrawings(canvasObjects);
+                drawDrawings(tempDrawingPoints);
             }
         }
         drawings.forEach(function (element) {
@@ -32,24 +32,24 @@ function updateDrawings() {
 }
 
 function drawDrawings(points) {
-    overlay.context2d().beginPath();
+    canvasOverlay.context2d().beginPath();
             for (var i = 0; i < points.length; i++) {
                 if (i === 0) {
-                    overlay.context2d().moveTo(points[i].x, points[i].y);
+                    canvasOverlay.context2d().moveTo(points[i].x, points[i].y);
                 } else if (i === points.length - 1) {
-                    overlay.context2d().lineTo(points[i].x, points[i].y);
-                    overlay.context2d().stroke();
-                    overlay.context2d().closePath();
+                    canvasOverlay.context2d().lineTo(points[i].x, points[i].y);
+                    canvasOverlay.context2d().stroke();
+                    canvasOverlay.context2d().closePath();
                 } else {
-                    overlay.context2d().lineTo(points[i].x, points[i].y);
+                    canvasOverlay.context2d().lineTo(points[i].x, points[i].y);
                 }
             }
 }
 
 function cancelDrawing() {
-    canvasObjects = [];
+    tempDrawingPoints = [];
     try {
-        overlay._updateCanvas();
+        canvasOverlay._updateCanvas();
     }
     catch (e) {
         console.log(e.message);
@@ -67,53 +67,3 @@ function toggleDrawing() {
     (drawingEnabled) ? drawingEnabled = false : drawingEnabled = true;
 }
 
-function addDrawingHandlers() {
-    $("#Drawing").click(function () {
-        if (!finishingDrawing && currentImage) {
-            if ($(this).text() === "New Drawing") {
-                $("#DrawingTools").show();
-                toggleDrawing();
-                $("#Drawing").html("Save Drawing");
-
-
-            } else if ($(this).text() === "Save Drawing") {
-                $("#tagSelector").css("display", "");
-                finishingDrawing = true;
-                $(this).removeClass("drawingHover");
-
-                updateAllTags(1);
-
-                $("#DrawingTools").hide();
-                if (canvasObjects.length > 1) {
-                    canvasObjects.push(canvasObjects[0]); //snap to start
-                    overlay._updateCanvas();
-                }
-                toggleDrawing();
-            }
-        }
-    });
-
-    $("#Dragging").click(function () {
-        if ($("#Dragging").attr("title") === "Enable Dragging") {
-            $("#Dragging").attr("title", "Disable Dragging");
-            $("#Dragging").css("background-color", "#757575");
-        } else if ($("#Dragging").attr("Title") === "Disable Dragging") {
-            $("#Dragging").attr("title", "Enable Dragging");
-            $("#Dragging").css("background-color", "");
-        }
-        toggleDrawing();
-    });
-
-    $("#UndoButton").click(function () {
-        if (canvasObjects.length > 0) {
-            canvasObjects.pop();
-        }
-        overlay._updateCanvas();
-    });
-
-    $("#CancelDrawing").click(function () {
-        if (confirm("Confirm Cancellation")) {
-            cancelDrawing();
-        }
-    });
-}

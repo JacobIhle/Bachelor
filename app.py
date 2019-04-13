@@ -181,7 +181,7 @@ def updateTags():
     return json.dumps(tags), 200
 
 
-@app.route("/searchTags", methods=["POST"])
+@app.route("/searchTagEnabled", methods=["POST"])
 def searchTags():
     tag = json.loads(request.data)["tag"]
     queryString = "select i.ImagePath from images as i inner join annotations a on (i.ImagePath = a.ImagePath) where a.tag = '{}';".format(tag)
