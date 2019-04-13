@@ -113,7 +113,6 @@ def InsertImageToDB(imagePath):
     query = "select ImagePath from images where ImagePath = '{}';".format(imagePath)
     queryResult = db.engine.execute(query)
     result = [row[0] for row in queryResult]
-    print(result)
 
     if not result:
         db.engine.execute("insert into images(ImagePath) values('{}');".format(imagePath))
