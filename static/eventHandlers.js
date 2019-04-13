@@ -1,4 +1,3 @@
-
 function addDrawingHandlers() {
     $("#Drawing").click(function () {
         if (!finishingDrawing && currentImageLoaded) {
@@ -7,20 +6,22 @@ function addDrawingHandlers() {
                 toggleDrawing();
                 $("#Drawing").html("Save Drawing");
 
-
             } else if ($(this).text() === "Save Drawing") {
-                $("#tagSelector").css("display", "");
-                finishingDrawing = true;
-                $(this).removeClass("drawingHover");
-
-                updateAllTags(1);
-
-                $("#DrawingTools").hide();
                 if (tempDrawingPoints.length > 1) {
+                    $("#tagSelector").css("display", "");
+                    finishingDrawing = true;
+                    $(this).removeClass("drawingHover");
+                    $("#DrawingTools").hide();
+
+                    updateAllTags(1);
                     tempDrawingPoints.push(tempDrawingPoints[0]); //snap to start
                     canvasOverlay._updateCanvas();
+                    toggleDrawing();
+                    
+                } else {
+                    cancelDrawing();
                 }
-                toggleDrawing();
+
             }
         }
     });
@@ -194,7 +195,7 @@ function addGuiHandlers() {
     $("#searchField").click(function () {
         $(".folder").show();
         $(".imageLinks").show();
-        if(searchTagEnabled) {
+        if (searchTagEnabled) {
             var searchDropdown = $(".dropdown-search-content");
 
             if ($(".dropdown-search-content a").length === 0) {
@@ -221,7 +222,7 @@ function addGuiHandlers() {
     });
 
     $("#searchTagEnabled").on("click", function () {
-        if(searchTagEnabled){
+        if (searchTagEnabled) {
             $("#searchField").val("");
             $(".dropdown-search-content").empty();
         }
