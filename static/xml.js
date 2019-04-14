@@ -5,6 +5,7 @@ function sendXMLtoServer(xml, action) {
             if (this.readyState == 4 && this.status == 200) {
                 if (action === 1) {
                     XMLtoDrawing(xml);
+                    canvasOverlay._updateCanvas();
                 }
             } else if (this.readyState == 4) {
                 alert("Something went wrong, please try again.");
@@ -20,7 +21,6 @@ function getXMLfromServer() {
     xmlHttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             XMLtoDrawing(xmlHttp.responseXML);
-            canvasOverlay._updateCanvas();
         }
     };
     xmlHttp.open("GET", "getxml/" + currentImageLoaded.substring(0, currentImageLoaded.length - 4) + ".xml");
