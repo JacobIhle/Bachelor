@@ -73,7 +73,7 @@ def GetTile(dummy, dummy2, level, tile):
 @app.route('/postxml/<foldername>/<filename>', methods=["POST"])
 @login_required
 def PostXML(foldername, filename):
-    saveFromXml(foldername, filename)
+    return saveFromXml(foldername, filename)
 
 
 @app.route('/getxml/<foldername>/<filename>')
@@ -149,13 +149,13 @@ def Logout():
 
 @app.route("/login", methods=["GET", "POST"])
 def Login():
-    handleLogin()
+    return handleLogin()
 
 
 @app.route("/register", methods=["GET", "POST"])
 @login_required
 def Register():
-    handleRegister()
+    return handleRegister()
 
 
 def saveFromXml(foldername, filename):
