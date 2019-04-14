@@ -176,12 +176,12 @@ def CatchNotLoggedIn():
 
 
 @app.errorhandler(401)
-def Handle401():
+def Handle401(error):
     return render_template('401.html'), 401
 
 
 @app.errorhandler(500)
-def Handle500():
+def Handle500(error):
     return "If you see this, something went wrong on our end", 500
 
 
