@@ -42,6 +42,7 @@ function XMLtoDrawing(xml) {
             points.push({x: x, y: y});
         });
         drawings.push(new Drawing(name, points, tags.split("|"), creator, grade));
+        canvasOverlay._updateCanvas();
     })
 }
 
