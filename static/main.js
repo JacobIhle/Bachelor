@@ -124,7 +124,3 @@ function open_slide(url) {
         canvasOverlay.resize();
     });
 }
-
-
-
-

@@ -141,4 +141,3 @@ function generateTagSelectorWindow() {
 
     addTagHandlers();
 }
-

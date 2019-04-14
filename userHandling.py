@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, abort
 from flask_login import login_user, current_user
 from app import db, logger
-import HelperClass
+import configuration
 import dbClasses
 
 
@@ -11,11 +11,11 @@ def handleLogin():
         password = request.form["password"]
         user = dbClasses.User.query.filter_by(username=username).first()
         if user is not None and username == user.username and user.check_password(password):
-            logger.log(25, HelperClass.LogFormat() + username + " logged in")
+            logger.log(25, configuration.LogFormat() + username + " logged in")
             login_user(user)
             return redirect("/")
         else:
-            logger.log(25, HelperClass.LogFormat() + "Attempted log in with username: " + username)
+            logger.log(25, configuration.LogFormat() + "Attempted log in with username: " + username)
             return render_template("login.html", className = "warning", message="Wrong username or password")
     else:
         return render_template("login.html")
@@ -38,7 +38,7 @@ def handleRegister():
         newUser = dbClasses.User(registerUsername, firstPassField, userType)
         db.session.add(newUser)
         db.session.commit()
-        logger.log(25, HelperClass.LogFormat() + current_user.username + " registered a new user: " + registerUsername)
+        logger.log(25, configuration.LogFormat() + current_user.username + " registered a new user: " + registerUsername)
         return redirect("/")
 
     return render_template("register.html")

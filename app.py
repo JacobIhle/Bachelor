@@ -4,16 +4,14 @@ from flask_login import LoginManager, logout_user, login_required, current_user
 from openslide.deepzoom import DeepZoomGenerator
 from QueueDictClass import OurDataStructure
 from flask_sqlalchemy import SQLAlchemy
-import xml.etree.ElementTree as ET
+from io import BytesIO
 import customLogger
-import HelperClass
+import configuration
 import openslide
 import imageList
-import traceback
 import binascii
 import json
 import os
-
 
 nestedImageList = {}
 imagePathLookupTable = {}
@@ -24,13 +22,14 @@ dateTime = customLogger.DateTime()
 logger = customLogger.StartLogging()
 
 app = Flask(__name__)
-HelperClass.ConfigureApp(app)
+configuration.ConfigureApp(app)
 
 
 db = SQLAlchemy(app)
 db.create_all()
 
 
+import xmlAndDB
 import dbClasses
 import userHandling
 
@@ -54,12 +53,12 @@ def LoadControlImages(filename):
 
 @app.route('/app/<folder>/<filename>')
 @login_required
-def changeImage(folder, filename):
+def ChangeImage(folder, filename):
     global imagePathLookupTable
     session["ID"] = binascii.hexlify(os.urandom(20))
     path = "//home/prosjekt"+imagePathLookupTable[folder+"/"+filename]
     image = openslide.OpenSlide(path)
-    logger.log(25, HelperClass.LogFormat() + current_user.username + " requested image " + filename)
+    logger.log(25, configuration.LogFormat() + current_user.username + " requested image " + filename)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     deepZoomList.append(session["ID"], deepZoomGen)
     return deepZoomGen.get_dzi("jpeg")
@@ -71,13 +70,13 @@ def GetTile(dummy, dummy2, level, tile):
     col, row = GetNumericTileCoordinatesFromString(tile)
     deepZoomGen = deepZoomList.get(session["ID"])
     img = deepZoomGen.get_tile(int(level), (int(col), int(row)))
-    return HelperClass.serve_pil_image(img)
+    return ServePilImage(img)
 
 
 @app.route('/postxml/<foldername>/<filename>', methods=["POST"])
 @login_required
 def PostXML(foldername, filename):
-    return saveFromXml(foldername, filename)
+    return xmlAndDB.saveFromXml(foldername, filename)
 
 
 @app.route('/getxml/<foldername>/<filename>')
@@ -91,13 +90,9 @@ def GetXML(foldername, filename):
     return "", 500
 
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_file("static/images/favicon.ico", mimetype="image/jpeg")
-
-
 @app.route("/addTag", methods=["POST"])
-def addTags():
+@login_required
+def AddTags():
     tag = json.loads(request.data)["tag"]
     newTag = dbClasses.Tags(tag)
     db.session.add(newTag)
@@ -106,7 +101,8 @@ def addTags():
 
 
 @app.route("/updateTags", methods=["GET", "POST"])
-def updateTags():
+@login_required
+def UpdateTags():
     tuppletags = dbClasses.Tags.query.with_entities(dbClasses.Tags.Name)
     tags = {"tags": []}
     for tag in tuppletags:
@@ -116,7 +112,8 @@ def updateTags():
 
 
 @app.route("/searchTags", methods=["POST"])
-def searchTags():
+@login_required
+def SearchTags():
     tag = json.loads(request.data)["tag"]
     queryString = "select i.ImagePath from images as i inner join annotations a on (i.ImagePath = a.ImagePath) where a.tag = '{}';".format(tag)
     query = db.engine.execute(queryString)
@@ -132,12 +129,12 @@ def searchTags():
 
 @app.route("/getCurrentUser")
 @login_required
-def getCurrentUser():
+def GetCurrentUser():
     return str(current_user.username), 200
 
 
 @app.route('/authenticated')
-def isAuthenticated():
+def IsAuthenticated():
     if not current_user.is_authenticated:
         return "", 401
     return "", 200
@@ -146,7 +143,7 @@ def isAuthenticated():
 @app.route("/logout")
 @login_required
 def Logout():
-    logger.log(25, HelperClass.LogFormat() + current_user.username + " logged out")
+    logger.log(25, configuration.LogFormat() + current_user.username + " logged out")
     logout_user()
     return render_template("login.html", className="info", message="Logged out")
 
@@ -162,81 +159,30 @@ def Register():
     return userHandling.handleRegister()
 
 
-def saveFromXml(foldername, filename):
-    grade = 0
-    tags = []
-    try:
-        folder = "//home/prosjekt/Histology/thomaso/"
-        file = foldername + "[slash]" + filename + ".xml"
-        if not os.path.isfile(folder + file):
-            createXmlFileIfNotExist(folder + file)
-
-        InsertImageToDB(file.replace(".xml", ""))
-
-        tree = ET.parse(folder + file)
-        regions = tree.getroot()[0][0]
-
-        xml = request.data.decode("utf-8")
-        xmlThing = ET.fromstring(xml)
-        xmlTree = ET.ElementTree(xmlThing)
-
-        newRegions = xmlTree.getroot()[0][0]
-        moreRegions = newRegions.findall("Region")
-
-        for region in moreRegions:
-            regions.append(region)
-            try:
-                formatedTags = region.attrib["tags"]
-                tags = formatedTags.split("|")
-                grade = region.attrib["grade"]
-            except:
-                pass
-            finally:
-                InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
-
-        tree.write(folder + file)
-    except:
-        traceback.print_exc()
-        return "", 500
-    return "", 200
+@app.route('/favicon.ico')
+def Favicon():
+    return send_file("static/images/favicon.ico", mimetype="image/jpeg")
 
 
-def createXmlFileIfNotExist(path):
-    Annotations = ET.Element("Annotations")
-    Annotation = ET.SubElement(Annotations, "Annotation")
-    ET.SubElement(Annotation, "Regions")
-    tree = ET.ElementTree(Annotations)
-    tree.write(path)
+
+@login_manager.user_loader
+def UserLogin(Username):
+    return dbClasses.User.query.get(Username)
 
 
-def InsertImageToDB(imagePath):
-    query = "select ImagePath from images where ImagePath = '{}';".format(imagePath)
-    queryResult = db.engine.execute(query)
-    result = [row[0] for row in queryResult]
-
-    if not result:
-        db.engine.execute("insert into images(ImagePath) values('{}');".format(imagePath))
-
-def InsertDrawingsToDB(imagePath, tags, grade):
-    for tag in tags:
-            queryResult = db.engine.execute("select ImagePath from annotations where tag = '{}'"
-                                            " and ImagePath = '{}'".format(tag, imagePath))
-            result = [row[0] for row in queryResult]
-
-            if not result:
-                db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
-                              .format(imagePath, tag, grade))
-            else:
-                dbResult = db.engine.execute("select ImagePath, Tag, Grade from annotations where ImagePath = '{}'"
-                                      "and Tag = '{}' and Grade = {};".format(imagePath, tag, grade))
-
-                resultDb = [res[0] for res in dbResult]
-                
-                if not resultDb:
-                    db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
-                                      .format(imagePath, tag, grade))
+@login_manager.unauthorized_handler
+def CatchNotLoggedIn():
+    return redirect("/login")
 
 
+@app.errorhandler(401)
+def Handle401():
+    return render_template('401.html'), 401
+
+
+@app.errorhandler(500)
+def Handle500():
+    return "If you see this, something went wrong on our end", 500
 
 
 def GetAvailableImages():
@@ -249,7 +195,11 @@ def GetAvailableImages():
         nestedImageList = imageList.BuildNested(imagePathLookupTable)
 
 
-
+def ServePilImage(pil_img):
+    img_io = BytesIO()
+    pil_img.save(img_io, 'JPEG', quality=80)
+    img_io.seek(0)
+    return send_file(img_io, mimetype='image/jpeg')
 
 
 def GetNumericTileCoordinatesFromString(tile):
@@ -258,41 +208,9 @@ def GetNumericTileCoordinatesFromString(tile):
     return col, row
 
 
-@app.errorhandler(500)
-def handle500(error):
-    return "SOMETHING BAD HAPPENED ON OUR END", 500
-
 def GenerateImageListHtml():
     global nestedImageList
     return imageList.GetImageListHTML(nestedImageList)
-
-
-
-
-
-
-
-
-
-@login_manager.user_loader
-def user_login(Username):
-    return dbClasses.User.query.get(Username)
-
-
-
-
-
-@login_manager.unauthorized_handler
-def CatchNotLoggedIn():
-    return redirect("/login")
-
-
-@app.errorhandler(401)
-def not_found(error):
-    return render_template('401.html'), 401
-
-
-
 
 
 if __name__ == '__main__':
