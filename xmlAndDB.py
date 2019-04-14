@@ -25,8 +25,9 @@ def saveFromXml(foldername, filename):
         xmlTree = ET.ElementTree(xmlThing)
 
         newRoot = xmlTree.getroot()
-        
+
         for region in newRoot.iter("region"):
+            print(region)
             regions.append(region)
             try:
                 formatedTags = region.attrib["tags"]
