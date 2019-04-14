@@ -1,6 +1,6 @@
 # LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
 from flask import Flask, send_file, render_template, redirect, request, abort, session, send_from_directory
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import LoginManager, logout_user, login_required, current_user
 from openslide.deepzoom import DeepZoomGenerator
 from QueueDictClass import OurDataStructure
 from flask_sqlalchemy import SQLAlchemy
@@ -13,8 +13,6 @@ import traceback
 import binascii
 import json
 import os
-import dbClasses
-import userHandling
 
 
 nestedImageList = {}
@@ -31,6 +29,11 @@ HelperClass.ConfigureApp(app)
 
 db = SQLAlchemy(app)
 db.create_all()
+
+
+import dbClasses
+import userHandling
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
