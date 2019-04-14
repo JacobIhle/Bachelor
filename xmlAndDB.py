@@ -26,7 +26,7 @@ def saveFromXml(foldername, filename):
 
         newRoot = xmlTree.getroot()
 
-        for region in newRoot.iter("region"):
+        for region in newRoot.iter("Region"):
             print(region)
             regions.append(region)
             try:
