@@ -33,11 +33,12 @@ def saveFromXml(foldername, filename):
                 tags = formatedTags.split("|")
                 grade = region.attrib["grade"]
             except:
-                pass
+                traceback.print_exc()
             finally:
                 InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
 
         tree.write(folder + file)
+        print("we got here")
     except:
         traceback.print_exc()
         return "", 500
@@ -68,7 +69,7 @@ def InsertDrawingsToDB(imagePath, tags, grade):
         result = [row[0] for row in queryResult]
 
         if not result:
-            db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
+            db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', '{}');"
                               .format(imagePath, tag, grade))
         else:
             dbResult = db.engine.execute("select ImagePath, Tag, Grade from annotations where ImagePath = '{}'"
@@ -77,5 +78,5 @@ def InsertDrawingsToDB(imagePath, tags, grade):
             resultDb = [res[0] for res in dbResult]
 
             if not resultDb:
-                db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
+                db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', '{}');"
                                   .format(imagePath, tag, grade))
