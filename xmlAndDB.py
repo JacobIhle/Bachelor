@@ -27,19 +27,17 @@ def saveFromXml(foldername, filename):
         newRoot = xmlTree.getroot()
 
         for region in newRoot.iter("Region"):
-            print(region)
             regions.append(region)
             try:
                 formatedTags = region.attrib["tags"]
                 tags = formatedTags.split("|")
                 grade = region.attrib["grade"]
             except:
-                traceback.print_exc()
+                pass
             finally:
                 InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
 
         tree.write(folder + file)
-        print("we got here")
     except:
         traceback.print_exc()
         return "", 500
