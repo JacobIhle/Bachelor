@@ -14,6 +14,7 @@ import binascii
 import json
 import os
 import dbClasses
+import userHandling
 
 
 nestedImageList = {}
@@ -149,13 +150,13 @@ def Logout():
 
 @app.route("/login", methods=["GET", "POST"])
 def Login():
-    return handleLogin()
+    return userHandling.handleLogin()
 
 
 @app.route("/register", methods=["GET", "POST"])
 @login_required
 def Register():
-    return handleRegister()
+    return userHandling.handleRegister()
 
 
 def saveFromXml(foldername, filename):
