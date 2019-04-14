@@ -4,10 +4,10 @@ function sendXMLtoServer(xml, action) {
         xmlHttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 if (action === 1) {
-                    XMLtoDrawing(xml)
+                    XMLtoDrawing(xml);
                 }
             } else if (this.readyState == 4) {
-                alert("Something went wrong, please try again.")
+                alert("Something went wrong, please try again.");
             }
         };
         xmlHttp.open("POST", "postxml/" + currentImageLoaded.substring(0, currentImageLoaded.length - 4));
@@ -19,7 +19,8 @@ function getXMLfromServer() {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            XMLtoDrawing(xmlHttp.responseXML)
+            XMLtoDrawing(xmlHttp.responseXML);
+            canvasOverlay._updateCanvas();
         }
     };
     xmlHttp.open("GET", "getxml/" + currentImageLoaded.substring(0, currentImageLoaded.length - 4) + ".xml");
@@ -42,7 +43,6 @@ function XMLtoDrawing(xml) {
             points.push({x: x, y: y});
         });
         drawings.push(new Drawing(name, points, tags.split("|"), creator, grade));
-        canvasOverlay._updateCanvas();
     })
 }
 
