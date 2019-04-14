@@ -1,5 +1,6 @@
 from collections import deque
 
+
 class OurDataStructure:
     dictionary = {}
     doubleSidedQueue = deque()

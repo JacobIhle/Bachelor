@@ -65,8 +65,6 @@ def BuildNestedHelper(path, text, container):
 
 
 def BuildNested(paths):
-    #TODO
-    #paths will according to plan be converted to a dict DONE
     container = {}
     for key, path in paths.items():
         path = path[1:]
