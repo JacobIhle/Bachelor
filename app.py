@@ -73,74 +73,8 @@ def GetTile(dummy, dummy2, level, tile):
 @app.route('/postxml/<foldername>/<filename>', methods=["POST"])
 @login_required
 def PostXML(foldername, filename):
-    grade = 0
-    tags = []
-    try:
-        folder = "//home/prosjekt/Histology/thomaso/"
-        file = foldername+"[slash]"+filename + ".xml"
-        if not os.path.isfile(folder+file):
-            Annotations = ET.Element("Annotations")
-            Annotation = ET.SubElement(Annotations, "Annotation")
-            ET.SubElement(Annotation, "Regions")
-            tree = ET.ElementTree(Annotations)
-            tree.write(folder+file)
+    saveFromXml(foldername, filename)
 
-        InsertImageToDB(file.replace(".xml", ""))
-
-        tree = ET.parse(folder+file)
-        regions = tree.getroot()[0][0]
-
-        xml = request.data.decode("utf-8")
-        xmlThing = ET.fromstring(xml)
-        xmlTree = ET.ElementTree(xmlThing)
-
-        newRegions = xmlTree.getroot()[0][0]
-        moreRegions = newRegions.findall("Region")
-
-        for region in moreRegions:
-            regions.append(region)
-            try:
-                formatedTags = region.attrib["tags"]
-                tags = formatedTags.split("|")
-                grade = region.attrib["grade"]
-            except:
-                pass
-            finally:
-                InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
-
-        tree.write(folder+file)
-    except:
-        traceback.print_exc()
-        return "", 500
-    return "", 200
-
-
-def InsertImageToDB(imagePath):
-    query = "select ImagePath from images where ImagePath = '{}';".format(imagePath)
-    queryResult = db.engine.execute(query)
-    result = [row[0] for row in queryResult]
-
-    if not result:
-        db.engine.execute("insert into images(ImagePath) values('{}');".format(imagePath))
-
-def InsertDrawingsToDB(imagePath, tags, grade):
-    for tag in tags:
-            queryResult = db.engine.execute("select ImagePath from annotations where tag = '{}'"
-                                            " and ImagePath = '{}'".format(tag, imagePath))
-            result = [row[0] for row in queryResult]
-
-            if not result:
-                db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
-                              .format(imagePath, tag, grade))
-            else:
-                dbResult = db.engine.execute("select ImagePath, Tag, Grade from annotations where ImagePath = '{}'"
-                                      "and Tag = '{}' and Grade = {};".format(imagePath, tag, grade))
-
-                resultDb = [res[0] for res in dbResult]
-                
-                if not resultDb:
-                    db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
-                                      .format(imagePath, tag, grade))
 
 @app.route('/getxml/<foldername>/<filename>')
 @login_required
@@ -151,16 +85,6 @@ def GetXML(foldername, filename):
     if os.path.isfile(folder+foo):
         return send_from_directory(folder, foo)
     return "", 500
-
-
-def GetAvailableImages():
-    global nestedImageList
-    global imagePathLookupTable
-    imagePathLookupTable, err = imageList.ReadImageListFromFile()
-    if err is not "":
-        abort(500)
-    else:
-        nestedImageList = imageList.BuildNested(imagePathLookupTable)
 
 
 @app.route('/favicon.ico')
@@ -207,11 +131,121 @@ def searchTags():
 def getCurrentUser():
     return str(current_user.username), 200
 
+
 @app.route('/authenticated')
 def isAuthenticated():
     if not current_user.is_authenticated:
         return "", 401
     return "", 200
+
+
+@app.route("/logout")
+@login_required
+def Logout():
+    logger.log(25, HelperClass.LogFormat() + current_user.username + " logged out")
+    logout_user()
+    return render_template("login.html", className="info", message="Logged out")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def Login():
+    handleLogin()
+
+
+@app.route("/register", methods=["GET", "POST"])
+@login_required
+def Register():
+    handleRegister()
+
+
+def saveFromXml(foldername, filename):
+    grade = 0
+    tags = []
+    try:
+        folder = "//home/prosjekt/Histology/thomaso/"
+        file = foldername + "[slash]" + filename + ".xml"
+        if not os.path.isfile(folder + file):
+            createXmlFileIfNotExist(folder + file)
+
+        InsertImageToDB(file.replace(".xml", ""))
+
+        tree = ET.parse(folder + file)
+        regions = tree.getroot()[0][0]
+
+        xml = request.data.decode("utf-8")
+        xmlThing = ET.fromstring(xml)
+        xmlTree = ET.ElementTree(xmlThing)
+
+        newRegions = xmlTree.getroot()[0][0]
+        moreRegions = newRegions.findall("Region")
+
+        for region in moreRegions:
+            regions.append(region)
+            try:
+                formatedTags = region.attrib["tags"]
+                tags = formatedTags.split("|")
+                grade = region.attrib["grade"]
+            except:
+                pass
+            finally:
+                InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
+
+        tree.write(folder + file)
+    except:
+        traceback.print_exc()
+        return "", 500
+    return "", 200
+
+
+def createXmlFileIfNotExist(path):
+    Annotations = ET.Element("Annotations")
+    Annotation = ET.SubElement(Annotations, "Annotation")
+    ET.SubElement(Annotation, "Regions")
+    tree = ET.ElementTree(Annotations)
+    tree.write(path)
+
+
+def InsertImageToDB(imagePath):
+    query = "select ImagePath from images where ImagePath = '{}';".format(imagePath)
+    queryResult = db.engine.execute(query)
+    result = [row[0] for row in queryResult]
+
+    if not result:
+        db.engine.execute("insert into images(ImagePath) values('{}');".format(imagePath))
+
+def InsertDrawingsToDB(imagePath, tags, grade):
+    for tag in tags:
+            queryResult = db.engine.execute("select ImagePath from annotations where tag = '{}'"
+                                            " and ImagePath = '{}'".format(tag, imagePath))
+            result = [row[0] for row in queryResult]
+
+            if not result:
+                db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
+                              .format(imagePath, tag, grade))
+            else:
+                dbResult = db.engine.execute("select ImagePath, Tag, Grade from annotations where ImagePath = '{}'"
+                                      "and Tag = '{}' and Grade = {};".format(imagePath, tag, grade))
+
+                resultDb = [res[0] for res in dbResult]
+                
+                if not resultDb:
+                    db.engine.execute("insert into annotations(ImagePath, Tag, Grade) values('{}', '{}', {});"
+                                      .format(imagePath, tag, grade))
+
+
+
+
+def GetAvailableImages():
+    global nestedImageList
+    global imagePathLookupTable
+    imagePathLookupTable, err = imageList.ReadImageListFromFile()
+    if err is not "":
+        abort(500)
+    else:
+        nestedImageList = imageList.BuildNested(imagePathLookupTable)
+
+
+
 
 
 def GetNumericTileCoordinatesFromString(tile):
@@ -229,8 +263,11 @@ def GenerateImageListHtml():
     return imageList.GetImageListHTML(nestedImageList)
 
 
-@app.route("/login", methods=["GET", "POST"])
-def Login():
+
+
+
+
+def handleLogin():
     if request.method == "POST":
         username = request.form["username"].lower()
         password = request.form["password"]
@@ -246,9 +283,7 @@ def Login():
         return render_template("login.html")
 
 
-@app.route("/register", methods=["GET", "POST"])
-@login_required
-def Register():
+def handleRegister():
     if str(current_user.type) != "Admin":
         abort(401)
     if request.method == "POST" and request.form["username"].lower() is not None:
@@ -276,12 +311,7 @@ def user_login(Username):
     return dbClasses.User.query.get(Username)
 
 
-@app.route("/logout")
-@login_required
-def Logout():
-    logger.log(25, HelperClass.LogFormat() + current_user.username + " logged out")
-    logout_user()
-    return render_template("login.html", className="info", message="Logged out")
+
 
 
 @login_manager.unauthorized_handler
