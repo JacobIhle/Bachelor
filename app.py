@@ -1,7 +1,6 @@
 # LICENSE: https://github.com/openslide/openslide/blob/master/lgpl-2.1.txt
 from flask import Flask, send_file, render_template, redirect, request, abort, session, send_from_directory
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from openslide.deepzoom import DeepZoomGenerator
 from QueueDictClass import OurDataStructure
 from flask_sqlalchemy import SQLAlchemy
@@ -14,6 +13,7 @@ import traceback
 import binascii
 import json
 import os
+import dbClasses
 
 
 nestedImageList = {}
@@ -171,7 +171,7 @@ def favicon():
 @app.route("/addTag", methods=["POST"])
 def addTags():
     tag = json.loads(request.data)["tag"]
-    newTag = Tags(tag)
+    newTag = dbClasses.Tags(tag)
     db.session.add(newTag)
     db.session.commit()
     return "", 200
@@ -179,7 +179,7 @@ def addTags():
 
 @app.route("/updateTags", methods=["GET", "POST"])
 def updateTags():
-    tuppletags = Tags.query.with_entities(Tags.Name)
+    tuppletags = dbClasses.Tags.query.with_entities(dbClasses.Tags.Name)
     tags = {"tags": []}
     for tag in tuppletags:
         tags["tags"].append(tag[0])
@@ -234,7 +234,7 @@ def Login():
     if request.method == "POST":
         username = request.form["username"].lower()
         password = request.form["password"]
-        user = User.query.filter_by(username=username).first()
+        user = dbClasses.User.query.filter_by(username=username).first()
         if user is not None and username == user.username and user.check_password(password):
             logger.log(25, HelperClass.LogFormat() + username + " logged in")
             login_user(user)
@@ -256,13 +256,13 @@ def Register():
         firstPassField = request.form["firstPassField"]
         userType = request.form.get("userType")
 
-        if User.query.filter_by(username=registerUsername).first() is not None:
+        if dbClasses.User.query.filter_by(username=registerUsername).first() is not None:
             return render_template("register.html", className = "warning", message = "Username already exists.")
 
         if request.form["secondPassField"] != firstPassField:
             return render_template("register.html", className = "warning", message = "Passwords does not match")
 
-        newUser = User(registerUsername, firstPassField, userType)
+        newUser = dbClasses.User(registerUsername, firstPassField, userType)
         db.session.add(newUser)
         db.session.commit()
         logger.log(25, HelperClass.LogFormat() + current_user.username + " registered a new user: " + registerUsername)
@@ -273,7 +273,7 @@ def Register():
 
 @login_manager.user_loader
 def user_login(Username):
-    return User.query.get(Username)
+    return dbClasses.User.query.get(Username)
 
 
 @app.route("/logout")
@@ -294,53 +294,7 @@ def not_found(error):
     return render_template('401.html'), 401
 
 
-class User(UserMixin, db.Model):
-    id = db.Column("ID", db.Integer, primary_key=True)
-    username = db.Column("Username", db.String, )
-    password = db.Column("Password", db.String)
-    type = db.Column("Type", db.String)
 
-    def __init__(self, username, password, type):
-        self.username = username
-        self.password = self.set_password(password)
-        self.type = type
-
-    def set_password(self, password):
-        return generate_password_hash(password)
-
-    def get_password(self):
-        return self.password
-
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
-
-
-class Tags(db.Model):
-    Name = db.Column("Name", db.String, primary_key=True)
-
-    def __init__(self, Name):
-        self.Name = Name
-
-
-class Images(db.Model):
-    ImageID = db.Column("ImageID", db.Integer, primary_key=True)
-    ImagePath = db.Column("ImagePath", db.String)
-
-    def __init__(self, ImageID, ImagePath):
-        self.ImageID = ImageID
-        self.ImagePath = ImagePath
-
-
-class Annotations(db.Model):
-    ID = db.Column("ID", db.Integer, primary_key=True)
-    ImagePath = db.Column("ImagePath", db.String, db.ForeignKey("Images.ImagePath"))
-    Tag = db.Column("Tag", db.String)
-    Grade = db.Column("Grade", db.Integer)
-
-    def __init__(self, ImagePath, Tag, Grade):
-        self.ImagePath = ImagePath
-        self.Tag = Tag
-        self.Grade = Grade
 
 
 if __name__ == '__main__':
