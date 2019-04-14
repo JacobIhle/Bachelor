@@ -61,7 +61,7 @@ function addViewerHandlers() {
     });
 
     viewer.addHandler("open-failed", function () {
-        fetch("https://histology.ux.uis.no/authenticated")
+        fetch(serverUrl + "/authenticated")
             .then(function (response) {
                 if (response.status === 401) {
                     window.location.reload(true);
@@ -75,7 +75,7 @@ function addViewerHandlers() {
     });
 
     viewer.addHandler("tile-load-failed", function () {
-        fetch("https://histology.ux.uis.no/authenticated")
+        fetch(serverUrl + "/authenticated")
             .then(function (response) {
                 if (response.status === 401) {
                     window.location.reload(true);
@@ -246,7 +246,7 @@ function addTagHandlers() {
 
     $("#tagSaveSubmit").on("click", function () {
         let result;
-        fetch("https://histology.ux.uis.no/getCurrentUser")
+        fetch(serverUrl + "/getCurrentUser")
             .then(data => data.text())
             .then(text => result = text)
             .then(() => tagSaveSubmit(result));
@@ -267,7 +267,7 @@ function addTagHandlers() {
 
         if (newTag !== "") {
             var selects = $("div select");
-            fetch("https://histology.ux.uis.no/addTag", {
+            fetch(serverUrl + "/addTag", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

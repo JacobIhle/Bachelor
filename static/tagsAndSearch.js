@@ -1,5 +1,5 @@
 function fetchSearchTags(searchValue) {
-    fetch("https://histology.ux.uis.no/searchTags", {
+    fetch(serverUrl + "/searchTags", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -45,12 +45,12 @@ function filterImages(value, searchValue) {
 
 function updateAllTags(modifier) {
     if (modifier === 1) {
-        fetch("https://histology.ux.uis.no/updateTags")
+        fetch(serverUrl + "/updateTags")
             .then(res => res.json())
             .then(data => allTags = data["tags"])
             .then(() => generateTagSelectorWindow());
     } else {
-        fetch("https://histology.ux.uis.no/updateTags")
+        fetch(serverUrl + "/updateTags")
             .then(res => res.json())
             .then(data => allTags = data["tags"])
     }
@@ -87,7 +87,6 @@ function removeTagSelector() {
 }
 
 function generateTagSelector() {
-    //fetch array of tags from database
     var selectorHtml = "<div><select name='option'>";
 
     selectorHtml += "<option></option>";
