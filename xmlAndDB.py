@@ -19,14 +19,14 @@ def saveFromXml(foldername, filename):
         tree = ET.parse(folder + file)
         regions = tree.getroot()[0][0]
 
+
         xml = request.data.decode("utf-8")
         xmlThing = ET.fromstring(xml)
         xmlTree = ET.ElementTree(xmlThing)
 
-        newRegions = xmlTree.getroot()[0][0]
-        moreRegions = newRegions.findall("Region")
-
-        for region in moreRegions:
+        newRoot = xmlTree.getroot()
+        
+        for region in newRoot.iter("region"):
             regions.append(region)
             try:
                 formatedTags = region.attrib["tags"]
