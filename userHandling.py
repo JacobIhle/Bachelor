@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request, abort
 from flask_login import login_user, current_user
-from app import db, logger as db, logger
+from app import db, logger
 import HelperClass
 import dbClasses
 
