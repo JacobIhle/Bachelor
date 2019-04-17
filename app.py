@@ -2,7 +2,7 @@
 from flask import Flask, send_file, render_template, redirect, request, abort, session, send_from_directory
 from flask_login import LoginManager, logout_user, login_required, current_user
 from openslide.deepzoom import DeepZoomGenerator
-from QueueDictClass import OurDataStructure
+from QueueDictClass import SessionDeepzoomStorage
 from flask_sqlalchemy import SQLAlchemy
 from io import BytesIO
 import customLogger
@@ -16,7 +16,7 @@ import os
 nestedImageList = {}
 imagePathLookupTable = {}
 
-deepZoomList = OurDataStructure()
+deepZoomList = SessionDeepzoomStorage()
 
 dateTime = customLogger.DateTime()
 logger = customLogger.StartLogging()
