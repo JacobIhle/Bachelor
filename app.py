@@ -82,12 +82,7 @@ def PostXML(foldername, filename):
 @app.route('/getxml/<foldername>/<filename>')
 @login_required
 def GetXML(foldername, filename):
-    folder = "//home/prosjekt/Histology/thomaso/"
-    file = foldername+"[slash]"+filename
-    foo = file.replace("%20", " ")
-    if os.path.isfile(folder+foo):
-        return send_from_directory(folder, foo)
-    return "", 500
+    return xmlAndDB.LoadFromXml(foldername, filename)
 
 
 @app.route("/addTag", methods=["POST"])
