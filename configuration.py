@@ -5,9 +5,9 @@ from flask import request
 
 def ReadDatabaseCredentialsFromFile():
     with open("Login.txt", 'r') as f:
-        user, password = f.readline().split("|")
+        user, password, url, name = f.readline().split("|")
         f.close()
-    return user, password
+    return user, password, url, name
 
 
 def ReadSecretKeyFromFile():
@@ -24,9 +24,9 @@ def LogFormat():
 
 
 def ConfigureApp(app):
-    dbUser, dbPassword = ReadDatabaseCredentialsFromFile()
+    dbUser, dbPassword, dbUrl, dbName = ReadDatabaseCredentialsFromFile()
     app.config["SECRET_KEY"] = ReadSecretKeyFromFile()
-    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://%s:%s@mysql2.ux.uis.no/dbthomaso" % (dbUser, dbPassword)
+    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://%s:%s@%s/%s" % (dbUser, dbPassword, dbUrl, dbName)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.permanent_session_lifetime = timedelta(minutes=75)
 

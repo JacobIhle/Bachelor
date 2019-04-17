@@ -1,29 +1,32 @@
 from collections import deque
 
 
-class OurDataStructure:
+class SessionDeepzoomStorage:
     dictionary = {}
     doubleSidedQueue = deque()
     counter = 0
 
-    def append(self, key, deepZoomGen):
+    def append(self, sessionID, deepZoomGen):
         try:
             if self.counter >= 1000:
                 oldestKey = self.doubleSidedQueue.pop()
-                self.doubleSidedQueue.appendleft(key)
+                self.doubleSidedQueue.appendleft(sessionID)
 
-                self.dictionary[key] = deepZoomGen
+                self.dictionary[sessionID] = deepZoomGen
                 self.dictionary.pop(oldestKey, None)
             else:
-                self.doubleSidedQueue.appendleft(key)
-                self.dictionary[key] = deepZoomGen
+                self.doubleSidedQueue.appendleft(sessionID)
+                self.dictionary[sessionID] = deepZoomGen
                 self.counter += 1
             return True
         except:
             return False
 
-    def get(self, key):
+    def get(self, sessionID):
         try:
-            return self.dictionary[key]
+            return self.dictionary[sessionID]
         except:
             return None
+
+    def size(self):
+        return self.counter

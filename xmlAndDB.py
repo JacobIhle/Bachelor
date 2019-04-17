@@ -1,22 +1,23 @@
-from flask import request
+from flask import request, send_from_directory
 from app import db
 import xml.etree.ElementTree as ET
 import traceback
 import os
+
+xmlStoragePath = "//home/prosjekt/Histology/thomaso/"
 
 
 def saveFromXml(foldername, filename):
     grade = 0
     tags = []
     try:
-        folder = "//home/prosjekt/Histology/thomaso/"
         file = foldername + "[slash]" + filename + ".xml"
-        if not os.path.isfile(folder + file):
-            createXmlFileIfNotExist(folder + file)
+        if not os.path.isfile(xmlStoragePath + file):
+            createXmlFileIfNotExist(xmlStoragePath + file)
 
         InsertImageToDB(file.replace(".xml", ""))
 
-        tree = ET.parse(folder + file)
+        tree = ET.parse(xmlStoragePath + file)
         regions = tree.getroot()[0][0]
 
 
@@ -37,11 +38,19 @@ def saveFromXml(foldername, filename):
             finally:
                 InsertDrawingsToDB(file.replace(".xml", ""), tags, grade)
 
-        tree.write(folder + file)
+        tree.write(xmlStoragePath + file)
     except:
         traceback.print_exc()
         return "", 500
     return "", 200
+
+
+def LoadFromXml(foldername, filename):
+    file = foldername + "[slash]" + filename
+    foo = file.replace("%20", " ")
+    if os.path.isfile(xmlStoragePath + foo):
+        return send_from_directory(xmlStoragePath, foo)
+    return "", 500
 
 
 def createXmlFileIfNotExist(path):

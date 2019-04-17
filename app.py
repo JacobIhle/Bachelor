@@ -2,7 +2,7 @@
 from flask import Flask, send_file, render_template, redirect, request, abort, session, send_from_directory
 from flask_login import LoginManager, logout_user, login_required, current_user
 from openslide.deepzoom import DeepZoomGenerator
-from QueueDictClass import OurDataStructure
+from QueueDictClass import SessionDeepzoomStorage
 from flask_sqlalchemy import SQLAlchemy
 from io import BytesIO
 import customLogger
@@ -16,7 +16,7 @@ import os
 nestedImageList = {}
 imagePathLookupTable = {}
 
-deepZoomList = OurDataStructure()
+deepZoomList = SessionDeepzoomStorage()
 
 dateTime = customLogger.DateTime()
 logger = customLogger.StartLogging()
@@ -61,6 +61,7 @@ def ChangeImage(folder, filename):
     logger.log(25, configuration.LogFormat() + current_user.username + " requested image " + filename)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     deepZoomList.append(session["ID"], deepZoomGen)
+    print(deepZoomList.size())
     return deepZoomGen.get_dzi("jpeg")
   
   
@@ -82,12 +83,7 @@ def PostXML(foldername, filename):
 @app.route('/getxml/<foldername>/<filename>')
 @login_required
 def GetXML(foldername, filename):
-    folder = "//home/prosjekt/Histology/thomaso/"
-    file = foldername+"[slash]"+filename
-    foo = file.replace("%20", " ")
-    if os.path.isfile(folder+foo):
-        return send_from_directory(folder, foo)
-    return "", 500
+    return xmlAndDB.LoadFromXml(foldername, filename)
 
 
 @app.route("/addTag", methods=["POST"])
