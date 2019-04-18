@@ -160,9 +160,9 @@ def Favicon():
     return send_file("static/images/favicon.ico", mimetype="image/jpeg")
 
 
-
+# Automatically called by login_manager to update session token.
 @login_manager.user_loader
-def UserLogin(Username):
+def RefreshLoginToken(Username):
     return dbClasses.User.query.get(Username)
 
 

@@ -72,8 +72,6 @@ def BuildNested(paths):
     return container
 
 
-
-
 def BuildImageListHTML(dict, returnString, level):
     for key, value in dict.items():
         if type(value) is list:
