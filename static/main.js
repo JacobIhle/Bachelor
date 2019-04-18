@@ -43,14 +43,14 @@ var finishingDrawing = false;
 
 $(document).ready(function () {
     updateAllTags(0);
-    initiallizeCanvas();
+    initializeCanvas();
     addNonViewerHandlers();
     addGuiHandlers();
     addXmlHandlers();
     addDrawingHandlers()
 });
 
-function initiallizeCanvas() {
+function initializeCanvas() {
 
     if (viewer) {
         viewer.close();

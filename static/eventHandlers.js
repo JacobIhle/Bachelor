@@ -166,7 +166,7 @@ function addGuiHandlers() {
     }, function () {
         $("#menuicon").css({"background-color": "#424242", "border-radius": "5px"});
     });
-    
+
 
     $("#imageList").click(function () {
         $("#imageExplorer").toggle();
