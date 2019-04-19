@@ -40,8 +40,8 @@ login_manager.init_app(app)
 @app.route('/')
 @login_required
 def Main():
-    ImageListHTML = GenerateImageListHtml()
     GetAvailableImages()
+    ImageListHTML = GenerateImageListHtml()
     return render_template("index.html", imageList=ImageListHTML)
 
 
