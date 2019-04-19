@@ -18,7 +18,6 @@ imagePathLookupTable = {}
 
 deepZoomList = SessionDeepzoomStorage()
 
-dateTime = customLogger.DateTime()
 logger = customLogger.StartLogging()
 
 app = Flask(__name__)
@@ -61,7 +60,6 @@ def ChangeImage(folder, filename):
     logger.log(25, configuration.LogFormat() + current_user.username + " requested image " + filename)
     deepZoomGen = DeepZoomGenerator(image, tile_size=254, overlap=1, limit_bounds=False)
     deepZoomList.append(session["ID"], deepZoomGen)
-    print(deepZoomList.size())
     return deepZoomGen.get_dzi("jpeg")
   
   

@@ -27,6 +27,3 @@ class SessionDeepzoomStorage:
             return self.dictionary[sessionID]
         except:
             return None
-
-    def size(self):
-        return self.counter
