@@ -12,7 +12,6 @@ import imageList
 import binascii
 import json
 import os
-import asyncio
 
 nestedImageList = {}
 imagePathLookupTable = {}
@@ -40,9 +39,8 @@ login_manager.init_app(app)
 
 @app.route('/')
 @login_required
-async def Main():
-    # GetAvailableImages()
-    await GetAvailableImages()
+def Main():
+    GetAvailableImages()
     ImageListHTML = GenerateImageListHtml()
     return render_template("index.html", imageList=ImageListHTML)
 
