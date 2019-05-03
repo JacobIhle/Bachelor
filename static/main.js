@@ -28,7 +28,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
-
+var serverUrl = "https://histology.ux.uis.no";
 var viewer;
 var aborts = 0;
 var allTags = [];
@@ -43,14 +43,14 @@ var finishingDrawing = false;
 
 $(document).ready(function () {
     updateAllTags(0);
-    initiallizeCanvas();
+    initializeCanvas();
     addNonViewerHandlers();
     addGuiHandlers();
     addXmlHandlers();
     addDrawingHandlers()
 });
 
-function initiallizeCanvas() {
+function initializeCanvas() {
 
     if (viewer) {
         viewer.close();
@@ -110,7 +110,7 @@ function changeImage(image) {
     }
     var id = image.id;
     currentImageLoaded = id.replace(new RegExp("{space}", "g"), " ");
-    currentImageUrl = "https://histology.ux.uis.no/app/" + currentImageLoaded;
+    currentImageUrl = serverUrl + "/app/" + currentImageLoaded;
 
     open_slide(currentImageUrl);
     getXMLfromServer();
@@ -124,7 +124,3 @@ function open_slide(url) {
         canvasOverlay.resize();
     });
 }
-
-
-
-
