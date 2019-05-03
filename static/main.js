@@ -44,7 +44,6 @@ var finishingDrawing = false;
 $(document).ready(function () {
     updateAllTags(0);
     initializeCanvas();
-    addNonViewerHandlers();
     addGuiHandlers();
     addXmlHandlers();
     addDrawingHandlers()
@@ -90,11 +89,6 @@ function addOverlays() {
         onRedraw: function () {updateDrawings();},
         clearBeforeRedraw: true
     });
-
-}
-
-function addNonViewerHandlers() {
-
 
 }
 
