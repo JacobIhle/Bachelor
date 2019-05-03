@@ -167,6 +167,13 @@ function addGuiHandlers() {
         $("#menuicon").css({"background-color": "#424242", "border-radius": "5px"});
     });
 
+    $(".imageLinks").on("click", function () {
+        if (tempDrawingPoints.length === 0) {
+            changeImage(this);
+        } else if (confirm("Changing image will cancel drawing, continue?")) {
+            changeImage(this);
+        }
+    });
 
     $("#imageList").click(function () {
         $("#imageExplorer").toggle();
