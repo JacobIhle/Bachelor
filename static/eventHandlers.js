@@ -195,7 +195,18 @@ function addGuiHandlers() {
         $(".folder").show();
         $(".imageLinks").show();
         if (searchTagEnabled) {
-            PopulateSearchDropDown();
+            var searchDropdown = $(".dropdown-search-content");
+
+            if ($(".dropdown-search-content a").length === 0) {
+                allTags.forEach(function (tag) {
+                    searchDropdown.append("<a class='classTags'>" + tag + "</a>");
+                });
+            }
+            $(".dropdown-search-content a").on("click", function () {
+                $("#searchField").val($(this).html());
+                $(".dropdown-search-content").empty();
+                fetchSearchTags($(this).html());
+            });
         }
     });
 
@@ -213,14 +224,16 @@ function addGuiHandlers() {
         if (searchTagEnabled) {
             $("#searchField").val("");
             $(".dropdown-search-content").empty();
-        
-            $(this).removeClass("searchTagsClicked");
-            $(this).attr("id", "searchTags");
-            searchTagEnabled = false;
-        } else {
+        }
+        var className = $(this).attr("class");
+        if (className === "") {
             $(this).addClass("searchTagsClicked");
             $(this).attr("id", " ");
             searchTagEnabled = true;
+        } else {
+            $(this).removeClass("searchTagsClicked");
+            $(this).attr("id", "searchTags");
+            searchTagEnabled = false;
         }
     });
 }
