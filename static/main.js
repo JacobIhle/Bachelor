@@ -28,7 +28,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
-var serverUrl = "https://histology.ux.uis.no";
+var serverUrl = "http://152.94.1.69:5000";
 var viewer;
 var aborts = 0;
 var allTags = [];
