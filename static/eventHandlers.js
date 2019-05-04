@@ -213,9 +213,7 @@ function addGuiHandlers() {
         if (searchTagEnabled) {
             $("#searchField").val("");
             $(".dropdown-search-content").empty();
-        }
-        var className = $(this).attr("class");
-        if (className === "") {
+
             $(this).addClass("searchTagsClicked");
             $(this).attr("id", " ");
             searchTagEnabled = true;
