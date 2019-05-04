@@ -213,14 +213,14 @@ function addGuiHandlers() {
         if (searchTagEnabled) {
             $("#searchField").val("");
             $(".dropdown-search-content").empty();
-
-            $(this).addClass("searchTagsClicked");
-            $(this).attr("id", " ");
-            searchTagEnabled = true;
-        } else {
+        
             $(this).removeClass("searchTagsClicked");
             $(this).attr("id", "searchTags");
             searchTagEnabled = false;
+        } else {
+            $(this).addClass("searchTagsClicked");
+            $(this).attr("id", " ");
+            searchTagEnabled = true;
         }
     });
 }
