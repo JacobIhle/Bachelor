@@ -195,7 +195,7 @@ function addGuiHandlers() {
         $(".folder").show();
         $(".imageLinks").show();
         if (searchTagEnabled) {
-            PopulateSearchDropDown();
+            populateSearchDropDown();
         }
     });
 
@@ -213,16 +213,15 @@ function addGuiHandlers() {
         if (searchTagEnabled) {
             $("#searchField").val("");
             $(".dropdown-search-content").empty();
-        }
-        var className = $(this).attr("class");
-        if (className === "") {
-            $(this).addClass("searchTagsClicked");
-            $(this).attr("id", " ");
-            searchTagEnabled = true;
-        } else {
+
             $(this).removeClass("searchTagsClicked");
             $(this).attr("id", "searchTags");
             searchTagEnabled = false;
+        } else {
+
+            $(this).addClass("searchTagsClicked");
+            $(this).attr("id", " ");
+            searchTagEnabled = true;
         }
     });
 }
