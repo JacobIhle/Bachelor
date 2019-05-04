@@ -33,17 +33,17 @@ function updateDrawings() {
 
 function drawDrawings(points) {
     canvasOverlay.context2d().beginPath();
-            for (var i = 0; i < points.length; i++) {
-                if (i === 0) {
-                    canvasOverlay.context2d().moveTo(points[i].x, points[i].y);
-                } else if (i === points.length - 1) {
-                    canvasOverlay.context2d().lineTo(points[i].x, points[i].y);
-                    canvasOverlay.context2d().stroke();
-                    canvasOverlay.context2d().closePath();
-                } else {
-                    canvasOverlay.context2d().lineTo(points[i].x, points[i].y);
-                }
-            }
+    for (var i = 0; i < points.length; i++) {
+        if (i === 0) {
+            canvasOverlay.context2d().moveTo(points[i].x, points[i].y);
+        } else if (i === points.length - 1) {
+            canvasOverlay.context2d().lineTo(points[i].x, points[i].y);
+            canvasOverlay.context2d().stroke();
+            canvasOverlay.context2d().closePath();
+        } else {
+            canvasOverlay.context2d().lineTo(points[i].x, points[i].y);
+        }
+    }
 }
 
 function cancelDrawing() {

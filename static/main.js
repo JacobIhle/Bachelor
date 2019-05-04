@@ -44,7 +44,6 @@ var finishingDrawing = false;
 $(document).ready(function () {
     updateAllTags(0);
     initializeCanvas();
-    addNonViewerHandlers();
     addGuiHandlers();
     addXmlHandlers();
     addDrawingHandlers()
@@ -91,17 +90,6 @@ function addOverlays() {
         clearBeforeRedraw: true
     });
 
-}
-
-function addNonViewerHandlers() {
-
-    $(".imageLinks").on("click", function () {
-        if (tempDrawingPoints.length === 0) {
-            changeImage(this);
-        } else if (confirm("Changing image will cancel drawing, continue?")) {
-            changeImage(this);
-        }
-    })
 }
 
 function changeImage(image) {
