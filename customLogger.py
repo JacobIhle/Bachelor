@@ -20,5 +20,3 @@ def StartLogging():
 
     return UserLog
 
-if __name__ == '__main__':
-    StartLogging()
