@@ -167,6 +167,13 @@ function addGuiHandlers() {
         $("#menuicon").css({"background-color": "#424242", "border-radius": "5px"});
     });
 
+    $(".imageLinks").on("click", function () {
+        if (tempDrawingPoints.length === 0) {
+            changeImage(this);
+        } else if (confirm("Changing image will cancel drawing, continue?")) {
+            changeImage(this);
+        }
+    });
 
     $("#imageList").click(function () {
         $("#imageExplorer").toggle();
@@ -188,18 +195,7 @@ function addGuiHandlers() {
         $(".folder").show();
         $(".imageLinks").show();
         if (searchTagEnabled) {
-            var searchDropdown = $(".dropdown-search-content");
-
-            if ($(".dropdown-search-content a").length === 0) {
-                allTags.forEach(function (tag) {
-                    searchDropdown.append("<a class='classTags'>" + tag + "</a>");
-                });
-            }
-            $(".dropdown-search-content a").on("click", function () {
-                $("#searchField").val($(this).html());
-                $(".dropdown-search-content").empty();
-                fetchSearchTags($(this).html());
-            });
+            populateSearchDropDown();
         }
     });
 
@@ -217,16 +213,15 @@ function addGuiHandlers() {
         if (searchTagEnabled) {
             $("#searchField").val("");
             $(".dropdown-search-content").empty();
-        }
-        var className = $(this).attr("class");
-        if (className === "") {
-            $(this).addClass("searchTagsClicked");
-            $(this).attr("id", " ");
-            searchTagEnabled = true;
-        } else {
+
             $(this).removeClass("searchTagsClicked");
             $(this).attr("id", "searchTags");
             searchTagEnabled = false;
+        } else {
+
+            $(this).addClass("searchTagsClicked");
+            $(this).attr("id", " ");
+            searchTagEnabled = true;
         }
     });
 }

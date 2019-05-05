@@ -140,3 +140,18 @@ function generateTagSelectorWindow() {
 
     addTagHandlers();
 }
+
+
+function populateSearchDropDown(){
+    var searchDropdown = $(".dropdown-search-content");
+    if ($(".dropdown-search-content a").length === 0) {
+        allTags.forEach(function (tag) {
+            searchDropdown.append("<a class='classTags'>" + tag + "</a>");
+        });
+    }
+    $(".dropdown-search-content a").on("click", function () {
+        $("#searchField").val($(this).html());
+        $(".dropdown-search-content").empty();
+        fetchSearchTags($(this).html());
+    });
+}

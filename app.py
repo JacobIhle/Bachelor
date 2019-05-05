@@ -97,11 +97,11 @@ def AddTags():
 @app.route("/updateTags", methods=["GET", "POST"])
 @login_required
 def UpdateTags():
-    tuppletags = dbClasses.Tags.query.with_entities(dbClasses.Tags.Name)
+    query = "select * from tags;"
+    tuppletags = db.engine.execute(query)
     tags = {"tags": []}
     for tag in tuppletags:
         tags["tags"].append(tag[0])
-
     return json.dumps(tags), 200
 
 
