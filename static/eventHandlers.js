@@ -61,30 +61,11 @@ function addViewerHandlers() {
     });
 
     viewer.addHandler("open-failed", function () {
-        fetch(serverUrl + "/authenticated")
-            .then(function (response) {
-                if (response.status === 401) {
-                    window.location.reload(true);
-                    if (aborts === 0) {
-                        alert("You have been logged out for inactivity");
-                        aborts++;
-                    }
-
-                }
-            });
+       fetchAuthenticaed();
     });
 
     viewer.addHandler("tile-load-failed", function () {
-        fetch(serverUrl + "/authenticated")
-            .then(function (response) {
-                if (response.status === 401) {
-                    window.location.reload(true);
-                    if (aborts === 0) {
-                        alert("You have been logged out for inactivity");
-                        aborts++;
-                    }
-                }
-            });
+        fetchAuthenticaed();
     });
 
     viewer.addHandler('canvas-click', function (e) {
@@ -109,6 +90,20 @@ function addViewerHandlers() {
             e.preventDefaultAction = false;
         }
     })
+}
+
+function fetchAuthenticaed(){
+    fetch(serverUrl + "/authenticated")
+    .then(function (response) {
+        if (response.status === 401) {
+            window.location.reload(true);
+            if (aborts === 0) {
+                alert("You have been logged out for inactivity");
+                aborts++;
+            }
+
+        }
+    });
 }
 
 function addXmlHandlers() {

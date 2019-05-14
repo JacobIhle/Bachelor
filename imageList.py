@@ -9,9 +9,7 @@ def RefreshImageList():
             for item in strippedListOfImages:
                 f.write("%s\n" % item)
     except OSError:
-        return [], "500"
-
-    return imageListToDict(strippedListOfImages), ""
+        print("error reading from file")
 
 
 def ReadImageListFromFile():
