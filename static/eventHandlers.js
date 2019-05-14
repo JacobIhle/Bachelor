@@ -61,11 +61,11 @@ function addViewerHandlers() {
     });
 
     viewer.addHandler("open-failed", function () {
-       fetchAuthenticaed();
+       fetchAuthenticated();
     });
 
     viewer.addHandler("tile-load-failed", function () {
-        fetchAuthenticaed();
+        fetchAuthenticated();
     });
 
     viewer.addHandler('canvas-click', function (e) {
@@ -92,7 +92,7 @@ function addViewerHandlers() {
     })
 }
 
-function fetchAuthenticaed(){
+function fetchAuthenticated(){
     fetch(serverUrl + "/authenticated")
     .then(function (response) {
         if (response.status === 401) {
